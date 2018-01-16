@@ -28,7 +28,9 @@ public class Card {
 		this.cargo = Integer.parseInt(tokens[5]);		
 	}
 	
-	
+	/**
+	 * Default object string is the card name
+	 */
 	public String toString() {
 		
 		return name;

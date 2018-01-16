@@ -36,7 +36,7 @@ public class Deck extends CardPile {
 			players[counter].addToHand(pile.get(i));
 			
 			//If all players have been dealt to, start again at first player
-			if (counter >= players.length - 1) {
+			if (counter == players.length - 1) {
 				
 				counter = 0;
 			}

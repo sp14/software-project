@@ -9,10 +9,18 @@ public class Player {
 	 * Constructor
 	 * @param name of player
 	 */
-	public Player (String name) {
+	public Player(String name) {
 		
 		hand = new Hand();
 		this.name = name;
+	}
+	
+	/**
+	 * Default object string is the player name
+	 */
+	public String toString() {
+		
+		return name;
 	}
 	
 	/**

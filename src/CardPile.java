@@ -6,6 +6,9 @@ public abstract class CardPile {
 	protected ArrayList<Card> pile;
 	private int cardCount;
 	
+	/**
+	 * Constructor initialises the card array
+	 */
 	public CardPile() {
 		
 		pile = new ArrayList<Card>();
