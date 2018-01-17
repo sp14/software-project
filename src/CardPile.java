@@ -30,7 +30,7 @@ public abstract class CardPile {
 	 * @return card count
 	 */
 	public int getCardCount() {
-
+		cardCount = pile.size();
 		return cardCount;
 	}
 

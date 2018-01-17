@@ -2,19 +2,28 @@
 public class Player {
 
 	//Instance variables
-	protected Hand hand;
+	private Hand hand;
+	
+	public void setHand(Hand hand) {
+		this.hand = hand;
+	}
+
 	String name;
+	boolean AI = false;
 	
 	/**
 	 * Constructor
 	 * @param name of player
 	 */
-	public Player(String name) {
+	public Player(String name, boolean AI) {
 		
 		hand = new Hand();
 		this.name = name;
+		this.AI = AI;
 	}
 	
+	
+
 	/**
 	 * Default object string is the player name
 	 */
@@ -41,4 +50,30 @@ public class Player {
 		
 		return hand.draw();
 	}
+	
+	
+	/**
+	 * getters and setters for all Player attributes
+	 * @return
+	 */
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public boolean isAI() {
+		return AI;
+	}
+
+	public void setAI(boolean aI) {
+		AI = aI;
+	}
+
+	public Hand getHand() {
+		return hand;
+	}
+	
 }
