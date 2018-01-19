@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 
 public class Game {
@@ -114,7 +113,7 @@ public class Game {
 			if (i==1) 
 				AI=false;							
 			else AI= true;
-				
+
 			//Create player object and add to the array
 			Player player = new Player("Player " + i,AI);
 			players[i - 1] = player;
@@ -137,14 +136,22 @@ public class Game {
 	 * @return
 	 */
 	public Player firstPlayer() {
-		//work needs to be done here
-		return players[0];
+		int fp;
+		Random rn = new Random();
+
+		fp = rn.nextInt(numberOfPlayers);
+		System.out.println("first player of the game is player : "+(fp+1));
+
+		return players[fp];
 	}
-	
+
 	/**
 	 * method with the logic of playing each round
 	 */
 	public void playRound() {
+
+		//Create a scanner object to read user input
+		Scanner scanner = new Scanner(System.in);
 
 		//variable for the temporary Array of cards in the middle
 		CardPile tempDeck = new Deck();
@@ -152,24 +159,164 @@ public class Game {
 		//variable for the communal pile
 		CardPile communalPile = new Deck();
 
+		//variable for the attribute the user chooses to compare
+		String selectedAttribute;
+
 		//fill the middle deck with the first card of each player's hand	
 		for (int i=0;i<numberOfPlayers;i++) {
 			tempDeck.add(players[i].drawCard());
-
 		} 
 
+		//get selected attribute from Console. needs to be changed
+		selectedAttribute= scanner.next();
 
-
-
-		// TESTING: print results in console for testing purposes
+		
+		// TESTING: print cards in middleDeck for testing purposes
 		System.out.print("middle deck: ");
 		tempDeck.printPile();
-
+		System.out.print(selectedAttribute + " ");
+		
+		//find who wins the round
+		findWinner(tempDeck, selectedAttribute);
+		
+		
+		// TESTING: print player hand after the round
 		for (int i=0;i<numberOfPlayers;i++) {
 			System.out.print("player " + (i+1) + " current hand: "); 
 			players[i].getHand().printPile();
 		}
 	}
+
+	/**
+	 * finds the player that won
+	 * @param tempDeck
+	 * @param selectedAttribute
+	 */
+	public void findWinner(CardPile tempDeck, String selectedAttribute) {
+
+		//variable for the highest value of selected attribute found in tempDeck
+		int max=-1;
+
+		//variable for the index of the card with highest value
+		int maxindex = -1;
+
+		//variable to store how many times highest value was found 
+		int counter=0;
+
+		//variable for the value of the attribute that is currently being tested
+		int value=-1;
+
+		//compare according to the given attribute
+		switch(selectedAttribute) {
+
+		//if speed was selected
+		case "speed": 
+			//print speed for all cards for testing purposes
+			for (int i=0;i<numberOfPlayers;i++) {
+				System.out.print(tempDeck.getCard(i).getSpeed() + " ");
+			}
+			System.out.println();
+			
+			//go through the tempDeck, find the max and hold its index
+			for (int i=0;i<tempDeck.getCardCount();i++) { 
+				value = tempDeck.getCard(i).getSpeed();
+				if (value>max) {
+					max = value; //if currently tested value is greater than max, set max to currently tested value
+					maxindex = i; //update the index of max card
+				}
+			}
+			for (int j=0; j<tempDeck.getCardCount(); j++) {
+				if (tempDeck.getCard(j).getSpeed() == max)
+					counter++;
+			}
+			break;
+
+		case "range": 
+			//print range for all cards for testing purposes
+			for (int i=0;i<numberOfPlayers;i++) {
+				System.out.print(tempDeck.getCard(i).getRange() + " ");
+			}
+			System.out.println();
+			for (int i=0;i<tempDeck.getCardCount();i++) {
+				value=tempDeck.getCard(i).getRange();
+				if (value>max) {
+					max = value;
+					maxindex=i;
+				}
+			}
+			for (int j=0;j<tempDeck.getCardCount();j++) {
+				if (tempDeck.getCard(j).getRange()==max)
+					counter++;
+			}
+			break;
+
+		case "firepower": 
+			//print firepower for all cards for testing purposes
+			for (int i=0;i<numberOfPlayers;i++) {
+				System.out.print(tempDeck.getCard(i).getFirepower() + " ");
+			}
+			System.out.println();
+			for (int i=0;i<tempDeck.getCardCount();i++) {
+				value=tempDeck.getCard(i).getFirepower();
+				if (value>max) {
+					max = value;
+					maxindex=i;
+				}
+			}
+			for (int j=0;j<tempDeck.getCardCount();j++) {
+				if (tempDeck.getCard(j).getFirepower()==max)
+					counter++;
+			}
+			break;
+
+		case "cargo": 
+			//print cargo for all cards for testing purposes
+			for (int i=0;i<numberOfPlayers;i++) {
+				System.out.print(tempDeck.getCard(i).getCargo() + " ");
+			}
+			System.out.println();
+			
+			for (int i=0;i<tempDeck.getCardCount();i++) {
+				value=tempDeck.getCard(i).getCargo();
+				if (value>max) {
+					max = value;
+					maxindex=i;
+				}
+			}
+			for (int j=0;j<tempDeck.getCardCount();j++) {
+				if (tempDeck.getCard(j).getCargo()==max)
+					counter++;
+			}
+			break;
+
+		case "size": 
+			//print size for all cards for testing purposes
+			for (int i=0;i<numberOfPlayers;i++) {
+				System.out.print(tempDeck.getCard(i).getSize() + " ");
+			}
+			System.out.println();
+			
+			for (int i=0;i<tempDeck.getCardCount();i++) {
+				value=tempDeck.getCard(i).getSize();
+				if (value>max) {
+					max = value;
+					maxindex=i;
+				}
+			}
+			for (int j=0;j<tempDeck.getCardCount();j++) {
+				if (tempDeck.getCard(j).getSize()==max)
+					counter++;
+			}
+			break;
+		}
+
+		// TESTING: print highest value and number of occurences for testing purposes
+		if (counter>1) 
+			System.out.println("it is a draw. the highest value is "+ value +" and was found " + counter+ " times.");
+
+		else System.out.println("winner is player "+ (maxindex+1)+ " with card " +tempDeck.getCard(maxindex).getName());
+
+	}	
 
 
 	/**
@@ -198,6 +345,4 @@ public class Game {
 
 		return continueGame;
 	}
-
-
 }

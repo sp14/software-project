@@ -9,11 +9,12 @@ public class Debugger {
 		game.populateDeck();
 		game.selectPlayers(4);
 		game.shuffleAndDeal();
-		
+		game.firstPlayer();
 	//	while (game.continueGame()==true)
 		
 		//play 5 hands for testing
-		for (int i=0; i<5;i++)
+		for (int i=0; i<9;i++)
 			game.playRound();
+			
 	}	
 }

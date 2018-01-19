@@ -40,7 +40,7 @@ public class Player {
 	public void addToHand(Card card) {
 		
 		hand.add(card);
-		hand.printPile();
+		//hand.printPile();
 	}
 	
 	/**
