@@ -70,26 +70,35 @@ public class TopTrumpsCLIApplication {
 
 	private static int chooseAIPlayers(Scanner scanner) {
 
+		//Prompt user to choose the number of AI players
 		System.out.println("How many AI players would you like to play against (Max 4)");
 
+		//Loop until the user enters a valid response
 		for(;;) {
 
 			try {
 
+				//Get the user response
 				int numPlayers = scanner.nextInt();
 
+				//Check that it is between 1 and 4
 				if (numPlayers < 1 || numPlayers > 4) {
 
 					System.out.println("Please enter a number between 1 and 4");
 				}
+				//If valid, return the integer
 				else {
 
 					return numPlayers;
 				}
 			}
+			//Catch any non integer that is entered
 			catch (InputMismatchException e) {
 
+				//Tell user input needs to be an integer
 				System.out.println("Please enter an integer");
+				//Use up carriage return
+				scanner.nextLine();
 			}	
 		}
 	}
