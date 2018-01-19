@@ -1,5 +1,6 @@
 package commandline;
 
+import game.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 //import Game;
@@ -35,11 +36,16 @@ public class TopTrumpsCLIApplication {
 			int numPlayers = chooseAIPlayers(scanner);
 
 			//Start the game logic
-
-			//			Game game = new Game();
-			//			game.populateDeck();
-			//			game.shuffleAndDeal();
-
+			Game game = new Game();
+			//Sets the number of players
+			game.selectPlayers(numPlayers);
+			//Deal the hands 
+			game.deal();
+			
+			while (game.continueGame()) {
+				
+				game.playRound();
+			}
 
 			userWantsToQuit=true; // use this when the user wants to exit the game
 
@@ -51,9 +57,9 @@ public class TopTrumpsCLIApplication {
 		//Loop until the user wants to play the game
 		for (;;) { 
 
-			//User prompt
+			//Prompt user whether they wish to see stats
 			System.out.println("Welcome to Top Trumps.\nType s to see stats or type anything else to play the game!");
-			//User input
+			//Wait for user input and put to lower case
 			String stats = scanner.nextLine().toLowerCase();
 
 			if (stats.equals("s")) {
@@ -84,11 +90,13 @@ public class TopTrumpsCLIApplication {
 				//Check that it is between 1 and 4
 				if (numPlayers < 1 || numPlayers > 4) {
 
+					//Inform user that the number is out of range
 					System.out.println("Please enter a number between 1 and 4");
 				}
 				//If valid, return the integer
 				else {
 
+					System.out.println("You have chosen " + numPlayers + " AI players. Let the games begin.");
 					return numPlayers;
 				}
 			}
@@ -101,5 +109,10 @@ public class TopTrumpsCLIApplication {
 				scanner.nextLine();
 			}	
 		}
+	}
+	
+	public static void chooseStat() {
+		
+		
 	}
 }

@@ -8,7 +8,7 @@ public class Debugger {
 		Game game = new Game();
 		game.populateDeck();
 		game.selectPlayers(4);
-		game.shuffleAndDeal();
+		game.deal();
 		game.firstPlayer();
 	//	while (game.continueGame()==true)
 		
