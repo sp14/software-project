@@ -35,6 +35,15 @@ public abstract class CardPile {
 	}
 
 	/**
+	 * returns Card object at index position i
+	 * @param i
+	 * @return Card at index position i
+	 */
+	public Card getCard(int i) {
+		
+		return pile.get(i);
+	}
+	/**
 	 * Prints the contents of the deck to the log file
 	 */
 	public void printPile() {
