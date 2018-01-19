@@ -1,3 +1,4 @@
+package game;
 //Debugging class to be removed
 
 public class Debugger {

@@ -1,3 +1,4 @@
+package game;
 import java.util.Collections;
 
 public class Deck extends CardPile {

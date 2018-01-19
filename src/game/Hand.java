@@ -1,3 +1,4 @@
+package game;
 
 public class Hand extends CardPile{
 	
