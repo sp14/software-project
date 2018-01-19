@@ -166,15 +166,20 @@ public class Game {
 			tempDeck.add(players[i].drawCard());
 		} 
 
+		//get selected attribute from Console. needs to be changed
 		selectedAttribute= scanner.next();
 
-
-		// TESTING: print results in console for testing purposes
+		
+		// TESTING: print cards in middleDeck for testing purposes
 		System.out.print("middle deck: ");
 		tempDeck.printPile();
 		System.out.print(selectedAttribute + " ");
 		
+		//find who wins the round
 		findWinner(tempDeck, selectedAttribute);
+		
+		
+		// TESTING: print player hand after the round
 		for (int i=0;i<numberOfPlayers;i++) {
 			System.out.print("player " + (i+1) + " current hand: "); 
 			players[i].getHand().printPile();
@@ -304,6 +309,7 @@ public class Game {
 			break;
 		}
 
+		// TESTING: print highest value and number of occurences for testing purposes
 		if (counter>1) 
 			System.out.println("it is a draw. the highest value is "+ value +" and was found " + counter+ " times.");
 
