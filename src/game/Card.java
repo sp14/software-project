@@ -95,7 +95,29 @@ public class Card
 		return cargo;
 	}
 
-//
+	/**
+	 * universal getter: given a String representing the attribute that the user wants
+	 * returns the value of the attribute
+	 * @param selected attribute: the attribute asked by the user
+	 * @return the value of the selected attribute or -1 if the selected attribute was not found
+	 */
+public int getAttribute(String selectedAttribute) {
+	
+	switch (selectedAttribute) {
+	case "speed": return this.speed;
+	case "firepower":return this.firepower;
+	case "cargo":return this.cargo;
+	case "range":return this.range;
+	case "size":return this.size;
+	default: return -1;
+	}
+}
+	
+	
+	
+	
+	
+	//
 //	/**
 //	 * compares the given attribute of Cards objects 
 //	 * and returns a negative or positive integer or zero according to the result 

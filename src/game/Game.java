@@ -162,28 +162,41 @@ public class Game {
 		//variable for the attribute the user chooses to compare
 		String selectedAttribute;
 
-		//fill the middle deck with the first card of each player's hand	
-		for (int i=0;i<numberOfPlayers;i++) {
-			tempDeck.add(players[i].drawCard());
-		} 
-
 		//get selected attribute from Console. needs to be changed
 		selectedAttribute= scanner.next();
 
-		
-		// TESTING: print cards in middleDeck for testing purposes
-		System.out.print("middle deck: ");
-		tempDeck.printPile();
-		System.out.print(selectedAttribute + " ");
-		
-		//find who wins the round
-		findWinner(tempDeck, selectedAttribute);
-		
-		
-		// TESTING: print player hand after the round
-		for (int i=0;i<numberOfPlayers;i++) {
-			System.out.print("player " + (i+1) + " current hand: "); 
-			players[i].getHand().printPile();
+		//check for bad input
+		if (!(selectedAttribute.toLowerCase().equals("speed") || 
+				selectedAttribute.toLowerCase().equals("firepower")||
+				selectedAttribute.toLowerCase().equals("size")||
+				selectedAttribute.toLowerCase().equals("cargo")||
+				selectedAttribute.toLowerCase().equals("range")))
+			//if input is bad, print message
+			System.out.println("Selected attribute does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
+
+		//if input is okay, proceed: fill middle deck and find winner
+		else {
+			//fill the middle deck with the first card of each player's hand	
+			for (int i=0;i<numberOfPlayers;i++) {
+				tempDeck.add(players[i].drawCard());
+			} 
+
+
+
+			// TESTING: print cards in middleDeck for testing purposes
+			System.out.print("middle deck: ");
+			tempDeck.printPile();
+			System.out.print(selectedAttribute + " ");
+
+			//find who wins the round
+			findWinner(tempDeck, selectedAttribute);
+
+
+			// TESTING: print player hand after the round
+			for (int i=0;i<numberOfPlayers;i++) {
+				System.out.print("player " + (i+1) + " current hand: "); 
+				players[i].getHand().printPile();
+			}
 		}
 	}
 
@@ -193,7 +206,6 @@ public class Game {
 	 * @param selectedAttribute
 	 */
 	public void findWinner(CardPile tempDeck, String selectedAttribute) {
-
 		//variable for the highest value of selected attribute found in tempDeck
 		int max=-1;
 
@@ -206,108 +218,23 @@ public class Game {
 		//variable for the value of the attribute that is currently being tested
 		int value=-1;
 
-		//compare according to the given attribute
-		switch(selectedAttribute) {
+		//print selected attribute values for testing purposes
+		for (int i=0;i<numberOfPlayers;i++) {
+			System.out.print(tempDeck.getCard(i).getAttribute(selectedAttribute) + " ");
+		}
+		System.out.println();
 
-		//if speed was selected
-		case "speed": 
-			//print speed for all cards for testing purposes
-			for (int i=0;i<numberOfPlayers;i++) {
-				System.out.print(tempDeck.getCard(i).getSpeed() + " ");
+		//go through the tempDeck, find the max and hold its index
+		for (int i=0;i<tempDeck.getCardCount();i++) { 
+			value = tempDeck.getCard(i).getAttribute(selectedAttribute);
+			if (value>max) {
+				max = value; //if currently tested value is greater than max, set max to currently tested value
+				maxindex = i; //update the index of max card
 			}
-			System.out.println();
-			
-			//go through the tempDeck, find the max and hold its index
-			for (int i=0;i<tempDeck.getCardCount();i++) { 
-				value = tempDeck.getCard(i).getSpeed();
-				if (value>max) {
-					max = value; //if currently tested value is greater than max, set max to currently tested value
-					maxindex = i; //update the index of max card
-				}
-			}
-			for (int j=0; j<tempDeck.getCardCount(); j++) {
-				if (tempDeck.getCard(j).getSpeed() == max)
-					counter++;
-			}
-			break;
-
-		case "range": 
-			//print range for all cards for testing purposes
-			for (int i=0;i<numberOfPlayers;i++) {
-				System.out.print(tempDeck.getCard(i).getRange() + " ");
-			}
-			System.out.println();
-			for (int i=0;i<tempDeck.getCardCount();i++) {
-				value=tempDeck.getCard(i).getRange();
-				if (value>max) {
-					max = value;
-					maxindex=i;
-				}
-			}
-			for (int j=0;j<tempDeck.getCardCount();j++) {
-				if (tempDeck.getCard(j).getRange()==max)
-					counter++;
-			}
-			break;
-
-		case "firepower": 
-			//print firepower for all cards for testing purposes
-			for (int i=0;i<numberOfPlayers;i++) {
-				System.out.print(tempDeck.getCard(i).getFirepower() + " ");
-			}
-			System.out.println();
-			for (int i=0;i<tempDeck.getCardCount();i++) {
-				value=tempDeck.getCard(i).getFirepower();
-				if (value>max) {
-					max = value;
-					maxindex=i;
-				}
-			}
-			for (int j=0;j<tempDeck.getCardCount();j++) {
-				if (tempDeck.getCard(j).getFirepower()==max)
-					counter++;
-			}
-			break;
-
-		case "cargo": 
-			//print cargo for all cards for testing purposes
-			for (int i=0;i<numberOfPlayers;i++) {
-				System.out.print(tempDeck.getCard(i).getCargo() + " ");
-			}
-			System.out.println();
-			
-			for (int i=0;i<tempDeck.getCardCount();i++) {
-				value=tempDeck.getCard(i).getCargo();
-				if (value>max) {
-					max = value;
-					maxindex=i;
-				}
-			}
-			for (int j=0;j<tempDeck.getCardCount();j++) {
-				if (tempDeck.getCard(j).getCargo()==max)
-					counter++;
-			}
-			break;
-
-		case "size": 
-			//print size for all cards for testing purposes
-			for (int i=0;i<numberOfPlayers;i++) {
-				System.out.print(tempDeck.getCard(i).getSize() + " ");
-			}
-			System.out.println();
-			
-			for (int i=0;i<tempDeck.getCardCount();i++) {
-				value=tempDeck.getCard(i).getSize();
-				if (value>max) {
-					max = value;
-					maxindex=i;
-				}
-			}
-			for (int j=0;j<tempDeck.getCardCount();j++) {
-				if (tempDeck.getCard(j).getSize()==max)
-					counter++;
-			}
-			break;
+		}
+		for (int j=0; j<tempDeck.getCardCount(); j++) {
+			if (tempDeck.getCard(j).getAttribute(selectedAttribute) == max)
+				counter++;
 		}
 
 		// TESTING: print highest value and number of occurences for testing purposes
@@ -316,7 +243,8 @@ public class Game {
 
 		else System.out.println("winner is player "+ (maxindex+1)+ " with card " +tempDeck.getCard(maxindex).getName());
 
-	}	
+	}
+
 
 
 	/**
