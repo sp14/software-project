@@ -11,8 +11,8 @@ public class Debugger {
 		game.deal();
 		game.firstPlayer();
 			
-		//play 9 hands for testing
-		for (int i=0; i<9;i++)
+		//play hands for testing
+		for (;;)
 			game.playRound();
 			
 	}	

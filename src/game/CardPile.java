@@ -25,6 +25,15 @@ public abstract class CardPile {
 		pile.add(card);
 		cardCount++;
 	}
+	
+	/**
+	 * Removes the card at index i from the pile
+	 * @param i
+	 */
+	public void remove(int i) {
+		
+		pile.remove(i);
+	}
 
 	/**
 	 * Gets the number of cards in the pile
