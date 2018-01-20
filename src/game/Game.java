@@ -20,7 +20,12 @@ public class Game {
 	 */
 	public Game() {
 
+		//Create a new deck and populate it
 		deck = new Deck();
+		populateDeck();
+		
+		//Shuffle the deck
+		deck.shuffle();
 	}
 
 	/**
@@ -105,10 +110,10 @@ public class Game {
 		//Set instant variable
 		numberOfPlayers = p;
 		//Set the size of the players array
-		players = new Player[p];
+		players = new Player[numberOfPlayers];
 
 		//Adds all players to the players array
-		for (int i = 1; i <= p; i++) {
+		for (int i = 1; i <= numberOfPlayers; i++) {
 			//check if it's human or AI
 			if (i==1) 
 				AI=false;							
@@ -123,11 +128,10 @@ public class Game {
 	}
 
 	/**
-	 * Shuffles the deck and deals cards to each player
+	 * Deals the cards to each player
 	 */
-	public void shuffleAndDeal() {
+	public void deal() {
 
-		deck.shuffle();
 		deck.dealCards(players);
 	}
 
