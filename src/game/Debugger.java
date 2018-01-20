@@ -10,9 +10,8 @@ public class Debugger {
 		game.selectPlayers(4);
 		game.deal();
 		game.firstPlayer();
-	//	while (game.continueGame()==true)
-		
-		//play 5 hands for testing
+			
+		//play 9 hands for testing
 		for (int i=0; i<9;i++)
 			game.playRound();
 			
