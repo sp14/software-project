@@ -318,6 +318,7 @@ public class Game {
 			communalPile.remove(i);
 		}
 	}
+	
 	/**
 	 * method to determine if the game is over: checks if more than one players have cards left
 	 * @return if game should continue
