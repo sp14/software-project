@@ -42,9 +42,34 @@ public class TopTrumpsCLIApplication {
 			//Deal the hands 
 			game.deal();
 			
+			//Randomly select the first player
+			Player firstPlayer = game.firstPlayer();
+			
+			//Display to the player who is to go first
+			if (firstPlayer.isAI()){
+				System.out.println(firstPlayer + " (AI) to go first.");
+			}
+			else {
+				System.out.println("You to go first.");
+			}
+			
 			while (game.continueGame()) {
 				
-				game.playRound();
+				Player currentPlayer = game.getCurrentPlayer();
+				
+				//The current player is an AI
+				if (currentPlayer.isAI()) {
+					
+					System.out.println(currentPlayer + " to play");
+					Card drawn = game.drawCards();
+					System.out.println("Your card is " + drawn);
+				}
+				else {
+					
+					System.out.println("It is your turn.");
+					Card drawn = game.drawCards();
+					System.out.println("Your card is " + drawn);
+				}
 			}
 
 			userWantsToQuit=true; // use this when the user wants to exit the game

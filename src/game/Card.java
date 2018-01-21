@@ -35,7 +35,7 @@ public class Card
 	 */
 	public String toString() {
 
-		return name;
+		return name + ": size " +  size + " speed " + speed + " range " + range + " firepower " + firepower + " cargo " + cargo;
 	}
 
 	/**

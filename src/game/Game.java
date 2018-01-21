@@ -15,6 +15,9 @@ public class Game {
 	private Player[] players; 	
 	private CardPile communalPile = new Deck(); //variable for the communal pile	
 	private CardPile tempDeck = new Deck(); //variable for the temporary Array of cards in the middle
+	private int currentPlayer;
+	
+	private Card[] drawnCards;
 
 	/**
 	 * Constructor initialises deck
@@ -112,6 +115,7 @@ public class Game {
 		numberOfPlayers = p;
 		//Set the size of the players array
 		players = new Player[numberOfPlayers];
+		drawnCards = new Card[p];
 
 		//Adds all players to the players array
 		for (int i = 1; i <= numberOfPlayers; i++) {
@@ -124,8 +128,6 @@ public class Game {
 			Player player = new Player("Player " + i,AI);
 			players[i - 1] = player;
 		}	
-
-		System.out.println(Arrays.deepToString(players));
 	}
 
 	/**
@@ -146,10 +148,26 @@ public class Game {
 
 		fp = rn.nextInt(numberOfPlayers);
 
-		//TESTING: print first player for test purposes.
-		System.out.println("first player of the game is player : "+(fp+1));
+		//Set the first player as the current player.
+		currentPlayer = fp;
 
 		return players[fp];
+	}
+	
+	public Player getCurrentPlayer() {
+		
+		return players[currentPlayer];
+	}
+	
+	public Card drawCards() {
+		
+		//fill the middle deck with the first card of each player's hand	
+		for (int i=0;i<numberOfPlayers;i++) {
+			drawnCards[i] = players[i].drawCard();
+		} 
+		
+		//Returns the players card
+		return drawnCards[0];
 	}
 
 	/**
