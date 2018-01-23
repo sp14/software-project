@@ -1,7 +1,6 @@
 package game;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,11 +12,10 @@ public class Game {
 	private Deck deck;
 	private int numberOfPlayers;
 	private Player[] players; 	
-	private CardPile communalPile = new Deck(); //variable for the communal pile	
-	private CardPile tempDeck = new Deck(); //variable for the temporary Array of cards in the middle
-	private int currentPlayer;
-	
-	private Card[] drawnCards;
+	private CardPile communalPile = new Deck(); //variable for the communal pile
+
+	//Index of the player whos turn it is
+	private Player currentPlayer;
 
 	/**
 	 * Constructor initialises deck
@@ -107,26 +105,28 @@ public class Game {
 	 * Sets the number of players for the game
 	 * @param The number of players - p
 	 */
-	public void selectPlayers(int p) {
+	public void setAIPlayers(int p) {
 
-		//variable to show if player is AI
-		boolean AI;
-		//Set instant variable
-		numberOfPlayers = p;
+		//total players is AI player + human player
+		numberOfPlayers = p + 1;
 		//Set the size of the players array
 		players = new Player[numberOfPlayers];
-		drawnCards = new Card[p];
 
 		//Adds all players to the players array
 		for (int i = 1; i <= numberOfPlayers; i++) {
 			//check if it's human or AI
-			if (i==1) 
-				AI=false;							
-			else AI= true;
-
-			//Create player object and add to the array
-			Player player = new Player("Player " + i,AI);
-			players[i - 1] = player;
+			//Put human player in first index
+			if (i==1) { 
+				
+				Player player = new Player("You",false);
+				players[i - 1] = player;
+			}
+			else {
+				
+				//Create an AI player object and add to the array
+				Player player = new Player("Player " + i,true);
+				players[i - 1] = player;
+			}
 		}	
 	}
 
@@ -143,88 +143,62 @@ public class Game {
 	 * @return
 	 */
 	public Player firstPlayer() {
+
 		int fp;
 		Random rn = new Random();
 
 		fp = rn.nextInt(numberOfPlayers);
 
 		//Set the first player as the current player.
-		currentPlayer = fp;
+		currentPlayer = players[fp];
 
+		//Return the first player
 		return players[fp];
 	}
-	
+
 	public Player getCurrentPlayer() {
-		
-		return players[currentPlayer];
+
+		return currentPlayer;
 	}
-	
+
+	//Experimenting with this method
 	public Card drawCards() {
-		
+
 		//fill the middle deck with the first card of each player's hand	
 		for (int i=0;i<numberOfPlayers;i++) {
-			drawnCards[i] = players[i].drawCard();
+			players[i].drawCard();
 		} 
-		
-		//Returns the players card
-		return drawnCards[0];
+
+		//Returns the human players card
+		return players[0].getCurrentCard();
+	}
+
+	public Player[] getPlayers() {
+
+		return players;
 	}
 
 	/**
 	 * method with the logic of playing each round
 	 */
-	public void playRound() {
-
-		//Create a scanner object to read user input
-		Scanner scanner = new Scanner(System.in);
-
+	public Player playRound(String attribute) {
 
 		//variable for the attribute the user chooses to compare
-		String selectedAttribute;
+		String selectedAttribute = attribute;
 
-		//get selected attribute from Console. needs to be changed
-		selectedAttribute= scanner.next();
+		//find who wins the round
+		int winnerindex = findWinner(selectedAttribute);
 
-		//check for bad input
-		//if input is bad, print message
-		if (!(selectedAttribute.toLowerCase().equals("speed") || selectedAttribute.toLowerCase().equals("firepower")||
-				selectedAttribute.toLowerCase().equals("size")|| selectedAttribute.toLowerCase().equals("cargo")||
-				selectedAttribute.toLowerCase().equals("range")))
+		//allocate the cards to the winner/communal pile
+		allocateDeck(winnerindex);
 
-			System.out.println("Selected attribute does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
+		if (winnerindex == -1) {
 
-		//if input is okay, proceed: fill middle deck and find winner
+			return null;
+		}
 		else {
-			//fill the middle deck with the first card of each player's hand	
-			for (int i=0;i<numberOfPlayers;i++) {
-				tempDeck.add(players[i].drawCard());
-			} 
 
-			// TESTING: print cards in middleDeck for testing purposes
-			System.out.print("middle deck: ");
-			tempDeck.printPile();
-			System.out.print(selectedAttribute + " ");
-
-			//find who wins the round
-			//findWinner(selectedAttribute);
-
-			//allocate the cards to the winner/communal pile
-			allocateDeck(selectedAttribute);
-
-			//empty middle temporary deck
-			clearTempDeck();
-
-			// TESTING: print all players' hand after the round
-			for (int i=0;i<numberOfPlayers;i++) {
-				System.out.print("player " + (i+1) + " current hand: "); 
-				players[i].getHand().printPile();
-			}
-
-			// TESTING: print communal pile after the round
-			if (communalPile.getCardCount()>0) {
-				communalPile.printPile();
-			}
-			else System.out.println("Communal pile is empty!");
+			return players[winnerindex];
 		}
 	}
 
@@ -237,10 +211,10 @@ public class Game {
 	 */
 	private int findWinner(String selectedAttribute) {
 		//variable for the highest value of selected attribute found in tempDeck
-		int max = -1;
+		int max = 0;
 
 		//variable for the index of the card with highest value
-		int winnerindex = -1;
+		int winnerindex = 0;
 
 		//variable to store how many times highest value was found 
 		int counter=0;
@@ -248,15 +222,9 @@ public class Game {
 		//variable for the value of the attribute that is currently being tested
 		int value=-1;
 
-		////TESTING: print selected attribute values for testing purposes
-		for (int i=0;i<numberOfPlayers;i++) {
-			System.out.print(tempDeck.getCard(i).getAttribute(selectedAttribute) + " ");
-		}
-		System.out.println();
-
 		//go through the tempDeck, find the max and hold its index
-		for (int i=0;i<tempDeck.getCardCount();i++) { 
-			value = tempDeck.getCard(i).getAttribute(selectedAttribute);
+		for (int i=0;i<numberOfPlayers;i++) { 
+			value = players[i].getCurrentCard().getAttribute(selectedAttribute);
 			if (value>max) {
 				max = value; //if the currently-tested value is greater than max, set max to currently-tested value
 				winnerindex = i; //update the index of max card
@@ -264,8 +232,8 @@ public class Game {
 		}
 
 		//check if more than one card have the highest value 
-		for (int j=0; j<tempDeck.getCardCount(); j++) {
-			if (tempDeck.getCard(j).getAttribute(selectedAttribute) == max)
+		for (int j=0; j<numberOfPlayers; j++) {
+			if (players[j].getCurrentCard().getAttribute(selectedAttribute) == max)
 				counter++;
 		}
 
@@ -277,8 +245,7 @@ public class Game {
 			System.out.println("it is a draw. the highest value is "+ value +" and was found " + counter+ " times.");
 		}
 		else {
-			//TESTING: print winner, and winners card name
-			System.out.println("winner is player "+ (winnerindex+1)+ " with card " +tempDeck.getCard(winnerindex).getName());
+
 		}
 
 		return winnerindex;
@@ -288,15 +255,15 @@ public class Game {
 	 * Proceeds the result of the round;
 	 * @param selectedAttribute
 	 */
-	private void allocateDeck(String selectedAttribute) {
+	private void allocateDeck(int winnerindex) {
 
 		// variable that stores the index of the winner (if any)
-		int winner= findWinner(selectedAttribute);
+		int winner = winnerindex;
 
 		// if it is a draw, put cards from tempDeck to communalPile
 		if (winner==-1) {
 			for (int i = 0; i < numberOfPlayers; i++)
-				communalPile.add(tempDeck.getCard(i));
+				communalPile.add(players[i].getCurrentCard());
 		}
 
 		// if there is a winner
@@ -304,7 +271,7 @@ public class Game {
 
 			// add the cards from tempDeck to his hand
 			for (int i = 0; i < numberOfPlayers; i++) {
-				players[winner].addToHand(tempDeck.getCard(i));
+				players[winner].addToHand(players[i].getCurrentCard());
 			}
 
 			// add the cards from communalPile (if any) to his hand 
@@ -316,15 +283,9 @@ public class Game {
 				// empty communal Pile
 				clearCommunalPile();
 			}
-		}
-	}
 
-	/**
-	 * Removes all cards from temporary middle Deck
-	 */
-	private void clearTempDeck() {
-		for (int i = (numberOfPlayers-1); i > -1 ; i--) {
-			tempDeck.remove(i);
+			//Set the winner to go next
+			currentPlayer = players[winner];
 		}
 	}
 
@@ -336,7 +297,7 @@ public class Game {
 			communalPile.remove(i);
 		}
 	}
-	
+
 	/**
 	 * method to determine if the game is over: checks if more than one players have cards left
 	 * @return if game should continue
@@ -351,7 +312,7 @@ public class Game {
 
 		//for each player that has cards left, increment counter
 		for (int i=0;i<numberOfPlayers; i++) {
-			if (players[i].getHand().getCardCount() != 0) {
+			if (players[i].getRemainingCards() != 0) {
 				counter++;
 			}
 		}
@@ -360,7 +321,6 @@ public class Game {
 		if (counter<2) {
 			continueGame =false;
 		}
-
 		return continueGame;
 	}
 }
