@@ -101,44 +101,71 @@ public class Card
 	 * @param selected attribute: the attribute asked by the user
 	 * @return the value of the selected attribute or -1 if the selected attribute was not found
 	 */
-public int getAttribute(String selectedAttribute) {
-	
-	switch (selectedAttribute) {
-	case "speed": return this.speed;
-	case "firepower":return this.firepower;
-	case "cargo":return this.cargo;
-	case "range":return this.range;
-	case "size":return this.size;
-	default: return -1;
+	public int getAttribute(String selectedAttribute) {
+
+		switch (selectedAttribute) {
+		case "speed": return this.speed;
+		case "firepower":return this.firepower;
+		case "cargo":return this.cargo;
+		case "range":return this.range;
+		case "size":return this.size;
+		default: return -1;
+		}
 	}
-}
-	
-	
-	
-	
-	
+
+	public String getBestAttribute() {
+
+		int[] attributes = {size, speed, range, firepower, cargo};
+
+		int max = 0;
+		int maxIndex = 0;
+
+		for (int i = 0; i < attributes.length; i++) {
+
+			if (attributes[i] > max) {
+
+				max = attributes[i];
+				maxIndex = i;
+			}
+		}
+
+		switch (maxIndex) {
+
+		case 0: return "size";
+		case 1: return "speed";
+		case 2: return "range";
+		case 3: return "firepower";
+		case 4: return "cargo";
+		default: return "";
+		}
+	}
+
+
+
+
+
 	//
-//	/**
-//	 * compares the given attribute of Cards objects 
-//	 * and returns a negative or positive integer or zero according to the result 
-//	 **/
-//	//@Override
-//	public int compareTo(Card card, String attribute) {
-//		int result=0;
-//		switch (attribute) {
-//		case "speed": result =Integer.compare(this.speed, card.speed);
-//		case "firepower":return Integer.compare(this.firepower, card.firepower);
-//		case "cargo":return Integer.compare(this.cargo, card.cargo);
-//		case "range": return Integer.compare(this.range, card.range);
-//		case "size":return Integer.compare(this.size, card.size);
-//		}
-//		return result;
-//	}
-//
-//	@Override
-//	public int compareTo(Card o) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
+	//	/**
+	//	 * compares the given attribute of Cards objects 
+	//	 * and returns a negative or positive integer or zero according to the result 
+	//	 **/
+	//	//@Override
+	//	public int compareTo(Card card, String attribute) {
+	//		int result=0;
+	//		switch (attribute) {
+	//		case "speed": result =Integer.compare(this.speed, card.speed);
+	//		case "firepower":return Integer.compare(this.firepower, card.firepower);
+	//		case "cargo":return Integer.compare(this.cargo, card.cargo);
+	//		case "range": return Integer.compare(this.range, card.range);
+	//		case "size":return Integer.compare(this.size, card.size);
+	//		}
+	//		return result;
+	//	}
+	//
+	//	@Override
+	//	public int compareTo(Card o) {
+	//		// TODO Auto-generated method stub
+	//		return 0;
+	//	}
 
 }

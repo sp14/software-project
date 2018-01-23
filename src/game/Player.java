@@ -4,6 +4,7 @@ public class Player {
 
 	//Instance variables
 	private Hand hand;
+	private Card currentCard;
 	
 	public void setHand(Hand hand) {
 		this.hand = hand;
@@ -49,7 +50,8 @@ public class Player {
 	 */
 	public Card drawCard() {
 		
-		return hand.draw();
+		currentCard = hand.draw();
+		return currentCard;
 	}
 	
 	
@@ -73,8 +75,23 @@ public class Player {
 		AI = aI;
 	}
 
+	public int getRemainingCards() {
+		
+		return hand.getCardCount();
+	}
+	
 	public Hand getHand() {
+		
 		return hand;
 	}
 	
+	public String getBestAttribute() {
+		
+		return currentCard.getBestAttribute();
+	}
+	
+	public Card getCurrentCard() {
+		
+		return currentCard;
+	}
 }

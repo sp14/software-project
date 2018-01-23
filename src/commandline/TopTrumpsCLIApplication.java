@@ -38,13 +38,13 @@ public class TopTrumpsCLIApplication {
 			//Start the game logic
 			Game game = new Game();
 			//Sets the number of players
-			game.selectPlayers(numPlayers);
+			game.setAIPlayers(numPlayers);
 			//Deal the hands 
 			game.deal();
-			
+
 			//Randomly select the first player
 			Player firstPlayer = game.firstPlayer();
-			
+
 			//Display to the player who is to go first
 			if (firstPlayer.isAI()){
 				System.out.println(firstPlayer + " (AI) to go first.");
@@ -52,24 +52,70 @@ public class TopTrumpsCLIApplication {
 			else {
 				System.out.println("You to go first.");
 			}
-			
+
 			while (game.continueGame()) {
-				
+
 				Player currentPlayer = game.getCurrentPlayer();
+
+				Card drawn = game.drawCards();
+
+				System.out.println("Your card is " + drawn);
 				
+				String selectedAttribute;
+
 				//The current player is an AI
 				if (currentPlayer.isAI()) {
-					
+
 					System.out.println(currentPlayer + " to play");
-					Card drawn = game.drawCards();
-					System.out.println("Your card is " + drawn);
+					
+					selectedAttribute = currentPlayer.getBestAttribute();
+					System.out.println(currentPlayer + " chooses the catagory " + selectedAttribute);
 				}
 				else {
+
+					System.out.println("It is your turn. Pick a catagory.");
 					
-					System.out.println("It is your turn.");
-					Card drawn = game.drawCards();
-					System.out.println("Your card is " + drawn);
+					for (;;) {
+						
+						selectedAttribute = scanner.nextLine();
+						
+						//Check the input is valid
+						if (!(selectedAttribute.toLowerCase().equals("speed") || selectedAttribute.toLowerCase().equals("firepower")||
+								selectedAttribute.toLowerCase().equals("size")|| selectedAttribute.toLowerCase().equals("cargo")||
+								selectedAttribute.toLowerCase().equals("range"))) {
+
+							System.out.println("Selected attribute " + selectedAttribute + " does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
+						}
+						else {
+							
+							System.out.println("You have selected " + selectedAttribute + ".");
+							break;
+						}
+					}
 				}
+				
+				Player winner = game.playRound(selectedAttribute);
+				
+				Player[] players = game.getPlayers();
+				
+				System.out.println("Everbody shows their cards");
+				
+				for (int i = 0; i < players.length; i++) {
+					
+					System.out.println(players[i] + " - " + players[i].getCurrentCard());
+				}
+				
+				if (winner == null) {
+					
+					System.out.println("The round was a draw. Cards added to the communal pile.");
+				} else {
+					
+				System.out.println(winner + " won with card " + winner.getCurrentCard());
+				}
+				
+				System.out.println("Type anything to play the next round");
+				
+				String nextRound = scanner.nextLine();
 			}
 
 			userWantsToQuit=true; // use this when the user wants to exit the game
@@ -122,6 +168,8 @@ public class TopTrumpsCLIApplication {
 				else {
 
 					System.out.println("You have chosen " + numPlayers + " AI players. Let the games begin.");
+					//Use up carriage return
+					scanner.nextLine();
 					return numPlayers;
 				}
 			}
@@ -134,10 +182,5 @@ public class TopTrumpsCLIApplication {
 				scanner.nextLine();
 			}	
 		}
-	}
-	
-	public static void chooseStat() {
-		
-		
 	}
 }
