@@ -110,7 +110,7 @@ public class TopTrumpsCLIApplication {
 					System.out.println("The round was a draw. Cards added to the communal pile.");
 				} else {
 					
-				System.out.println(winner + " won with card " + winner.getCurrentCard());
+				System.out.println(winner + " wins the round");
 				}
 				
 				System.out.println("Type anything to play the next round");
