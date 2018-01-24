@@ -38,7 +38,7 @@ public class TopTrumpsCLIApplication {
 			int numPlayers = chooseAIPlayers(scanner);
 
 			//Start the game logic
-			Game game = new Game();
+			Game game = new Game(writeGameLogsToFile);
 			//Sets the number of players
 			game.setAIPlayers(numPlayers);
 			//Deal the hands 
@@ -62,25 +62,25 @@ public class TopTrumpsCLIApplication {
 				Card drawn = game.drawCards();
 
 				System.out.println("Your card is " + drawn);
-				
+
 				String selectedAttribute;
 
 				//The current player is an AI
 				if (currentPlayer.isAI()) {
 
 					System.out.println(currentPlayer + " to play");
-					
+
 					selectedAttribute = currentPlayer.getBestAttribute();
 					System.out.println(currentPlayer + " chooses the catagory " + selectedAttribute);
 				}
 				else {
 
 					System.out.println("It is your turn. Pick a catagory.");
-					
+
 					for (;;) {
-						
+
 						selectedAttribute = scanner.nextLine();
-						
+
 						//Check the input is valid
 						if (!(selectedAttribute.toLowerCase().equals("speed") || selectedAttribute.toLowerCase().equals("firepower")||
 								selectedAttribute.toLowerCase().equals("size")|| selectedAttribute.toLowerCase().equals("cargo")||
@@ -89,34 +89,34 @@ public class TopTrumpsCLIApplication {
 							System.out.println("Selected attribute " + selectedAttribute + " does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
 						}
 						else {
-							
+
 							System.out.println("You have selected " + selectedAttribute + ".");
 							break;
 						}
 					}
 				}
-				
+
 				Player winner = game.playRound(selectedAttribute);
-				
+
 				ArrayList<Player> players = game.getPlayers();
-				
+
 				System.out.println("Everbody shows their cards");
-				
+
 				for (int i = 0; i < players.size(); i++) {
-					
+
 					System.out.println(players.get(i) + " - " + players.get(i).getCurrentCard());
 				}
-				
+
 				if (winner == null) {
-					
+
 					System.out.println("The round was a draw. Cards added to the communal pile.");
 				} else {
-					
-				System.out.println(winner + " wins the round");
+
+					System.out.println(winner + " won the round");
 				}
-				
+
 				System.out.println("Type anything to play the next round");
-				
+
 				String nextRound = scanner.nextLine();
 			}
 

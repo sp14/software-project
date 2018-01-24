@@ -7,7 +7,7 @@ public class Debugger {
 
 		Game game = new Game();
 		game.populateDeck();
-		game.selectPlayers(4);
+		game.setAIPlayers(4);
 		game.deal();
 		game.firstPlayer();
 			
