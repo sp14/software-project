@@ -110,13 +110,13 @@ public class Game {
 
 		//total players is AI player + human player
 		numberOfPlayers = p + 1;
-		
-////	Set the size of the players array
-//		players = new Player[numberOfPlayers];
+
+		////	Set the size of the players array
+		//		players = new Player[numberOfPlayers];
 
 		//Adds all players to the players array
 		for (int i = 0; i <= (numberOfPlayers-1); i++) {
-			
+
 			//check if it's human or AI
 			//Put human player in first index
 			if (i==0) { 
@@ -130,10 +130,10 @@ public class Game {
 				Player player = new Player("Player " + i,true);
 				players.add(player);
 			}
-			
+
 			//set player IDs
 			players.get(i).setID(i+1);
-		System.out.println( players.get(i).getID());
+			System.out.println( players.get(i).getID());
 		}	
 	}
 
@@ -329,5 +329,12 @@ public class Game {
 			continueGame =false;
 		}
 		return continueGame;
+	}
+
+	private void clearPlayers() {
+		for (int i=0; i < players.size() ; i++)
+			if (players.get(i).getRemainingCards() == 0 ) {
+				players.remove(i);
+			}
 	}
 }
