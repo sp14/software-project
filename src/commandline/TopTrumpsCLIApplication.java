@@ -62,6 +62,11 @@ public class TopTrumpsCLIApplication {
 		}
 	}
 	
+	/**
+	 * Plays rounds until a there is a winner
+	 * @param scanner
+	 * @param game
+	 */
 	private static void roundLogic(Scanner scanner, Game game) {
 		
 		while (game.continueGame()) {
@@ -84,13 +89,13 @@ public class TopTrumpsCLIApplication {
 				System.out.println(currentPlayer + " to play");
 				//Select the strongest attribute on the AI's card
 				selectedAttribute = currentPlayer.getBestAttribute();
-				//Tell the user which catagory the AI has chosen
+				//Tell the user which category the AI has chosen
 				System.out.println(currentPlayer + " chooses the catagory " + selectedAttribute);
 			}
 			//It is the users turn to play
 			else {
 				
-				//Prompt the user to pick a catagory
+				//Prompt the user to pick a category
 				System.out.println("It is your turn. Pick a catagory to compare.");
 				
 				//Loop until the user provides a valid input
@@ -139,7 +144,7 @@ public class TopTrumpsCLIApplication {
 			System.out.println(winner + " wins the round");
 			}
 			
-			clearPlayers();
+			game.clearPlayers();
 			
 			//Wait for user input to start the next round
 			System.out.println("Type anything to play the next round");
@@ -147,6 +152,10 @@ public class TopTrumpsCLIApplication {
 		}
 	}
 
+	/**
+	 * Ask the user whether they wish to see the stats of previous games before they play
+	 * @param scanner
+	 */
 	private static void promptStats(Scanner scanner) {
 
 		//Loop until the user wants to play the game
@@ -169,6 +178,11 @@ public class TopTrumpsCLIApplication {
 		}
 	}
 
+	/**
+	 * Allows the user to choose how many AI player they wish to play against
+	 * @param scanner
+	 * @return the number of AI players the user has chosen
+	 */
 	private static int chooseAIPlayers(Scanner scanner) {
 
 		//Prompt user to choose the number of AI players
