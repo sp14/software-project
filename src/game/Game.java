@@ -136,7 +136,6 @@ public class Game {
 
 			//set player IDs
 			players.get(i).setID(i+1);
-			System.out.println( players.get(i).getID());
 		}	
 	}
 
@@ -190,48 +189,32 @@ public class Game {
 
 	/**
 	 * method with the logic of playing each round
+	 * returns winner of the round, if no winner, returns null
 	 */
 	public Player playRound(String attribute) {
 
-		//TESTING: print out players' hands before changes
-		for (int i =0 ; i < players.size();i++) {
-			System.out.print("player " +(i+1) + " ");
-			for (int j = 0; j < (players.get(i).getHand().getCardCount()); j++) {
-				System.out.print(players.get(i).getHand().getCard(j).getName());
-				System.out.print(" ");
-			}
-			System.out.println();
-			}
 		//variable for the attribute the user chooses to compare
 		String selectedAttribute = attribute;
 
 		//find who wins the round
 		int winnerindex = findWinner(selectedAttribute);
 
-		
-		
-
-
 		//allocate the cards to the winner/communal pile
 		allocateDeck(winnerindex);
 
-		//TESTING: print out players' hands after changes
-		for (int i =0 ; i < players.size();i++) {
-			System.out.print("player " +(i+1) + " ");
-			for (int j = 0; j < (players.get(i).getHand().getCardCount()); j++) {
-				System.out.print(players.get(i).getHand().getCard(j).getName());
-				System.out.print(" ");
-			}
-			System.out.println();
-		}
+		//winner of the round
+		Player winningPlayer = players.get(winnerindex);
 
+		//remove eliminated players
+		clearPlayers();
+		
 		if (winnerindex == -1) {
 
 			return null;
 		}
 		else {
 
-			return players.get(winnerindex);
+			return winningPlayer;
 		}
 	}
 
