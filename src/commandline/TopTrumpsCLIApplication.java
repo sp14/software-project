@@ -1,6 +1,8 @@
 package commandline;
 
 import game.*;
+
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 //import Game;
@@ -96,13 +98,13 @@ public class TopTrumpsCLIApplication {
 				
 				Player winner = game.playRound(selectedAttribute);
 				
-				Player[] players = game.getPlayers();
+				ArrayList<Player> players = game.getPlayers();
 				
 				System.out.println("Everbody shows their cards");
 				
-				for (int i = 0; i < players.length; i++) {
+				for (int i = 0; i < players.size(); i++) {
 					
-					System.out.println(players[i] + " - " + players[i].getCurrentCard());
+					System.out.println(players.get(i) + " - " + players.get(i).getCurrentCard());
 				}
 				
 				if (winner == null) {

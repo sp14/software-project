@@ -1,6 +1,7 @@
 package game;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ public class Game {
 	//Class instance variables
 	private Deck deck;
 	private int numberOfPlayers;
-	private Player[] players; 	
+	private ArrayList<Player> players = new ArrayList<Player>(); 	
 	private CardPile communalPile = new Deck(); //variable for the communal pile
 
 	//Index of the player whos turn it is
@@ -109,24 +110,30 @@ public class Game {
 
 		//total players is AI player + human player
 		numberOfPlayers = p + 1;
-		//Set the size of the players array
-		players = new Player[numberOfPlayers];
+		
+////	Set the size of the players array
+//		players = new Player[numberOfPlayers];
 
 		//Adds all players to the players array
-		for (int i = 1; i <= numberOfPlayers; i++) {
+		for (int i = 0; i <= (numberOfPlayers-1); i++) {
+			
 			//check if it's human or AI
 			//Put human player in first index
-			if (i==1) { 
-				
+			if (i==0) { 
+
 				Player player = new Player("You",false);
-				players[i - 1] = player;
+				players.add(0, player);
 			}
 			else {
-				
+
 				//Create an AI player object and add to the array
 				Player player = new Player("Player " + i,true);
-				players[i - 1] = player;
+				players.add(player);
 			}
+			
+			//set player IDs
+			players.get(i).setID(i+1);
+		System.out.println( players.get(i).getID());
 		}	
 	}
 
@@ -150,10 +157,10 @@ public class Game {
 		fp = rn.nextInt(numberOfPlayers);
 
 		//Set the first player as the current player.
-		currentPlayer = players[fp];
+		currentPlayer = players.get(fp);
 
 		//Return the first player
-		return players[fp];
+		return players.get(fp);
 	}
 
 	public Player getCurrentPlayer() {
@@ -166,14 +173,14 @@ public class Game {
 
 		//fill the middle deck with the first card of each player's hand	
 		for (int i=0;i<numberOfPlayers;i++) {
-			players[i].drawCard();
+			players.get(i).drawCard();
 		} 
 
 		//Returns the human players card
-		return players[0].getCurrentCard();
+		return players.get(0).getCurrentCard();
 	}
 
-	public Player[] getPlayers() {
+	public ArrayList<Player> getPlayers() {
 
 		return players;
 	}
@@ -198,7 +205,7 @@ public class Game {
 		}
 		else {
 
-			return players[winnerindex];
+			return players.get(winnerindex);
 		}
 	}
 
@@ -217,14 +224,14 @@ public class Game {
 		int winnerindex = 0;
 
 		//variable to store how many times highest value was found 
-		int counter=0;
+		int counter = 0;
 
 		//variable for the value of the attribute that is currently being tested
-		int value=-1;
+		int value = -1;
 
-		//go through the tempDeck, find the max and hold its index
+		//go through each player's first card, find the max and hold its index
 		for (int i=0;i<numberOfPlayers;i++) { 
-			value = players[i].getCurrentCard().getAttribute(selectedAttribute);
+			value = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
 			if (value>max) {
 				max = value; //if the currently-tested value is greater than max, set max to currently-tested value
 				winnerindex = i; //update the index of max card
@@ -233,7 +240,7 @@ public class Game {
 
 		//check if more than one card have the highest value 
 		for (int j=0; j<numberOfPlayers; j++) {
-			if (players[j].getCurrentCard().getAttribute(selectedAttribute) == max)
+			if (players.get(j).getCurrentCard().getAttribute(selectedAttribute) == max)
 				counter++;
 		}
 
@@ -263,7 +270,7 @@ public class Game {
 		// if it is a draw, put cards from tempDeck to communalPile
 		if (winner==-1) {
 			for (int i = 0; i < numberOfPlayers; i++)
-				communalPile.add(players[i].getCurrentCard());
+				communalPile.add(players.get(i).getCurrentCard());
 		}
 
 		// if there is a winner
@@ -271,13 +278,13 @@ public class Game {
 
 			// add the cards from tempDeck to his hand
 			for (int i = 0; i < numberOfPlayers; i++) {
-				players[winner].addToHand(players[i].getCurrentCard());
+				players.get(winner).addToHand(players.get(i).getCurrentCard());
 			}
 
 			// add the cards from communalPile (if any) to his hand 
 			if (communalPile.getCardCount()>0) {
 				for (int i = 0; i< communalPile.getCardCount(); i++) {
-					players[winner].addToHand(communalPile.getCard(i));
+					players.get(winner).addToHand(communalPile.getCard(i));
 				}
 
 				// empty communal Pile
@@ -285,7 +292,7 @@ public class Game {
 			}
 
 			//Set the winner to go next
-			currentPlayer = players[winner];
+			currentPlayer = players.get(winner);
 		}
 	}
 
@@ -312,7 +319,7 @@ public class Game {
 
 		//for each player that has cards left, increment counter
 		for (int i=0;i<numberOfPlayers; i++) {
-			if (players[i].getRemainingCards() != 0) {
+			if (players.get(i).getRemainingCards() != 0) {
 				counter++;
 			}
 		}

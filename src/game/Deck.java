@@ -1,4 +1,5 @@
 package game;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck extends CardPile {
@@ -25,7 +26,7 @@ public class Deck extends CardPile {
 	 * Deal the cards out to the players
 	 * @param players
 	 */
-	public void dealCards(Player[] players) {
+	public void dealCards(ArrayList<Player> players) {
 		
 		//Counter for looping
 		int counter = 0;
@@ -34,10 +35,10 @@ public class Deck extends CardPile {
 		for (int i = 0; i < pile.size(); i++) {
 			
 			//Add the card to the players hand
-			players[counter].addToHand(pile.get(i));
+			players.get(counter).addToHand(pile.get(i));
 			
 			//If all players have been dealt to, start again at first player
-			if (counter == players.length - 1) {
+			if (counter == players.size() - 1) {
 				
 				counter = 0;
 			}
