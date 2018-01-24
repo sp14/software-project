@@ -55,76 +55,106 @@ public class TopTrumpsCLIApplication {
 				System.out.println("You to go first.");
 			}
 
-			while (game.continueGame()) {
-
-				Player currentPlayer = game.getCurrentPlayer();
-
-				Card drawn = game.drawCards();
-
-				System.out.println("Your card is " + drawn);
-
-				String selectedAttribute;
-
-				//The current player is an AI
-				if (currentPlayer.isAI()) {
-
-					System.out.println(currentPlayer + " to play");
-
-					selectedAttribute = currentPlayer.getBestAttribute();
-					System.out.println(currentPlayer + " chooses the catagory " + selectedAttribute);
-				}
-				else {
-
-					System.out.println("It is your turn. Pick a catagory.");
-
-					for (;;) {
-
-						selectedAttribute = scanner.nextLine();
-
-						//Check the input is valid
-						if (!(selectedAttribute.toLowerCase().equals("speed") || selectedAttribute.toLowerCase().equals("firepower")||
-								selectedAttribute.toLowerCase().equals("size")|| selectedAttribute.toLowerCase().equals("cargo")||
-								selectedAttribute.toLowerCase().equals("range"))) {
-
-							System.out.println("Selected attribute " + selectedAttribute + " does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
-						}
-						else {
-
-							System.out.println("You have selected " + selectedAttribute + ".");
-							break;
-						}
-					}
-				}
-
-				ArrayList<Player> players = game.getPlayers();
-
-				Player winner = game.playRound(selectedAttribute);
-
-				System.out.println("Everbody shows their cards");
-
-				for (int i = 0; i < players.size(); i++) {
-
-					System.out.println(players.get(i) + " - " + players.get(i).getCurrentCard());
-				}
-
-				if (winner == null) {
-
-					System.out.println("The round was a draw. Cards added to the communal pile.");
-				} else {
-
-					System.out.println(winner + " won the round");
-				}
-
-				System.out.println("Type anything to play the next round");
-
-				String nextRound = scanner.nextLine();
-			}
+			roundLogic(scanner, game);
 
 			userWantsToQuit=true; // use this when the user wants to exit the game
+		}
+	}
+	
+	/**
+	 * Plays rounds until a there is a winner
+	 * @param scanner
+	 * @param game
+	 */
+	private static void roundLogic(Scanner scanner, Game game) {
+		
+		while (game.continueGame()) {
 
+			//Whos turn is it to play
+			Player currentPlayer = game.getCurrentPlayer();
+			//Draw cards and add them to players hands
+			Card drawn = game.drawCards();
+
+			//Show the user their hand
+			System.out.println("Your card is " + drawn);
+			
+			//The attribute that is to be compared
+			String selectedAttribute;
+
+			//The current player is an AI
+			if (currentPlayer.isAI()) {
+
+				//Tell the user which AI is playing 
+				System.out.println(currentPlayer + " to play");
+				//Select the strongest attribute on the AI's card
+				selectedAttribute = currentPlayer.getBestAttribute();
+				//Tell the user which category the AI has chosen
+				System.out.println(currentPlayer + " chooses the catagory " + selectedAttribute);
+			}
+			//It is the users turn to play
+			else {
+				
+				//Prompt the user to pick a category
+				System.out.println("It is your turn. Pick a catagory to compare.");
+				
+				//Loop until the user provides a valid input
+				for (;;) {
+					
+					//Read the users input
+					selectedAttribute = scanner.nextLine();
+					
+					//Check the input is valid
+					if (!(selectedAttribute.toLowerCase().equals("speed") || selectedAttribute.toLowerCase().equals("firepower")||
+							selectedAttribute.toLowerCase().equals("size")|| selectedAttribute.toLowerCase().equals("cargo")||
+							selectedAttribute.toLowerCase().equals("range"))) {
+
+						//If the input is not valid, tell user and ask again
+						System.out.println("Selected attribute " + selectedAttribute + " does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
+					}
+					else {
+						
+						//The input is valid. Tell user and break the loop
+						System.out.println("You have selected " + selectedAttribute + ".");
+						break;
+					}
+				}
+			}
+			
+			//Get the winner of the round
+			Player winner = game.playRound(selectedAttribute);
+			
+			//Get all the players so that the cards can be compared
+			ArrayList<Player> players = game.getPlayers();
+			
+			System.out.println("Everbody shows their cards");
+			
+			//Print out the current cards of all the players
+			for (int i = 0; i < players.size(); i++) {
+				
+				System.out.println(players.get(i) + " - " + players.get(i).getCurrentCard());
+			}
+			
+			//No winner. The round was a draw, inform user
+			if (winner == null) {
+				
+				System.out.println("The round was a draw. Cards added to the communal pile.");
+			} else {
+				
+			System.out.println(winner + " wins the round");
+			}
+			
+			game.clearPlayers();
+			
+			//Wait for user input to start the next round
+			System.out.println("Type anything to play the next round");
+			String nextRound = scanner.nextLine();
 		}
 	}
 
+	/**
+	 * Ask the user whether they wish to see the stats of previous games before they play
+	 * @param scanner
+	 */
 	private static void promptStats(Scanner scanner) {
 
 		//Loop until the user wants to play the game
@@ -147,6 +177,11 @@ public class TopTrumpsCLIApplication {
 		}
 	}
 
+	/**
+	 * Allows the user to choose how many AI player they wish to play against
+	 * @param scanner
+	 * @return the number of AI players the user has chosen
+	 */
 	private static int chooseAIPlayers(Scanner scanner) {
 
 		//Prompt user to choose the number of AI players

@@ -16,7 +16,7 @@ public class Game {
 	private CardPile communalPile = new Deck(); //variable for the communal pile
 	private boolean testlog = false;
 
-	//Index of the player whos turn it is
+	//The player whos turn it is
 	private Player currentPlayer;
 
 	/**
@@ -344,7 +344,7 @@ public class Game {
 		return continueGame;
 	}
 
-	private void clearPlayers() {
+	public void clearPlayers() {
 		for (int i=0; i < players.size() ; i++)
 			if (players.get(i).getRemainingCards() == 0 ) {
 				players.remove(i);
