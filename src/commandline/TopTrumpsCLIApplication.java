@@ -38,7 +38,7 @@ public class TopTrumpsCLIApplication {
 			int numPlayers = chooseAIPlayers(scanner);
 
 			//Start the game logic
-			Game game = new Game();
+			Game game = new Game(writeGameLogsToFile);
 			//Sets the number of players
 			game.setAIPlayers(numPlayers);
 			//Deal the hands 
@@ -58,7 +58,6 @@ public class TopTrumpsCLIApplication {
 			roundLogic(scanner, game);
 
 			userWantsToQuit=true; // use this when the user wants to exit the game
-
 		}
 	}
 	

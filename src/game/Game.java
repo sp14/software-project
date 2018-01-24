@@ -14,6 +14,7 @@ public class Game {
 	private int numberOfPlayers;
 	private ArrayList<Player> players = new ArrayList<Player>(); 	
 	private CardPile communalPile = new Deck(); //variable for the communal pile
+	private boolean testlog = false;
 
 	//The player whos turn it is
 	private Player currentPlayer;
@@ -21,7 +22,9 @@ public class Game {
 	/**
 	 * Constructor initialises deck
 	 */
-	public Game() {
+	public Game(boolean testlog) {
+
+		this.testlog=testlog;
 
 		//Create a new deck and populate it
 		deck = new Deck();
@@ -190,14 +193,37 @@ public class Game {
 	 */
 	public Player playRound(String attribute) {
 
+		//TESTING: print out players' hands before changes
+		for (int i =0 ; i < players.size();i++) {
+			System.out.print("player " +(i+1) + " ");
+			for (int j = 0; j < (players.get(i).getHand().getCardCount()-1); j++) {
+				System.out.print(players.get(i).getHand().getCard(j).getName());
+				System.out.print(" ");
+			}
+			System.out.println();
+			}
 		//variable for the attribute the user chooses to compare
 		String selectedAttribute = attribute;
 
 		//find who wins the round
 		int winnerindex = findWinner(selectedAttribute);
 
+		
+		
+
+
 		//allocate the cards to the winner/communal pile
 		allocateDeck(winnerindex);
+
+		//TESTING: print out players' hands after changes
+		for (int i =0 ; i < players.size();i++) {
+			System.out.print("player " +(i+1) + " ");
+			for (int j = 0; j < (players.get(i).getHand().getCardCount()-1); j++) {
+				System.out.print(players.get(i).getHand().getCard(j).getName());
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
 
 		if (winnerindex == -1) {
 
@@ -264,6 +290,7 @@ public class Game {
 	 */
 	private void allocateDeck(int winnerindex) {
 
+
 		// variable that stores the index of the winner (if any)
 		int winner = winnerindex;
 
@@ -293,7 +320,10 @@ public class Game {
 
 			//Set the winner to go next
 			currentPlayer = players.get(winner);
+
+
 		}
+
 	}
 
 	/**
