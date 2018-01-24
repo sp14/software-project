@@ -96,9 +96,9 @@ public class TopTrumpsCLIApplication {
 					}
 				}
 
-				Player winner = game.playRound(selectedAttribute);
-
 				ArrayList<Player> players = game.getPlayers();
+
+				Player winner = game.playRound(selectedAttribute);
 
 				System.out.println("Everbody shows their cards");
 
