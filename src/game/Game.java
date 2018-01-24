@@ -196,7 +196,7 @@ public class Game {
 		//TESTING: print out players' hands before changes
 		for (int i =0 ; i < players.size();i++) {
 			System.out.print("player " +(i+1) + " ");
-			for (int j = 0; j < (players.get(i).getHand().getCardCount()-1); j++) {
+			for (int j = 0; j < (players.get(i).getHand().getCardCount()); j++) {
 				System.out.print(players.get(i).getHand().getCard(j).getName());
 				System.out.print(" ");
 			}
@@ -218,7 +218,7 @@ public class Game {
 		//TESTING: print out players' hands after changes
 		for (int i =0 ; i < players.size();i++) {
 			System.out.print("player " +(i+1) + " ");
-			for (int j = 0; j < (players.get(i).getHand().getCardCount()-1); j++) {
+			for (int j = 0; j < (players.get(i).getHand().getCardCount()); j++) {
 				System.out.print(players.get(i).getHand().getCard(j).getName());
 				System.out.print(" ");
 			}

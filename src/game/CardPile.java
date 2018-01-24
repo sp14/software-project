@@ -56,7 +56,7 @@ public abstract class CardPile {
 	/**
 	 * Prints the contents of the deck to the log file
 	 */
-	public void printPile() {
+	public void printPileToLog() {
 
 		//This needs to be changes to print to the log instead of the console
 		System.out.println(pile);
