@@ -310,9 +310,6 @@ public class Game {
 		// check if it's a draw. return -1 if yes, else return winner index
 		if (counter>1) {
 			winnerIndex = -1;
-
-			// TESTING: print highest value and number of occurences for testing purposes
-			System.out.println("it is a draw. the highest value is "+ value +" and was found " + counter+ " times.");
 		}
 
 		return winnerIndex;
