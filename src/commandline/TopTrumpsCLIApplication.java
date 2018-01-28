@@ -5,7 +5,6 @@ import game.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-//import Game;
 
 /**
  * Top Trumps command line application
@@ -38,46 +37,54 @@ public class TopTrumpsCLIApplication {
 			int numPlayers = chooseAIPlayers(scanner);
 
 			//Start the game logic
-			Game game = new Game(writeGameLogsToFile);
-			//Sets the number of players
-			game.setAIPlayers(numPlayers);
-			//Deal the hands 
-			game.deal();
+			Game game = new Game(writeGameLogsToFile, numPlayers);
 
-			//Randomly select the first player
-			Player firstPlayer = game.firstPlayer();
+			//Get the randomly selected first player
+			Player firstPlayer = game.getCurrentPlayer();
 
 			//Display to the player who is to go first
-			if (firstPlayer.isAI()){
-				System.out.println(firstPlayer + " (AI) to go first.");
-			}
-			else {
-				System.out.println("You to go first.");
-			}
-
+			System.out.println(firstPlayer + " to go first.");
+		
+			//Play rounds until there is a winner
 			roundLogic(scanner, game);
 
-			userWantsToQuit=true; // use this when the user wants to exit the game
+			//The game is over. Display winner
+			System.out.println("Game over. The winner is " + game.getWinner() + "\nWould you like to play a new game? type y for a new game or anything else to quit");
+
+			//Ask user whether they wish to continue with game
+			String keepPlaying = scanner.nextLine();
+
+			//Keep playing?
+			if (!keepPlaying.equals("y")) {
+
+				userWantsToQuit=true;
+			}
 		}
 	}
-	
+
 	/**
 	 * Plays rounds until a there is a winner
 	 * @param scanner
 	 * @param game
 	 */
 	private static void roundLogic(Scanner scanner, Game game) {
-		
+
 		while (game.continueGame()) {
 
 			//Whos turn is it to play
 			Player currentPlayer = game.getCurrentPlayer();
 			//Draw cards and add them to players hands
-			Card drawn = game.drawCards();
+			game.drawCards();
+			//Get all the players for output purposes
+			ArrayList<Player> players = game.getPlayers();
 
-			//Show the user their hand
-			System.out.println("Your card is " + drawn);
-			
+			//If the human player is still in the game
+			if (!players.get(0).isAI()) {
+
+				//The human will always be at index 0 if they are in the game. Display their card	
+				System.out.println("Your card is " + players.get(0).getCurrentCard());
+			}
+
 			//The attribute that is to be compared
 			String selectedAttribute;
 
@@ -93,16 +100,16 @@ public class TopTrumpsCLIApplication {
 			}
 			//It is the users turn to play
 			else {
-				
+
 				//Prompt the user to pick a category
 				System.out.println("It is your turn. Pick a catagory to compare.");
-				
+
 				//Loop until the user provides a valid input
 				for (;;) {
-					
+
 					//Read the users input
 					selectedAttribute = scanner.nextLine();
-					
+
 					//Check the input is valid
 					if (!(selectedAttribute.toLowerCase().equals("speed") || selectedAttribute.toLowerCase().equals("firepower")||
 							selectedAttribute.toLowerCase().equals("size")|| selectedAttribute.toLowerCase().equals("cargo")||
@@ -112,39 +119,53 @@ public class TopTrumpsCLIApplication {
 						System.out.println("Selected attribute " + selectedAttribute + " does not exist. Please enter one of the following attributes: Speed - Cargo - Firepower - Size - Range.");
 					}
 					else {
-						
+
 						//The input is valid. Tell user and break the loop
 						System.out.println("You have selected " + selectedAttribute + ".");
 						break;
 					}
 				}
 			}
-			
-			//Get the winner of the round
-			Player winner = game.playRound(selectedAttribute);
-			
-			//Get all the players so that the cards can be compared
-			ArrayList<Player> players = game.getPlayers();
-			
+
 			System.out.println("Everbody shows their cards");
-			
+
 			//Print out the current cards of all the players
 			for (int i = 0; i < players.size(); i++) {
-				
+
 				System.out.println(players.get(i) + " - " + players.get(i).getCurrentCard());
 			}
 			
+			//Get the winner of the round
+			Player winner = game.playRound(selectedAttribute);
+
 			//No winner. The round was a draw, inform user
 			if (winner == null) {
-				
+
 				System.out.println("The round was a draw. Cards added to the communal pile.");
 			} else {
-				
-			System.out.println(winner + " wins the round");
+
+				System.out.println(winner + " won the round");
 			}
-			
-			game.clearPlayers();
-			
+
+			//Get a list of all eliminated players
+			ArrayList<Player> eliminated = game.clearPlayers();
+
+			if (!(eliminated == null)) {
+				for (int i = 0; i < eliminated.size(); i++) {
+
+					Player elimPlayer = eliminated.get(i);
+
+					if (elimPlayer.isAI()) {
+
+						System.out.println(elimPlayer + " has been eliminated");	
+					}
+					else {
+
+						System.out.println("You have been eliminated");
+					}
+				}
+			}
+
 			//Wait for user input to start the next round
 			System.out.println("Type anything to play the next round");
 			String nextRound = scanner.nextLine();
