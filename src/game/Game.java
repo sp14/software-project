@@ -22,7 +22,7 @@ public class Game {
 	//Initialise the test log variables
 	private String filename = "toptrumps.log";
 	private boolean testlog = false;
-	PrintWriter writer = null;
+	private PrintWriter writer = null;
 
 	/**
 	 * Constructor initialises deck and sets up game
@@ -192,7 +192,7 @@ public class Game {
 
 	/**
 	 * Method to get the player who's turn it is to play
-	 * @return
+	 * @return the player who's turn it is
 	 */
 	public Player getCurrentPlayer() {
 
@@ -200,8 +200,17 @@ public class Game {
 	}
 	
 	/**
-	 * Draws the first card of the players hand so that it is ready to play
-	 * Must be called before playRound()
+	 * Method to get the number of players still in the game
+	 * @return number of player still in game
+	 */
+	public int getNumberOfPlayer() {
+		
+		return numberOfPlayers;
+	}
+	
+	/**
+	 * Draws the first card of all remaining players hands so that it is ready to play.
+	 * Must be called before playRound().
 	 */
 	public void drawCards() {
 
@@ -233,7 +242,7 @@ public class Game {
 
 	/**
 	 * method with the logic of playing each round
-	 * @param attribute
+	 * @param attribute that has been selected to compare
 	 * @return the player who has won the round
 	 */
 	public Player playRound(String attribute) {
@@ -425,7 +434,7 @@ public class Game {
 	}
 
 	/**
-	 * To be called when the game is finish
+	 * To be called when the game is finished
 	 * @return the winning player
 	 */
 	public Player getWinner(){
