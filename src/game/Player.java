@@ -34,7 +34,14 @@ public class Player {
 	 */
 	public String toString() {
 
-		return name;
+		if (AI) {
+			
+			return name + " (AI)";
+		}
+		else {
+			
+			return name;
+		}
 	}
 
 	/**
@@ -44,7 +51,6 @@ public class Player {
 	public void addToHand(Card card) {
 
 		hand.add(card);
-		//hand.printPile();
 	}
 
 	/**

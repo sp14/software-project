@@ -33,6 +33,7 @@ public abstract class CardPile {
 	public void remove(int i) {
 		
 		pile.remove(i);
+		cardCount--;
 	}
 
 	/**
@@ -56,9 +57,9 @@ public abstract class CardPile {
 	/**
 	 * Prints the contents of the deck to the log file
 	 */
-	public void printPileToLog() {
+	public ArrayList<Card> getPile() {
 
 		//This needs to be changes to print to the log instead of the console
-		System.out.println(pile);
+		return pile;
 	}
 }
