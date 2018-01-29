@@ -68,9 +68,9 @@ public class TopTrumpsCLIApplication {
 	 */
 	private static void roundLogic(Scanner scanner, Game game) {
 		
-		while (game.continueGame()) {
+		while (game.continueGame()==true) {
 
-			//Whos turn is it to play
+			//Whose turn is it to play
 			Player currentPlayer = game.getCurrentPlayer();
 			//Draw cards and add them to players hands
 			Card drawn = game.drawCards();
@@ -120,8 +120,6 @@ public class TopTrumpsCLIApplication {
 				}
 			}
 			
-			//Get the winner of the round
-			Player winner = game.playRound(selectedAttribute);
 			
 			//Get all the players so that the cards can be compared
 			ArrayList<Player> players = game.getPlayers();
@@ -134,13 +132,16 @@ public class TopTrumpsCLIApplication {
 				System.out.println(players.get(i) + " - " + players.get(i).getCurrentCard());
 			}
 			
+			//Get the winner of the round
+			Player winner = game.playRound(selectedAttribute);
+			
 			//No winner. The round was a draw, inform user
 			if (winner == null) {
 				
 				System.out.println("The round was a draw. Cards added to the communal pile.");
 			} else {
 				
-			System.out.println(winner + " wins the round");
+			System.out.println(winner + " won the round");
 			}
 			
 			game.clearPlayers();
@@ -149,6 +150,8 @@ public class TopTrumpsCLIApplication {
 			System.out.println("Type anything to play the next round");
 			String nextRound = scanner.nextLine();
 		}
+		
+		System.out.println("End of the game. The winner is "+ game.getPlayers().get(0) + ".");
 	}
 
 	/**

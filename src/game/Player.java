@@ -10,11 +10,12 @@ public class Player {
 		this.hand = hand;
 	}
 
-	int ID;
-	String name;
-	boolean AI = false;
+	private int ID;
+	private String name;
+	private boolean AI = false;
+	private int winCounter = 0;
 
-	
+
 	/**
 	 * Constructor
 	 * @param name of player
@@ -104,4 +105,13 @@ public class Player {
 
 		return currentCard;
 	}
+	
+	public int getWinCounter() {
+		return winCounter;
+	}
+
+	public void setWinCounter(int winCounter) {
+		this.winCounter = winCounter;
+	}
+	
 }

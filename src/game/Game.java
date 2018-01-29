@@ -13,10 +13,14 @@ public class Game {
 	private Deck deck;
 	private int numberOfPlayers;
 	private ArrayList<Player> players = new ArrayList<Player>(); 	
+	private ArrayList<Player> startingPlayers = new ArrayList<Player>();
 	private CardPile communalPile = new Deck(); //variable for the communal pile
 	private boolean testlog = false;
+	private int roundCounter = 0; //variable for the number of rounds
+	private int drawCounter = 0; //variable for the number of draws
 
-	//The player whos turn it is
+
+	//The player whose turn it is
 	private Player currentPlayer;
 
 	/**
@@ -126,16 +130,19 @@ public class Game {
 
 				Player player = new Player("You",false);
 				players.add(0, player);
+				startingPlayers.add(0, player);
 			}
 			else {
 
 				//Create an AI player object and add to the array
 				Player player = new Player("Player " + i,true);
 				players.add(player);
+				startingPlayers.add(player);
 			}
 
 			//set player IDs
 			players.get(i).setID(i+1);
+			startingPlayers.get(i).setID(i+1);
 		}	
 	}
 
@@ -174,7 +181,7 @@ public class Game {
 	public Card drawCards() {
 
 		//fill the middle deck with the first card of each player's hand	
-		for (int i=0;i<numberOfPlayers;i++) {
+		for (int i=0;i<players.size();i++) {
 			players.get(i).drawCard();
 		} 
 
@@ -192,6 +199,7 @@ public class Game {
 	 * returns winner of the round, if no winner, returns null
 	 */
 	public Player playRound(String attribute) {
+		testHands("before");
 
 		//variable for the attribute the user chooses to compare
 		String selectedAttribute = attribute;
@@ -202,20 +210,25 @@ public class Game {
 		//allocate the cards to the winner/communal pile
 		allocateDeck(winnerindex);
 
-		//winner of the round
-		Player winningPlayer = players.get(winnerindex);
+		//variable for the player who won the round. 
+		Player winningPlayer = null;
+
+		//if there is a winner, store the winner in winningPlayer variable		
+		if (winnerindex >= 0)
+			winningPlayer = players.get(winnerindex);
 
 		//remove eliminated players
 		clearPlayers();
-		
-		if (winnerindex == -1) {
 
-			return null;
-		}
-		else {
+		//update game statistics
+		updateGameStats(winningPlayer);
 
-			return winningPlayer;
-		}
+		//print game stats
+		printStats();
+
+		testHands("after");
+
+		return winningPlayer;
 	}
 
 	/**
@@ -239,7 +252,7 @@ public class Game {
 		int value = -1;
 
 		//go through each player's first card, find the max and hold its index
-		for (int i=0;i<numberOfPlayers;i++) { 
+		for (int i=0;i<players.size();i++) { 
 			value = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
 			if (value>max) {
 				max = value; //if the currently-tested value is greater than max, set max to currently-tested value
@@ -248,7 +261,7 @@ public class Game {
 		}
 
 		//check if more than one card have the highest value 
-		for (int j=0; j<numberOfPlayers; j++) {
+		for (int j=0; j<players.size(); j++) {
 			if (players.get(j).getCurrentCard().getAttribute(selectedAttribute) == max)
 				counter++;
 		}
@@ -279,7 +292,7 @@ public class Game {
 
 		// if it is a draw, put cards from tempDeck to communalPile
 		if (winner==-1) {
-			for (int i = 0; i < numberOfPlayers; i++)
+			for (int i = 0; i < players.size(); i++)
 				communalPile.add(players.get(i).getCurrentCard());
 		}
 
@@ -287,7 +300,7 @@ public class Game {
 		else {
 
 			// add the cards from tempDeck to his hand
-			for (int i = 0; i < numberOfPlayers; i++) {
+			for (int i = 0; i < players.size(); i++) {
 				players.get(winner).addToHand(players.get(i).getCurrentCard());
 			}
 
@@ -326,28 +339,73 @@ public class Game {
 
 		//flag variable that shows if game should continue
 		boolean continueGame = true;
-
-		//variable that counts how many players have cardrs left
-		int counter =0;
-
-		//for each player that has cards left, increment counter
-		for (int i=0;i<numberOfPlayers; i++) {
-			if (players.get(i).getRemainingCards() != 0) {
-				counter++;
-			}
-		}
-
-		//if only one player has cards left, turn flag variable to false
-		if (counter<2) {
-			continueGame =false;
-		}
+		
+		//if there is only one player left, end game
+		if (players.size()<2)
+			continueGame = false;
+		
 		return continueGame;
 	}
 
+	/**
+	 * removes players with no cards left in their hand
+	 */
 	public void clearPlayers() {
 		for (int i=0; i < players.size() ; i++)
 			if (players.get(i).getRemainingCards() == 0 ) {
 				players.remove(i);
 			}
 	}
+
+	/**
+	 * testing method, to be deleted. prints players hands.
+	 * @param s
+	 */
+	private void testHands(String s) {
+		System.out.println(s);
+		for (int i =0 ; i < players.size();i++) {
+			System.out.print(players.get(i).getName()+"	");
+			for(int j=0;j<players.get(i).getRemainingCards();j++) {
+				System.out.print(players.get(i).getHand().getCard(j).getName()+" ");
+			}
+			System.out.println();
+		}
+		System.out.print("communal pile: ");
+		for (int i =0 ; i < communalPile.getCardCount();i++) {
+			System.out.print(communalPile.getCard(i).getName()+ " ");
+		}
+		System.out.println();
+	}
+
+	/**in the end of every round, updates the number of rounds played
+	 * and returns a String if player was AI or Human
+	 * @param p : the winning player
+	 */
+	private String updateGameStats(Player p) {
+		String s="";
+		if (p != null) {
+			p.setWinCounter(p.getWinCounter()+1);
+			if (p.isAI()==true) {
+				s = "AI won";
+			}
+			else s = "Human won";
+		}
+		
+		else drawCounter++;
+		roundCounter++;
+		
+		//print out variables for testing
+		System.out.println("round " + roundCounter);
+		System.out.println(s);
+		return s;
+		}
+	
+	public void printStats() {
+		for (int i=0;i < startingPlayers.size();i++) {
+			System.out.println(startingPlayers.get(i).getName() + ": " + startingPlayers.get(i).getWinCounter()+ " victories." );						
+		}
+		System.out.println("Draws: " + drawCounter);
+		
+	}
+		
 }
