@@ -189,6 +189,10 @@ public class Game {
 		return players.get(0).getCurrentCard();
 	}
 
+	/**
+	 * Returns ArrayList of Players still in game
+	 * @return
+	 */
 	public ArrayList<Player> getPlayers() {
 
 		return players;
@@ -281,11 +285,10 @@ public class Game {
 	}
 
 	/**
-	 * Proceeds the result of the round;
+	 * Moves the cards in accordance with the result of the round;
 	 * @param selectedAttribute
 	 */
 	private void allocateDeck(int winnerindex) {
-
 
 		// variable that stores the index of the winner (if any)
 		int winner = winnerindex;
@@ -316,10 +319,7 @@ public class Game {
 
 			//Set the winner to go next
 			currentPlayer = players.get(winner);
-
-
 		}
-
 	}
 
 	/**
@@ -332,7 +332,7 @@ public class Game {
 	}
 
 	/**
-	 * method to determine if the game is over: checks if more than one players have cards left
+	 * Method to determine if the game is over: checks if more than one players have cards left
 	 * @return if game should continue
 	 */
 	public boolean continueGame() {
@@ -348,7 +348,7 @@ public class Game {
 	}
 
 	/**
-	 * removes players with no cards left in their hand
+	 * Removes players with no cards left in their hand
 	 */
 	public void clearPlayers() {
 		for (int i=0; i < players.size() ; i++)
@@ -358,11 +358,14 @@ public class Game {
 	}
 
 	/**
-	 * testing method, to be deleted. prints players hands.
+	 * TEST method, to be deleted/changed. Prints players' hands and communal pile.
 	 * @param s
 	 */
 	private void testHands(String s) {
+		
 		System.out.println(s);
+		
+		// for each player, print their cards
 		for (int i =0 ; i < players.size();i++) {
 			System.out.print(players.get(i).getName()+"	");
 			for(int j=0;j<players.get(i).getRemainingCards();j++) {
@@ -370,6 +373,8 @@ public class Game {
 			}
 			System.out.println();
 		}
+		
+		// print communal pile
 		System.out.print("communal pile: ");
 		for (int i =0 ; i < communalPile.getCardCount();i++) {
 			System.out.print(communalPile.getCard(i).getName()+ " ");
@@ -377,21 +382,34 @@ public class Game {
 		System.out.println();
 	}
 
-	/**in the end of every round, updates the number of rounds played
+	/**
+	 * In the end of every round, updates the number of rounds played
 	 * and returns a String if player was AI or Human
 	 * @param p : the winning player
+	 * @return s : "AI won" / "Human won"
 	 */
 	private String updateGameStats(Player p) {
+		
+		//variable for the String to be returned
 		String s="";
+		
+		//if there is a winner for the round, increase winner's winCounter 
 		if (p != null) {
 			p.setWinCounter(p.getWinCounter()+1);
+			
+			//if the winner is AI, set returning String to AI won
 			if (p.isAI()==true) {
 				s = "AI won";
 			}
+			
+			//if the winner is Human, set returning String to Human won
 			else s = "Human won";
 		}
 		
+		//if the round has no winner (is a draw), increase drawCounter
 		else drawCounter++;
+		
+		//increase roundCounter
 		roundCounter++;
 		
 		//print out variables for testing
@@ -400,12 +418,14 @@ public class Game {
 		return s;
 		}
 	
+	/**
+	 * TEST method, to be deleted/changed. Prints winCounter for each player and drawCounter.
+	 */
 	public void printStats() {
 		for (int i=0;i < startingPlayers.size();i++) {
 			System.out.println(startingPlayers.get(i).getName() + ": " + startingPlayers.get(i).getWinCounter()+ " victories." );						
 		}
 		System.out.println("Draws: " + drawCounter);
-		
 	}
 		
 }
