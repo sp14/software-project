@@ -31,7 +31,8 @@ public class GameWebPagesResource {
     public SelectionScreenView getSelectionScreen() {
         return new SelectionScreenView();
     }
-	
+
+
 	@GET
 	@Path("/game")
 	/**
