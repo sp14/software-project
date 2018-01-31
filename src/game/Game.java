@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -223,9 +224,11 @@ public class Game {
 	 */
 	//Experimenting with this method
 	public void drawCards() {
-
+		
+		System.out.println(players.size());
+		
 		//Each player draws a new card	
-		for (int i=0;i<numberOfPlayers;i++) {
+		for (int i=0;i<players.size();i++) {
 			
 			//Draw a new card
 			players.get(i).drawCard();
@@ -234,7 +237,7 @@ public class Game {
 		//If test log mode is active, write the cards in play to the file
 		if (testlog) {
 			
-			for (int i = 0; i < numberOfPlayers; i++) {
+			for (int i = 0; i < players.size(); i++) {
 				
 				writer.println(players.get(i).getCurrentCard());
 			}
@@ -274,9 +277,6 @@ public class Game {
 		//if there is a winner, store the winner in winningPlayer variable		
 		if (winnerIndex >= 0)
 			winningPlayer = players.get(winnerIndex);
-
-		//remove eliminated players
-		clearPlayers();
 
 		//update game statistics
 		updateGameStats(winningPlayer);
@@ -507,7 +507,7 @@ public class Game {
 	private void printHandsToLog() {
 
 		//Loop through each player in the array list
-		for (int i = 0; i < numberOfPlayers; i++) {
+		for (int i = 0; i < players.size(); i++) {
 
 			//Prints the players hand to the test log file
 			writer.println("" + players.get(i) + ": " + players.get(i).getHand().getPile());
