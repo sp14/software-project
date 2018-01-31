@@ -55,10 +55,10 @@ public class Game {
 
 		//Set the number of AI players
 		setAIPlayers(AIPlayers);
-
+		
 		//Deal cards to all players
 		deal();
-
+		
 		//Choose a random first player
 		setFirstPlayer();
 	}
@@ -206,16 +206,16 @@ public class Game {
 
 		return currentPlayer;
 	}
-
+	
 	/**
 	 * Method to get the number of players still in the game
 	 * @return number of player still in game
 	 */
 	public int getNumberOfPlayer() {
-
+		
 		return numberOfPlayers;
 	}
-
+	
 	/**
 	 * Draws the first card of all remaining players hands so that it is ready to play.
 	 * Must be called before playRound().
@@ -287,7 +287,7 @@ public class Game {
 	 * OR -1 if draw
 	 */
 	private int findWinner(String selectedAttribute) {
-
+		
 		//variable for the highest value of selected attribute
 		int max = 0;
 
@@ -384,6 +384,7 @@ public class Game {
 		boolean continueGame = true;
 
 		//variable that counts how many players have cards left
+
 		int counter =0;
 
 		//for each player that has cards left, increment counter
@@ -406,7 +407,7 @@ public class Game {
 				closeLogWriter();
 			}
 		}
-
+		
 		//Return whether the game should continue
 		return continueGame;
 	}
@@ -480,13 +481,13 @@ public class Game {
 			writer.close();
 		}
 	}
-
-
+	
+	
 	/**
 	 * Prints every players hand to the testlog file
 	 */
 	private void printHandsToLog() {
-
+		
 		//Loop through each player in the array list
 		for (int i = 0; i < numberOfPlayers; i++) {
 
