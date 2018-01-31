@@ -27,21 +27,29 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	</head>
 
+
+
+
+
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
-    	
+
+	
+		<div class="row justify-content-md-center" id="titlebar">
+			<h1>Top Trumps</h1>
+		</div>
+
     	<div class="container">
 
 			<!-- Add your HTML Here -->
 
+            <!-- two large block primary button with url -->
+            <a href="http://localhost:7777/toptrumps/game"><button type="button" class="btn btn-primary  btn-lg btn-block" id="menubtn">Start A New Game</button></a>
+            <a href="http://localhost:7777/toptrumps/stats"><button type="button" class="btn btn-primary btn-lg btn-block" id="menubtn">View Overall Statistics</button></a>
 
 
 
 
 
-
-
-
-		
 		</div>
 		
 		<script type="text/javascript">
