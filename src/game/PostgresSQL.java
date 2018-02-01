@@ -61,8 +61,9 @@ public class PostgresSQL {
 	//String winner needs to be - "Human" "AI1" "AI2" "AI3" "AI4"
 	
 	
-	public void setCurrentGameNo() { // Sets current game number for the SQL table. There needs to be an instance
+	public int setCurrentGameNo() { // Sets current game number for the SQL table. There needs to be an instance
 		// currentGameNo variable
+		int currentGameNo;
 		Statement stmt = null;
 		String query = "SELECT * FROM toptrumps.game ORDER BY gameno DESC LIMIT 1;";
 		try {
@@ -74,9 +75,8 @@ public class PostgresSQL {
 
 				currentGameNo = Integer.parseInt(gameno); // Getting the most recent entry game number in the table
 
-				if (currentGameNo!=null)
+				//check if gameNo returned is not null
 				currentGameNo++; // Incrementing it by one
-				else currentGameNo = 0;
 				
 				System.out.println("The current game number is: " + currentGameNo);
 
@@ -87,6 +87,7 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		}
+		return currentGameNo;
 	}
 
 

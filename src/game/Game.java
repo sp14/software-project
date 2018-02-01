@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
+
 public class Game {
 
 	//Class instance variables
@@ -21,7 +22,7 @@ public class Game {
 	private Player winner; //variable for the winner of the Game
 	private int roundCounter = 0; //variable for the number of rounds
 	private int drawCounter = 0; //variable for the number of draws
-
+	private int currentGameNo; // variable for the game number
 
 	//Initialise the test log variables
 	private String filename = "toptrumps.log";
@@ -29,10 +30,20 @@ public class Game {
 	private PrintWriter writer = null;
 
 	/**
-	 * Constructor initialises deck and sets up game
+	 * Game constructor 
+	 * @param con
 	 */
-	public Game(boolean testlog, int AIPlayers) {
-
+	public Game(PostgresSQL con) {
+		// Set game number
+		this.currentGameNo = con.setCurrentGameNo();
+	}	
+	
+	/**
+	 * Method that initialises deck and sets up game
+	 * @return 
+	 */
+	public void initGame(boolean testlog, int AIPlayers) {
+		 
 		//If the user wishes to print to the test log, open a print writer
 		this.testlog=testlog;
 		if (testlog) openLogWriter();
@@ -40,6 +51,8 @@ public class Game {
 		//Populate the deck
 		populateDeck();
 
+		
+				
 		//If testlog mode is active, print the initial deck to the log
 		if (testlog) {
 			writer.print("Deck after loading: ");
@@ -67,6 +80,9 @@ public class Game {
 		setFirstPlayer();
 	}
 
+	
+	
+	
 	/**
 	 * Populates the deck with cards from the input file
 	 */
@@ -398,6 +414,9 @@ public class Game {
 		if (players.size()<2) {
 			continueGame = false;
 
+			//probably add db update here
+			
+			
 			//The winner will be the only player left in the players array
 			winner = players.get(0);
 
@@ -504,22 +523,12 @@ public class Game {
 	 * @param p : the winning player
 	 * @return s : "AI won" / "Human won"
 	 */
-	private String updateGameStats(Player p) {
+	private void updateGameStats(Player p) {
 
-		//variable for the String to be returned
-		String s="";
 
 		//if there is a winner for the round, increase winner's winCounter 
 		if (p != null) {
 			p.setWinCounter(p.getWinCounter()+1);
-
-			//if the winner is AI, set returning String to AI won
-			if (p.isAI()==true) {
-				s = "AI won";
-			}
-
-			//if the winner is Human, set returning String to Human won
-			else s = "Human won";
 		}
 
 		//if the round has no winner (is a draw), increase drawCounter
@@ -530,7 +539,33 @@ public class Game {
 
 		//print out variables for testing
 		System.out.println("round " + roundCounter);
+	
+
+	}
+	
+	public int getDrawCounter() {
+		return drawCounter;
+	}
+
+	public int getRoundCounter() {
+		return roundCounter;
+	}
+
+	public String getWinnerString (Player p) {
+
+		//variable for the String to be returned
+		String s="";
+		
+
+		//if the winner is AI, set returning String to AI won
+		if (p.isAI()==true) {
+			s = "AI" + (p.getID()-1);
+		}
+
+		//if the winner is Human, set returning String to Human won
+		else s = "Human";
 		System.out.println(s);
+		
 		return s;
 	}
 

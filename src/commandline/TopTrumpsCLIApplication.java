@@ -16,7 +16,7 @@ public class TopTrumpsCLIApplication {
 	 * command line mode. The contents of args[0] is whether we should write game logs to a file.
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, PostgresSQL con) {
 
 		boolean writeGameLogsToFile = false; // Should we write game logs to file?
 		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
@@ -36,14 +36,19 @@ public class TopTrumpsCLIApplication {
 			//Get the number of players the user wishes to play against
 			int numPlayers = chooseAIPlayers(scanner);
 
-			//Start the game logic
-			Game game = new Game(writeGameLogsToFile, numPlayers);
+			//Create new Game
+			Game game = new Game(con);
 
+			//initiate the game 
+			game.initGame(writeGameLogsToFile, numPlayers);
 			//Play rounds until there is a winner
 			roundLogic(scanner, game);
 
 			//The game is over. Display winner
 			System.out.println("Game over. The winner is " + game.getWinner() + "\nWould you like to play a new game? type y for a new game or anything else to quit");
+
+			// update DB
+			updateDBStats(game, game.getWinner(),con);
 
 			//Ask user whether they wish to continue with game
 			String keepPlaying = scanner.nextLine();
@@ -54,6 +59,16 @@ public class TopTrumpsCLIApplication {
 				userWantsToQuit=true;
 			}
 		}
+	}
+
+	private static void updateDBStats(Game game, Player p, PostgresSQL con) {
+
+		int currentGameNo = game.getRoundCounter();
+		int totalRounds = game.getRoundCounter();
+		int totalDraws = game.getDrawCounter();
+		String winner = game.getWinnerString(p);
+
+		con.insertIntoGameTable(currentGameNo, totalRounds, totalDraws, winner);
 	}
 
 	/**
@@ -92,7 +107,7 @@ public class TopTrumpsCLIApplication {
 			//Get a list of all eliminated players and display in the console
 			ArrayList<Player> eliminated = game.clearPlayers();
 			displayEliminatedPlayers(eliminated);
-			
+
 			//displayRemaingCardCount
 
 			//Wait for user input to start the next round
@@ -193,12 +208,12 @@ public class TopTrumpsCLIApplication {
 
 		return selectedAttribute;
 	}
-	
+
 	private static String getUserAttributeInput(Scanner scanner) {
-		
+
 		//Prompt the user to pick a category
 		System.out.println("It is your turn. Pick a catagory to compare.");
-		
+
 		String selectedAttribute;
 
 		//Loop until the user provides a valid input
@@ -222,7 +237,7 @@ public class TopTrumpsCLIApplication {
 				break;
 			}
 		}
-		
+
 		return selectedAttribute;
 	}
 
@@ -256,9 +271,9 @@ public class TopTrumpsCLIApplication {
 			}
 		}
 	}
-	
+
 	private static void displayCards(ArrayList<Player> players) {
-		
+
 		System.out.println("Everbody shows their cards");
 
 		//Print out the current cards of all the players

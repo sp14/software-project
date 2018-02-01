@@ -1,5 +1,5 @@
 import commandline.TopTrumpsCLIApplication;
-
+import game.PostgresSQL;
 import online.TopTrumpsOnlineApplication;
 
 
@@ -26,11 +26,15 @@ public class TopTrumps {
 			if (arg.equalsIgnoreCase("-o")) onlineMode=true;
 		}
 		
-		// We cannot run online and command line mode simultaniously
+		// We cannot run online and command line mode simultaneously
 		if (onlineMode && commandLineMode) {
 			System.out.println("ERROR: Both online and command line mode selected, select one or the other!");
 			System.exit(0);
 		}
+		
+		// Connect to DB
+		PostgresSQL con = new PostgresSQL();
+		con.sqlConnection();
 		
 		// Start the appropriate application
 		if (onlineMode) {
@@ -40,7 +44,7 @@ public class TopTrumps {
 		} else if (commandLineMode) {
 			// Start the command line application
 			String[] commandArgs = {String.valueOf(printTestLog)};
-			TopTrumpsCLIApplication.main(commandArgs);
+			TopTrumpsCLIApplication.main(commandArgs, con);
 		}
 		
 	}
