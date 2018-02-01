@@ -39,12 +39,6 @@ public class TopTrumpsCLIApplication {
 			//Start the game logic
 			Game game = new Game(writeGameLogsToFile, numPlayers);
 
-			//Get the randomly selected first player
-			Player firstPlayer = game.getCurrentPlayer();
-
-			//Display to the player who is to go first
-			System.out.println(firstPlayer + " to go first.");
-
 			//Play rounds until there is a winner
 			roundLogic(scanner, game);
 
