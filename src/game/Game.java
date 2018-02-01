@@ -13,11 +13,15 @@ public class Game {
 
 	//Class instance variables
 	private Deck deck = new Deck();
-	private int numberOfPlayers;
-	private ArrayList<Player> players = new ArrayList<Player>(); 	
-	private CardPile communalPile = new Deck(); //variable for the communal pile
+	private int numberOfPlayers; // total number of players
+	private ArrayList<Player> startingPlayers = new ArrayList<Player>(); //arraylist to hold the initial players
+	private ArrayList<Player> players = new ArrayList<Player>(); // ArrayList to hold the players still in game
+	private CardPile communalPile = new Deck(); // Variable for the communal pile
 	private Player currentPlayer;
-	private Player winner;
+	private Player winner; //variable for the winner of the Game
+	private int roundCounter = 0; //variable for the number of rounds
+	private int drawCounter = 0; //variable for the number of draws
+
 
 	//Initialise the test log variables
 	private String filename = "toptrumps.log";
@@ -55,10 +59,10 @@ public class Game {
 
 		//Set the number of AI players
 		setAIPlayers(AIPlayers);
-		
+
 		//Deal cards to all players
 		deal();
-		
+
 		//Choose a random first player
 		setFirstPlayer();
 	}
@@ -143,7 +147,7 @@ public class Game {
 		//total players is AI player + human player
 		numberOfPlayers = p + 1;
 
-		//Adds all players to the players array
+		//Adds all players to the players arraylists
 		for (int i = 0; i <= (numberOfPlayers-1); i++) {
 
 			//check if it's human or AI
@@ -152,16 +156,19 @@ public class Game {
 
 				Player player = new Player("You",false);
 				players.add(0, player);
+				startingPlayers.add(0, player);
 			}
 			else {
 
-				//Create an AI player object and add to the array
+				//Create an AI player object and add to the arraylists
 				Player player = new Player("Player " + i,true);
 				players.add(player);
+				startingPlayers.add(player);
 			}
 
 			//set player IDs
 			players.get(i).setID(i+1);
+			startingPlayers.get(i).setID(i+1);
 		}	
 	}
 
@@ -206,16 +213,16 @@ public class Game {
 
 		return currentPlayer;
 	}
-	
+
 	/**
 	 * Method to get the number of players still in the game
 	 * @return number of player still in game
 	 */
 	public int getNumberOfPlayer() {
-		
+
 		return numberOfPlayers;
 	}
-	
+
 	/**
 	 * Draws the first card of all remaining players hands so that it is ready to play.
 	 * Must be called before playRound().
@@ -258,7 +265,10 @@ public class Game {
 		//variable for the attribute the user chooses to compare
 		String selectedAttribute = attribute;
 
-		//find who wins the round
+		//variable to store the winner of the round
+		Player winningPlayer=null;
+
+		//find the index of the round winner
 		int winnerIndex = findWinner(selectedAttribute);
 
 		//allocate the cards to the winner/communal pile
@@ -267,17 +277,17 @@ public class Game {
 		if (testlog) printHandsToLog();
 
 		//findWinner returns -1 if there has been a draw
-		if (winnerIndex == -1) {
-
-			//No winner, return null
-			return null;
+		if (winnerIndex >=0) {
+			winningPlayer = players.get(winnerIndex);
+			//Set the winner to go next
+			currentPlayer = winningPlayer;
 		}
-		else {
 
-			//Get the winning player from the index and return
-			Player winningPlayer = players.get(winnerIndex);
-			return winningPlayer;
-		}
+		//update game statistics
+		updateGameStats(winningPlayer);
+
+
+		return winningPlayer;
 	}
 
 	/**
@@ -287,7 +297,7 @@ public class Game {
 	 * OR -1 if draw
 	 */
 	private int findWinner(String selectedAttribute) {
-		
+
 		//variable for the highest value of selected attribute
 		int max = 0;
 
@@ -329,13 +339,12 @@ public class Game {
 	 */
 	private void allocateDeck(int winnerIndex) {
 
-
 		// variable that stores the index of the winner (if any)
 		int winner = winnerIndex;
 
 		// if it is a draw, put all current cards in the communalPile
 		if (winner==-1) {
-			for (int i = 0; i < numberOfPlayers; i++)
+			for (int i = 0; i < players.size(); i++)
 				communalPile.add(players.get(i).getCurrentCard());
 		}
 
@@ -343,7 +352,7 @@ public class Game {
 		else {
 
 			// adds all the current cards to his hand
-			for (int i = 0; i < numberOfPlayers; i++) {
+			for (int i = 0; i < players.size(); i++) {
 				players.get(winner).addToHand(players.get(i).getCurrentCard());
 			}
 
@@ -355,10 +364,7 @@ public class Game {
 
 				// empty communal Pile
 				clearCommunalPile();
-			}
-
-			//Set the winner to go next
-			currentPlayer = players.get(winner);
+			}		
 		}
 
 		//If testlog mode is active, print the communal pile to the testlog
@@ -378,39 +384,32 @@ public class Game {
 	 * method to determine if the game is over: checks if more than one players have cards left
 	 * @return if game should continue
 	 */
+	/**
+	 * Method to determine if the game is over: checks if more than one players have cards left
+	 * @return if game should continue
+	 */
 	public boolean continueGame() {
 
 		//flag variable that shows if game should continue
 		boolean continueGame = true;
 
-		//variable that counts how many players have cards left
 
-		int counter =0;
+		//if there is only one player left, end game
+		if (players.size()<2) {
+			continueGame = false;
 
-		//for each player that has cards left, increment counter
-		for (int i=0;i<players.size(); i++) {
-			if (players.get(i).getRemainingCards() != 0) {
-				counter++;
-			}
-		}
-
-		//if only one player has cards left, turn flag variable to false
-		if (counter<2) {
 			//The winner will be the only player left in the players array
 			winner = players.get(0);
-			//End the game
-			continueGame =false;
 
 			//If testlog is active, print the winner and then close the writer
-			if (testlog) {
-				writer.println("Winner: " + winner);
-				closeLogWriter();
-			}
+			if (testlog) writer.println("Winner: " + winner);
+			closeLogWriter();
 		}
-		
+
 		//Return whether the game should continue
 		return continueGame;
 	}
+
 
 	/**
 	 * Removes eliminated players from the list of players
@@ -481,13 +480,13 @@ public class Game {
 			writer.close();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Prints every players hand to the testlog file
 	 */
 	private void printHandsToLog() {
-		
+
 		//Loop through each player in the array list
 		for (int i = 0; i < numberOfPlayers; i++) {
 
@@ -498,4 +497,41 @@ public class Game {
 			}
 		}
 	}
+	
+	/**
+	 * In the end of every round, updates the number of rounds played
+	 * and returns a String if player was AI or Human
+	 * @param p : the winning player
+	 * @return s : "AI won" / "Human won"
+	 */
+	private String updateGameStats(Player p) {
+
+		//variable for the String to be returned
+		String s="";
+
+		//if there is a winner for the round, increase winner's winCounter 
+		if (p != null) {
+			p.setWinCounter(p.getWinCounter()+1);
+
+			//if the winner is AI, set returning String to AI won
+			if (p.isAI()==true) {
+				s = "AI won";
+			}
+
+			//if the winner is Human, set returning String to Human won
+			else s = "Human won";
+		}
+
+		//if the round has no winner (is a draw), increase drawCounter
+		else drawCounter++;
+
+		//increase roundCounter
+		roundCounter++;
+
+		//print out variables for testing
+		System.out.println("round " + roundCounter);
+		System.out.println(s);
+		return s;
+	}
+
 }
