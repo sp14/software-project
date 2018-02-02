@@ -321,26 +321,26 @@ public class Game {
 		//variable to hold the value of the selected attribute of the card that is currently being tested
 		int value = -1;
 
-		//go through each player's first card, find the max and hold its index
+		//go through each player's first card, find the max and set round winner
 		for (int i=0;i<players.size();i++) { 
 			value = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
 
 			//if the currently-tested value is greater than max
 			if (value > max) {
 				max = value;  //set max to currently-tested value
-				roundWinner = players.get(i);
+				roundWinner = players.get(i); // set round winner to the player with the currently greater attribute
 			}
 		}
 
-		//check if more than one cards have the highest value 
+		//check if the highest value is found more than once
 		for (int i=0; i<players.size(); i++) {
 			int testValue = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
 			if (testValue == max)
 				counter++;
 
-			// if it's a draw. if yes return -1, else return winner index
+			// if it is, it's a draw, return null
 			if (counter > 1) {
-				roundWinner =null;
+				roundWinner = null;
 				break;
 			}
 		}
@@ -438,18 +438,17 @@ public class Game {
 		ArrayList<Player> eliminated = new ArrayList<Player>();
 
 		//Loop through all remaining players
-		for (int i=numberOfPlayers-1; i >=0 ; i--) {
+		for (int i = players.size()-1; i >= 0 ; i--) {
 
 			//If the player has no cards remaining
 			if (players.get(i).getRemainingCards() == 0 ) {
 
 				//Add to the list of eliminated players
 				eliminated.add(players.get(i));
+				
 				//Removes the player from the list of remaining players 
 				players.remove(i);
-				//Decrement the number of players still in the game
-				numberOfPlayers--;
-			}
+				}
 		}
 
 		//Return the list of eliminated players
@@ -457,7 +456,7 @@ public class Game {
 	}
 
 	/**
-	 * To be called when the game is finished
+	 * Getter for the winner of the Game
 	 * @return the winning player
 	 */
 	public Player getWinner(){
@@ -515,13 +514,13 @@ public class Game {
 	}
 
 	/**
-	 * In the end of every round, updates the number of rounds played
-	 * and returns a String if player was AI or Human
-	 * @param p : the winning player
-	 * @return s : "AI won" / "Human won"
+	 * In the end of every round, updates: 
+	 * -the number of rounds played
+	 * -the number of individual wins, if round has a winner
+	 * -the number of draws, if round was a draw
+	 * @param p : the round winner
 	 */
 	private void updateGameStats(Player p) {
-
 
 		//if there is a winner for the round, increase winner's winCounter 
 		if (p != null) {
@@ -536,19 +535,14 @@ public class Game {
 
 		//print out variables for testing
 		System.out.println("round " + roundCounter);
-
-
 	}
 
-	public int getDrawCounter() {
-		return drawCounter;
-	}
-
-	public int getRoundCounter() {
-		return roundCounter;
-	}
-
-	public String getWinnerString (Player p) {
+	/**
+	 * Returns a String if the winner of the round is AI or Human
+	 * @param p : the roundWinner
+	 * @return s : "AI-x" / "Human"
+	 */
+	public String gameWinnerString (Player p) {
 
 		//variable for the String to be returned
 		String s="";
@@ -565,5 +559,20 @@ public class Game {
 
 		return s;
 	}
-
+	
+	/**
+	 * Getter method for the number of draws in the game
+	 * @return drawCounter
+	 */
+	public int getDrawCounter() {
+		return drawCounter;
+	}
+	
+	/**
+	 * Getter method for the number of rounds of the game
+	 * @return roundCounter
+	 */
+	public int getRoundCounter() {
+		return roundCounter;
+	}
 }
