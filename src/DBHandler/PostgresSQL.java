@@ -1,8 +1,10 @@
+package DBHandler;
+
 import java.sql.*;
 
 import javax.swing.JOptionPane;
 
-import org.postgresql.util.PSQLException;
+//import org.postgresql.util.PSQLException;
 
 public class PostgresSQL {
 
@@ -59,34 +61,51 @@ public class PostgresSQL {
 	//Need a variable of type STRING to keep track of the winner. "Human" / "AI1" / "AI2" / "AI3" / "AI4"
 
 	//String winner needs to be - "Human" "AI1" "AI2" "AI3" "AI4"
-	
-	
+
+	/**
+	 * Method to create a new game number
+	 * @return the game number to be used.
+	 */
 	public int setCurrentGameNo() { // Sets current game number for the SQL table. There needs to be an instance
-		// currentGameNo variable
-		int currentGameNo;
+
+		/* Variable for the game number,
+		 * Initialised to 0 in case the query does not return any games */		 
+		int currentGameNo = 0;
+
 		Statement stmt = null;
+
+		// The SQL query String
 		String query = "SELECT * FROM toptrumps.game ORDER BY gameno DESC LIMIT 1;";
+
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
-			while (rs.next()) {
-				String gameno = rs.getString("gameno");
+			//check if the ResultSet is empty.
+			if (rs.next()) {
 
-				currentGameNo = Integer.parseInt(gameno); // Getting the most recent entry game number in the table
+				//if not empty, find greatest value and increment
+				while (rs.next()) {
 
-				//check if gameNo returned is not null
-				currentGameNo++; // Incrementing it by one
-				
-				System.out.println("The current game number is: " + currentGameNo);
+					String gameNo = rs.getString("gameno");
 
-				System.err.println(currentGameNo);
+					// Getting the most recent entry game number in the table
+					currentGameNo = Integer.parseInt(gameNo); 
+
+					// Incrementing it by one
+					currentGameNo++; 
+
+					System.out.println("The current game number is: " + currentGameNo);
+
+					System.err.println(currentGameNo);
+				}
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		}
+
 		return currentGameNo;
 	}
 
@@ -95,11 +114,15 @@ public class PostgresSQL {
 	public void insertIntoGameTable(int currentGameNo, int totalRounds, int totalDraws, String winner) {			
 
 		Statement stmt = null;
+
+		// The SQL query String
 		String query = "INSERT INTO toptrumps.game(gameno, totalrounds, totaldraws, winner) VALUES ('" + currentGameNo + "','" + totalRounds + "','" + totalDraws + "','" + winner + "') ;";
+
 		try {
 			stmt = connection.createStatement();
 			stmt.executeUpdate(query);
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 

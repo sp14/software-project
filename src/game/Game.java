@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-
+import DBHandler.*;
 
 public class Game {
 
@@ -37,23 +37,21 @@ public class Game {
 		// Set game number
 		this.currentGameNo = con.setCurrentGameNo();
 	}	
-	
+
 	/**
 	 * Method that initialises deck and sets up game
 	 * @return 
 	 */
 	public void initGame(boolean testlog, int AIPlayers) {
-		 
-		//If the user wishes to print to the test log, open a print writer
+
+		// If the user wishes to print to the test log, open a print writer
 		this.testlog=testlog;
 		if (testlog) openLogWriter();
 
-		//Populate the deck
+		// Populate the deck
 		populateDeck();
 
-		
-				
-		//If testlog mode is active, print the initial deck to the log
+		// If testlog mode is active, print the initial deck to the log
 		if (testlog) {
 			writer.print("Deck after loading: ");
 			for (int i=0;i<deck.getPile().size();i++)
@@ -80,9 +78,9 @@ public class Game {
 		setFirstPlayer();
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Populates the deck with cards from the input file
 	 */
@@ -234,9 +232,9 @@ public class Game {
 	 * Method to get the number of players still in the game
 	 * @return number of player still in game
 	 */
-	public int getNumberOfPlayer() {
+	public int getCurrNumberOfPlayer() {
 
-		return numberOfPlayers;
+		return players.size();
 	}
 
 	/**
@@ -246,7 +244,7 @@ public class Game {
 	public void drawCards() {
 
 		//Each player draws a new card	
-		for (int i=0;i<numberOfPlayers;i++) {
+		for (int i=0; i<players.size() ;i++) {
 
 			//Draw a new card
 			players.get(i).drawCard();
@@ -255,7 +253,7 @@ public class Game {
 		//If test log mode is active, write the cards in play to the file
 		if (testlog) {
 
-			for (int i = 0; i < numberOfPlayers; i++) {
+			for (int i = 0; i < players.size(); i++) {
 
 				writer.println(players.get(i).getCurrentCard());
 			}
@@ -263,7 +261,7 @@ public class Game {
 	}
 
 	/**
-	 * Method to get a list of all the remaining players in the game
+	 * Getter method
 	 * @return list of remaining players
 	 */
 	public ArrayList<Player> getPlayers() {
@@ -282,84 +280,83 @@ public class Game {
 		String selectedAttribute = attribute;
 
 		//variable to store the winner of the round
-		Player winningPlayer=null;
+		Player roundWinner = null;
 
 		//find the index of the round winner
-		int winnerIndex = findWinner(selectedAttribute);
+		roundWinner = findWinner(selectedAttribute);
 
-		//allocate the cards to the winner/communal pile
-		allocateDeck(winnerIndex);
+		if (roundWinner != null) {
+			// Set the winner to go next
+			currentPlayer = roundWinner;
+		}
+
+		// allocate the cards to the winner/communal pile
+		allocateDeck(roundWinner);
 
 		if (testlog) printHandsToLog();
 
-		//findWinner returns -1 if there has been a draw
-		if (winnerIndex >=0) {
-			winningPlayer = players.get(winnerIndex);
-			//Set the winner to go next
-			currentPlayer = winningPlayer;
-		}
+		//update Game statistics
+		updateGameStats(roundWinner);
 
-		//update game statistics
-		updateGameStats(winningPlayer);
-
-
-		return winningPlayer;
+		return winner;
 	}
 
 	/**
-	 * Finds the player that won
+	 * Finds the player that won the round
 	 * @param String selectedAttribute
-	 * @return the index of player with the winning card 
-	 * OR -1 if draw
+	 * @return the player that wins the round 
+	 * or NULL if it's a draw
 	 */
-	private int findWinner(String selectedAttribute) {
+	private Player findWinner(String selectedAttribute) {
+
+		//variable for the winner of the round
+		Player roundWinner = null;
 
 		//variable for the highest value of selected attribute
 		int max = 0;
 
-		//variable for the index of the card with highest value
-		int winnerIndex = 0;
-
 		//variable to store how many times highest value was found 
 		int counter = 0;
 
-		//variable for the value of the attribute that is currently being tested
+		//variable to hold the value of the selected attribute of the card that is currently being tested
 		int value = -1;
 
 		//go through each player's first card, find the max and hold its index
-		for (int i=0;i<numberOfPlayers;i++) { 
+		for (int i=0;i<players.size();i++) { 
 			value = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
-			if (value>max) {
-				max = value; //if the currently-tested value is greater than max, set max to currently-tested value
-				winnerIndex = i; //update the index of max card
+
+			//if the currently-tested value is greater than max
+			if (value > max) {
+				max = value;  //set max to currently-tested value
+				roundWinner = players.get(i);
 			}
 		}
 
-		//check if more than one card have the highest value 
-		for (int j=0; j<numberOfPlayers; j++) {
-			if (players.get(j).getCurrentCard().getAttribute(selectedAttribute) == max)
+		//check if more than one cards have the highest value 
+		for (int i=0; i<players.size(); i++) {
+			int testValue = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
+			if (testValue == max)
 				counter++;
+
+			// if it's a draw. if yes return -1, else return winner index
+			if (counter > 1) {
+				roundWinner =null;
+				break;
+			}
 		}
 
-		// check if it's a draw. return -1 if yes, else return winner index
-		if (counter>1) {
-			winnerIndex = -1;
-		}
-
-		return winnerIndex;
+		return roundWinner;
 	}
 
+
 	/**
-	 * Proceeds the result of the round;
+	 * Moves the cards to the winner's hand or to communal pile
 	 * @param selectedAttribute
 	 */
-	private void allocateDeck(int winnerIndex) {
-
-		// variable that stores the index of the winner (if any)
-		int winner = winnerIndex;
+	private void allocateDeck(Player roundWinner) {
 
 		// if it is a draw, put all current cards in the communalPile
-		if (winner==-1) {
+		if (roundWinner == null) {
 			for (int i = 0; i < players.size(); i++)
 				communalPile.add(players.get(i).getCurrentCard());
 		}
@@ -369,13 +366,13 @@ public class Game {
 
 			// adds all the current cards to his hand
 			for (int i = 0; i < players.size(); i++) {
-				players.get(winner).addToHand(players.get(i).getCurrentCard());
+				roundWinner.addToHand(players.get(i).getCurrentCard());
 			}
 
-			// add the cards from communalPile (if any) to his hand 
+			// add the cards from communalPile (if any) to the winner's hand 
 			if (communalPile.getCardCount()>0) {
 				for (int i = 0; i< communalPile.getCardCount(); i++) {
-					players.get(winner).addToHand(communalPile.getCard(i));
+					roundWinner.addToHand(communalPile.getCard(i));
 				}
 
 				// empty communal Pile
@@ -415,8 +412,8 @@ public class Game {
 			continueGame = false;
 
 			//probably add db update here
-			
-			
+
+
 			//The winner will be the only player left in the players array
 			winner = players.get(0);
 
@@ -516,7 +513,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	/**
 	 * In the end of every round, updates the number of rounds played
 	 * and returns a String if player was AI or Human
@@ -539,10 +536,10 @@ public class Game {
 
 		//print out variables for testing
 		System.out.println("round " + roundCounter);
-	
+
 
 	}
-	
+
 	public int getDrawCounter() {
 		return drawCounter;
 	}
@@ -555,7 +552,7 @@ public class Game {
 
 		//variable for the String to be returned
 		String s="";
-		
+
 
 		//if the winner is AI, set returning String to AI won
 		if (p.isAI()==true) {
@@ -565,7 +562,7 @@ public class Game {
 		//if the winner is Human, set returning String to Human won
 		else s = "Human";
 		System.out.println(s);
-		
+
 		return s;
 	}
 

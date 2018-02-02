@@ -1,5 +1,5 @@
 import commandline.TopTrumpsCLIApplication;
-import game.PostgresSQL;
+import DBHandler.*;
 import online.TopTrumpsOnlineApplication;
 
 
