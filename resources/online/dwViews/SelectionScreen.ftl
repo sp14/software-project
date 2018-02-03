@@ -62,8 +62,7 @@
 				// --------------------------------------------------------------------------
 				
 				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
+				// helloWord("test");
 				
 			}
 			

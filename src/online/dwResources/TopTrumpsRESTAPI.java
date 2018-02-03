@@ -65,8 +65,8 @@ public class TopTrumpsRESTAPI {
 		
 		List<String> listOfWords = new ArrayList<String>();
 		listOfWords.add("Hello");
-		listOfWords.add("World!");
-		
+//		listOfWords.add("!");
+
 		// We can turn arbatory Java objects directly into JSON strings using
 		// Jackson seralization, assuming that the Java objects are not too complex.
 		String listAsJSONString = oWriter.writeValueAsString(listOfWords);

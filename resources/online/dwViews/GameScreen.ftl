@@ -22,7 +22,18 @@
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
     	
-    	<div class="container">
+    	<div class="container" style="text-align: center">
+			<#--Select how many AI-->
+                <h1 >Top Trumps Games</h1><br/>
+				<hr>
+				<h3>How many AI you want to play with?</h3>
+                <form>
+                    <input type="radio" name="AI" value="1">1<br/>
+                    <input type="radio" name="AI" value="2">2<br/>
+                    <input type="radio" name="AI" value="3">3<br/>
+                    <input type="radio" name="AI" value="4">4<br/>
+                    <input type="submit" value="Submit">
+                </form>
 
 			<!-- Add your HTML Here -->
 		
@@ -38,8 +49,9 @@
 				// --------------------------------------------------------------------------
 				
 				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
+				// helloJSONList();
+
+				helloWord("You will Start Game Here");
 				
 			}
 			
