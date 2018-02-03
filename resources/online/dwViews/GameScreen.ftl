@@ -34,28 +34,89 @@
                     <input type="radio" name="AI" value="4">4<br/>
                     <input type="submit" value="Submit">
                 </form>
+        </div>
 
-		<div class="card" style="width:400px">
-			<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%">
-			<div class="card-body">
-				<h4 class="card-title">m50</h4>
-				<p class="card-text">m50 1 10 2 2 0</p>
+                <#--image card-->
+		<#--<div class="card" style="width:400px">-->
+			<#--<img class="float-left"  src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%">-->
+			<#--<div class="card-body">-->
+                <#--<h2 class="card-title">You</h2><hr/>-->
+                <#--<h3 class="card-title">m50</h3>-->
+                <#--<p class="card-text">m50 1 10 2 2 0</p>-->
 
-			</div>
-		</div>
-				
-        <div class="card" style="width:400px">
-                    <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%">
+                <#--<hr>-->
+
+			<#--</div>-->
+
+            <#--<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">-->
+            <#--<div class="card-body">-->
+                <#--<h2 class="card-title" >AI player1</h2><hr/>-->
+                <#--<h4 class="card-title">350r</h4>-->
+                <#--<p class="card-text">350r 1 10 2 2 0</p>-->
+            <#--</div>-->
+        <#--</div>-->
+
+        <div class="float-left" style="width:400px">
+                    <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
                     <div class="card-body">
-                        <h4 class="card-title">m50</h4>
-                        <p class="card-text">m50 1 10 2 2 0</p>
+                        <h2 class="card-title" >AI player2</h2><hr/>
+                        <h4 class="card-title">350r</h4>
+                        <p class="card-text">350r 1 10 2 2 0</p>
+
 
                     </div>
-                </div>
+        </div>
+
+        <div class="float-left" style="width:400px">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <div class="card-body">
+                <h2 class="card-title" >AI player3</h2><hr/>
+                <h4 class="card-title">350r</h4>
+                <p class="card-text">350r 1 10 2 2 0</p>
+
+
+            </div>
+
+        </div>
+    
+        <div class="float-left" style="width:400px">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <div class="card-body">
+                <h2 class="card-title" >AI player4</h2><hr/>
+                <h4 class="card-title">350r</h4>
+                <p class="card-text">350r 1 10 2 2 0</p>
+
+
+            </div>
+        </div>
+
+        <div class="float-left" style="width:400px">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <div class="card-body">
+                <h2 class="card-title" >AI player2</h2><hr/>
+                <h4 class="card-title">350r</h4>
+                <p class="card-text">350r 1 10 2 2 0</p>
+
+
+            </div>
+        </div>
+
+        <div class="float-left" style="width:400px">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <div class="card-body">
+                <h2 class="card-title" >AI player3</h2><hr/>
+                <h4 class="card-title">350r</h4>
+                <p class="card-text">350r 1 10 2 2 0</p>
+
+
+            </div>
+
+        </div>
+
 
 			<!-- Add your HTML Here -->
 		
-		</div>
+
 		
 		<script type="text/javascript">
 		
