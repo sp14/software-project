@@ -57,20 +57,18 @@
         <#--</div>-->
 
         <div class="float-left" style="width:400px">
-                    <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%;height:200px ">
                     <div class="card-body">
-                        <h2 class="card-title" >AI player2</h2><hr/>
-                        <h4 class="card-title">350r</h4>
-                        <p class="card-text">350r 1 10 2 2 0</p>
-
-
+                        <h2 class="card-title" >You</h2><hr/>
+                        <h4 class="card-title">m50</h4>
+                        <p class="card-text"> 1 10 2 2 0</p>
                     </div>
         </div>
 
         <div class="float-left" style="width:400px">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
-                <h2 class="card-title" >AI player3</h2><hr/>
+                <h2 class="card-title" >AI player1</h2><hr/>
                 <h4 class="card-title">350r</h4>
                 <p class="card-text">350r 1 10 2 2 0</p>
 
@@ -78,20 +76,9 @@
             </div>
 
         </div>
-    
-        <div class="float-left" style="width:400px">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
-            <div class="card-body">
-                <h2 class="card-title" >AI player4</h2><hr/>
-                <h4 class="card-title">350r</h4>
-                <p class="card-text">350r 1 10 2 2 0</p>
-
-
-            </div>
-        </div>
 
         <div class="float-left" style="width:400px">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
                 <h2 class="card-title" >AI player2</h2><hr/>
                 <h4 class="card-title">350r</h4>
@@ -102,9 +89,20 @@
         </div>
 
         <div class="float-left" style="width:400px">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
                 <h2 class="card-title" >AI player3</h2><hr/>
+                <h4 class="card-title">350r</h4>
+                <p class="card-text">350r 1 10 2 2 0</p>
+
+
+            </div>
+        </div>
+
+        <div class="float-left" style="width:400px">
+            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Constellation.jpg" alt="Card image" style="width:100%;height:200px">
+            <div class="card-body">
+                <h2 class="card-title" >AI player4</h2><hr/>
                 <h4 class="card-title">350r</h4>
                 <p class="card-text">350r 1 10 2 2 0</p>
 
