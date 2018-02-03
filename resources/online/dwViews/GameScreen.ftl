@@ -28,12 +28,30 @@
 				<hr>
 				<h3>How many AI you want to play with?</h3>
                 <form>
-                    <input type="radio" name="AI" value="1">1<br/>
+                    <input  type="radio" name="AI" value="1">1<br/>
                     <input type="radio" name="AI" value="2">2<br/>
                     <input type="radio" name="AI" value="3">3<br/>
                     <input type="radio" name="AI" value="4">4<br/>
                     <input type="submit" value="Submit">
                 </form>
+
+		<div class="card" style="width:400px">
+			<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%">
+			<div class="card-body">
+				<h4 class="card-title">m50</h4>
+				<p class="card-text">m50 1 10 2 2 0</p>
+
+			</div>
+		</div>
+				
+        <div class="card" style="width:400px">
+                    <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%">
+                    <div class="card-body">
+                        <h4 class="card-title">m50</h4>
+                        <p class="card-text">m50 1 10 2 2 0</p>
+
+                    </div>
+                </div>
 
 			<!-- Add your HTML Here -->
 		
