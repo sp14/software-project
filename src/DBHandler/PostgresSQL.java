@@ -146,6 +146,7 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
+		
 	}
 
 
