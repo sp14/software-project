@@ -53,8 +53,13 @@
         <input type="radio" name="AI" value="2">2<br/>
         <input type="radio" name="AI" value="3">3<br/>
         <input type="radio" name="AI" value="4">4<br/>
-        <input type="submit" value="Start">
+        <#--<input type="submit" value="Start">-->
     </form>
+    <!-- Button: Start Game-->
+    <button onclick="startGame()" type="button" class="btn-primary  btn-lg " id="startButton" >Start Game</button></a>
+
+    <br/>
+    <br/>
     <!-- Button next round -->
     <button type="button" class="btn-primary  btn-lg " id="roundButton">Next Round</button></a>
 
@@ -69,7 +74,7 @@
     <div class="row">
         <!--YOU-->
         <div class="col" id="Player 1">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/m50.jpg" alt="Card image" style="width:100%;height:200px ">
+            <img class="card-img-top" id="p1CardImage" src="" alt="Card image" style="width:100%;height:200px ">
             <div id="playerInfo">
                 <h2 class="playerInfo" >Player 1</h2><hr/>
             </div>
@@ -88,7 +93,7 @@
 
         <!--AI 1-->
         <div class="col">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%;height:200px">
+            <img class="card-img-top" id="a1CardImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
                 <h2 class="card-title" >AI player1</h2><hr/>
                 <h4 class="card-title">350r</h4>
@@ -102,7 +107,7 @@
         <!--AI 2-->
 
         <div class="col">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image" style="width:100%;height:200px">
+            <img class="card-img-top" id="a2CardImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
                 <h2 class="card-title" >AI player2</h2><hr/>
                 <h4 class="card-title">350r</h4>
@@ -113,7 +118,7 @@
         </div>
         <!--AI 3-->
         <div  class="col">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image" style="width:100%;height:200px">
+            <img class="card-img-top" id="a3CardImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
                 <h2 class="card-title" >AI player3</h2><hr/>
                 <h4 class="card-title">350r</h4>
@@ -124,7 +129,7 @@
         </div>
         <!--AI 4-->
         <div  class="col">
-            <img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Constellation.jpg" alt="Card image" style="width:100%;height:200px">
+            <img class="card-img-top" id="a4CardImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Constellation.jpg" alt="Card image" style="width:100%;height:200px">
             <div class="card-body">
                 <h2 class="card-title" >AI player4</h2><hr/>
                 <h4 class="card-title">350r</h4>
@@ -166,6 +171,7 @@
 
 <script type="text/javascript">
 
+
     // Method that is called on page load
     function initalize() {
 
@@ -174,16 +180,86 @@
         // --------------------------------------------------------------------------
 
         // For example, lets call our sample methods
-        // helloJSONList();
+        helloJSONList();
 
-        helloWord("You will Start Game Here");
 
     }
 
     // -----------------------------------------
     // Add your other Javascript methods Here
     // -----------------------------------------
+    // This calls the startGame REST method from TopTrumpsRESTAPI
+    function startGame() {
 
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/startGame"); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response; // the text of the response
+            // getP1CardName();
+            var p1CardName = JSON.parse(responseText);
+
+
+
+             var p1CardName = "Constellation";
+
+            alert(responseText);
+            setImage("p1CardImage",responseText);
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+    }
+
+
+
+    //
+    function getP1CardName() {
+
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getP1CardName"); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response; // the text of the response
+            var p1CardName = JSON.parse(responseText);
+            p1CardName = "m50";
+            alert(p1CardName);
+            setImage("p1CardImage",p1CardName);
+
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+    }
+
+
+
+    /*
+    set the Image to each card
+     */
+    function setImage(id, imageName) {
+        document.getElementById(id).src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + imageName + ".jpg"
+
+
+    }
 
 
 
@@ -247,6 +323,11 @@
         xhr.send();
     }
 
+
+
+
+
+
     // This calls the helloJSONList REST method from TopTrumpsRESTAPI
     function helloWord(word) {
 
@@ -271,16 +352,16 @@
 
 </script>
 
-<script>
-    $(document).ready(function(){
-        $("#hide").click(function(){
-            $("p").hide();
-        });
-        $("#show").click(function(){
-            $("p").show();
-        });
-    });
-</script>
+<#--<script>-->
+    <#--$(document).ready(function(){-->
+        <#--$("#hide").click(function(){-->
+            <#--$("p").hide();-->
+        <#--});-->
+        <#--$("#show").click(function(){-->
+            <#--$("p").show();-->
+        <#--});-->
+    <#--});-->
+<#--</script>-->
 
 </body>
 </html>

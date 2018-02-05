@@ -11,6 +11,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import game.Card;
+import game.Deck;
+import game.Game;
+import game.Player;
 import online.configuration.TopTrumpsJSONConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +34,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
  * methods that allow a TopTrumps game to be controled from a Web page.
  */
 public class TopTrumpsRESTAPI {
+    Game game;
+
 
 	/** A Jackson Object writer. It allows us to turn Java objects
 	 * into JSON strings easily. */
@@ -47,11 +53,44 @@ public class TopTrumpsRESTAPI {
 		// ----------------------------------------------------
 
 
+
+
 	}
 	
 	// ----------------------------------------------------
 	// Add relevant API methods here
 	// ----------------------------------------------------
+	@GET
+	@Path("/startGame")
+	public String startGame() throws IOException{
+        //Start the game logic
+        game = new Game(false,4);
+
+        ArrayList<Player> players = game.getPlayers();
+
+
+        String p1CardName = String.valueOf(players.get(0).getCurrentCard());
+//        String p1NameAsJSONString = oWriter.writeValueAsString(p1CardName);
+
+//        p1NameAsJSONString = card.getName();
+		return "m50";
+	}
+
+
+
+
+	//get p1 card name
+    @GET
+    @Path("/getP1CardName")
+    public String getP1CardName() throws IOException{
+
+        ArrayList<Player> players = game.getPlayers();
+
+
+        String p1CardName = String.valueOf(players.get(0).getCurrentCard());
+        String p1NameAsJSONString = oWriter.writeValueAsString(p1CardName);
+	    return "Avenger";
+    }
 	
 	@GET
 	@Path("/helloJSONList")
@@ -64,14 +103,14 @@ public class TopTrumpsRESTAPI {
 	public String helloJSONList() throws IOException {
 		
 		List<String> listOfWords = new ArrayList<String>();
-		listOfWords.add("Hello");
+		listOfWords.add("Hello~~~~");
 //		listOfWords.add("!");
 
 		// We can turn arbatory Java objects directly into JSON strings using
 		// Jackson seralization, assuming that the Java objects are not too complex.
 		String listAsJSONString = oWriter.writeValueAsString(listOfWords);
 		
-		return listAsJSONString;
+		return "test";
 	}
 	
 	@GET
