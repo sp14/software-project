@@ -27,17 +27,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<style>
 			body{
-                background-color: aliceblue;
+                background-image: url("http://www.dq995.com/data/out/37/908673.jpg");
+                background-color: #cccccc
 			}
 		</style>
 
 
 	</head>
-
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
     	
-<div class="row justify-content-md-center" id="titlebar">
-			<h1>Top Trumps</h1>
+		<div class="row justify-content-md-center" id="titlebar">
+			<img src="https://vignette.wikia.nocookie.net/logopedia/images/0/08/Top_Trumps.svg/revision/latest?cb=20160628161856" alt="Top trumps" style="width:450px;height:450px;" class="row justify-content-md-center" align="top">
 		</div>
 
     	<div class="container">
@@ -47,27 +47,27 @@
             <!-- two large block primary button with url -->
             <a href="http://localhost:7777/toptrumps/"><button type="button" class="btn btn-primary  btn-lg btn-block" id="menubtn">Return to the Main Menu</button></a>
 			<br>
-			<table style="width:100%">
+<table>
+<table style="width:100%">
+  <colgroup>
+    <col span="2" style="background-color:white">
+    <col style="background-color:white">
+  </colgroup>
   <tr>
-    <th>Name</th>
-    <th>Rounds Played</th>
-    <th>Rounds Won</th>
-    <th>Rounds Lost</th>
-    <th>Games played</th>
+    <th>Test</th>
+    <th>Test</th>
+    <th>Test</th>
   </tr>
   <tr>
-    <td>Player</td>
-    <td>5</td>
-    <td>5</td>
-    <td>7</td>
-    <td>7</td>
+    <td>Test</td>
+    <td>Test</td>
+    <td>Test</td>
   </tr>
   <tr>
-  	<td>Computer</td>
-  	<td>5</td>
-  	<td>7</td>
-  	<td>7</td>
-  	<td>7</td>
+    <td>Test</td>
+    <td>Test</td>
+    <td>Test</td>
+  </tr>
 </table>
 
 
