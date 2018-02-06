@@ -38,8 +38,9 @@ public class TopTrumpsCLIApplication {
 			//Get the number of players the user wishes to play against
 			int numPlayers = chooseAIPlayers(scanner);
 
-			int n = con.setCurrentGameNo();
-			con.insertIntoGameTable(n,  2, 2, "chris");
+			//retrieve new game number from database 
+			int gameID = con.setCurrentGameNo();
+			
 			//Start the game logic
 			Game game = new Game(writeGameLogsToFile, numPlayers);
 
