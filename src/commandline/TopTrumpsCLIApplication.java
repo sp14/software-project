@@ -1,7 +1,7 @@
 package commandline;
 
 import game.*;
-
+import DBHandler.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -11,6 +11,8 @@ import java.util.Scanner;
  */
 public class TopTrumpsCLIApplication {
 
+	private static PostgresSQL con = new PostgresSQL();
+	
 	/**
 	 * This main method is called by TopTrumps.java when the user specifies that they want to run in
 	 * command line mode. The contents of args[0] is whether we should write game logs to a file.
@@ -36,6 +38,8 @@ public class TopTrumpsCLIApplication {
 			//Get the number of players the user wishes to play against
 			int numPlayers = chooseAIPlayers(scanner);
 
+			int n = con.setCurrentGameNo();
+			con.insertIntoGameTable(n,  2, 2, "chris");
 			//Start the game logic
 			Game game = new Game(writeGameLogsToFile, numPlayers);
 
@@ -116,7 +120,7 @@ public class TopTrumpsCLIApplication {
 			String stats = scanner.nextLine().toLowerCase();
 
 			if (stats.equals("s")) {
-
+				
 				//Print statistics here
 			}
 			else {
