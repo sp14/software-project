@@ -50,10 +50,21 @@ public class TopTrumpsCLIApplication {
 			//The game is over. Update DB
 			con.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
 			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-				
-				con.insertHumanTable(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
+				con.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
 			}
-				
+
+			//display db data
+			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+				con.playerRoundsWon(game.getGameID(), game.getStartingPlayers().get(i).getName());
+			}
+			con.noOfGamesPlayed();
+			con.noOfAIWins();
+			con.noOfHumanWins();
+			con.avgNoOfDraws();
+			con.maxNoOfRoundsPlayed();
+			
+			
+			
 			//The game is over. Display winner
 			System.out.println("Game over. The winner is " + game.getWinner() + "\nWould you like to play a new game? type y for a new game or anything else to quit");
 
