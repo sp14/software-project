@@ -14,14 +14,14 @@ public class Game {
 	//Class instance variables
 	private Deck deck = new Deck();
 	private int numberOfPlayers; // total number of players
-	private ArrayList<Player> startingPlayers = new ArrayList<Player>(); //arraylist to hold the initial players
+	private ArrayList<Player> startingPlayers = new ArrayList<Player>(); //ArrayList to hold the initial players
 	private ArrayList<Player> players = new ArrayList<Player>(); // ArrayList to hold the players still in game
 	private CardPile communalPile = new Deck(); // Variable for the communal pile
 	private Player currentPlayer;
 	private Player winner; //variable for the winner of the Game
 	private int roundCounter = 0; //variable for the number of rounds
 	private int drawCounter = 0; //variable for the number of draws
-
+	private int gameID;
 
 	//Initialise the test log variables
 	private String filename = "toptrumps.log";
@@ -286,7 +286,6 @@ public class Game {
 		//update game statistics
 		updateGameStats(winningPlayer);
 
-
 		return winningPlayer;
 	}
 
@@ -533,5 +532,36 @@ public class Game {
 		System.out.println(s);
 		return s;
 	}
+	
+	//getters & setters
+	public int getGameID() {
+		return gameID;
+	}
 
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
+	
+	public int getRoundCounter() {
+		return roundCounter;
+	}
+
+	public void setRoundCounter(int roundCounter) {
+		this.roundCounter = roundCounter;
+	}
+
+	public int getDrawCounter() {
+		return drawCounter;
+	}
+
+	public void setDrawCounter(int drawCounter) {
+		this.drawCounter = drawCounter;
+	}
+
+	public void setWinner(Player winner) {
+		this.winner = winner;
+	}
+	public ArrayList<Player> getStartingPlayers() {
+		return startingPlayers;
+	}
 }

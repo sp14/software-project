@@ -6,16 +6,26 @@ import javax.swing.JOptionPane;
 import org.postgresql.util.PSQLException;
 
 public class PostgresSQL {
-	
+
 	private Connection connection = null;
 	int currentGameNo;
-	
+
 	public PostgresSQL() {	//Constructor
-		
+
 	}
-	
+
 	public void sqlConnection() {	//Establish connection to the database
 
+		/*//connection for home
+		String databaseName = "postgres";
+		String userName = "postgres";
+		String password = "kats1kampee?";
+
+		try {
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + databaseName,
+					userName, password);*/
+
+		//connection for uni
 		String databaseName = "m_17_2352834c";
 		String userName = "m_17_2352834c";
 		String password = "2352834c";
@@ -37,7 +47,7 @@ public class PostgresSQL {
 			System.err.println("Failed to make connection!");
 		}
 	}
-	
+
 	public void close() {	//Close the connection to the database
 		try {
 			connection.close();
@@ -47,9 +57,9 @@ public class PostgresSQL {
 			System.out.println("Connection could not be closed � SQL exception");
 		}
 	}
-	
-	
-	
+
+
+
 	//So the program would need to insert values every step of the game into the SQL database. 
 	//This begins when the game starts up it inserts a value which is one greater than the previous game number.
 	//This would mean all methods would need parameters which are from the counters in the main Game class.
@@ -60,16 +70,16 @@ public class PostgresSQL {
 	//Need a variable to keep track of the number of draws in the current game. totalDraws.
 	//Need a variable of type STRING to keep track of the winner. "Human" / "AI1" / "AI2" / "AI3" / "AI4"
 
-		
-	
-		//String winner needs to be - "Human" "AI1" "AI2" "AI3" "AI4"
-	
-	
-	public void setCurrentGameNo() { // Sets current game number for the SQL table. There needs to be an instance
+
+
+	//String winner needs to be - "Human" "AI1" "AI2" "AI3" "AI4"
+
+
+	public int setCurrentGameNo() { // Sets current game number for the SQL table. There needs to be an instance
 		// currentGameNo variable
-		
+		System.err.println(currentGameNo);
 		sqlConnection();
-		
+
 		Statement stmt = null;
 		String query = "SELECT * FROM toptrumps.game ORDER BY gameno DESC LIMIT 1;";
 		try {
@@ -79,26 +89,23 @@ public class PostgresSQL {
 			while (rs.next()) {
 				String gameno = rs.getString("gameno");
 
-				currentGameNo = Integer.parseInt(gameno); // Getting the most recent entry game number in the table
-
-				currentGameNo++; // Incrementing it by one
-
-				System.out.println("The current game number is: " + currentGameNo);
-
-				System.err.println(currentGameNo);
+				currentGameNo = Integer.parseInt(gameno); // Getting the most recent entry game number in the table				
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		}
-		close();
+
+		close(); //close connection
+
+		currentGameNo++; // Incrementing it by one
+
+		return currentGameNo;
 	}
-	
-	
-	
+
 	public void insertIntoGameTable(int currentGameNo, int totalRounds, int totalDraws, String winner) {			
-												
+		sqlConnection();
 		Statement stmt = null;
 		String query = "INSERT INTO toptrumps.game(gameno, totalrounds, totaldraws, winner) VALUES ('" + currentGameNo + "','" + totalRounds + "','" + totalDraws + "','" + winner + "') ;";
 		try {
@@ -109,12 +116,14 @@ public class PostgresSQL {
 			System.err.println("error executing query " + query);
 		} 
 	}
-	
-	
+
+
 	public void viewNoOfDraws(int currentGameNo) {	//Pass current game number 
+
+		sqlConnection();
 		Statement stmt = null;
 		String query = "SELECT totaldraws FROM toptrumps.game WHERE gameno='" + currentGameNo + "' ;"; //REPLACE X WITH CURRENT GAME NUMBER
-		
+
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -128,11 +137,13 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
+		close();
 	}
-	
-	
-	
+
+
+
 	public void viewWinner(int currentGameNo) {	//PASS CURRENT GAME NUMBER
+		sqlConnection();
 		Statement stmt = null;
 		String query = "SELECT winner FROM toptrumps.game WHERE gameno='" + currentGameNo + "';";
 		try {
@@ -148,10 +159,11 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
-		
+		close();
 	}
-	
+
 	public void viewTotalRounds(int currentGameNo) {	//Pass current game number
+		sqlConnection();
 		Statement stmt = null;
 		String query = "SELECT totalrounds FROM toptrumps.game WHERE gameno='" + currentGameNo + "';";
 		try {
@@ -167,12 +179,14 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
+		close();
 	}
-	
+
 	public void humanRoundsWon(int currentGameNo) {	//pass current game number
+		sqlConnection();
 		Statement stmt = null;
 		String query = "SELECT roundswon FROM toptrumps.human WHERE gameno='" + currentGameNo + "';";	//Cos its null atm
-		
+
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -185,12 +199,30 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
+		close();
 	}
-	
-	public void insertHumanTable(int currentGameNo, int roundsWon) {	//pass current game no and rounds human has won
+
+	/**
+	 * Universal insert method to insert data in players' tables
+	 * @param currentGameNo
+	 * @param roundsWon
+	 * @param playerName
+	 */	 
+	public void insertPlayersTables(int currentGameNo, int roundsWon, String playerName) {	//pass current game no and rounds human has won
 		Statement stmt = null;
-		String query = "INSERT INTO toptrumps.human (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
-		try {
+		String query = "";
+		if (playerName.equals("You"))
+			query = "INSERT INTO toptrumps.human (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
+		else if  (playerName.equals("Player 1"))
+			query = "INSERT INTO toptrumps.ai1 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
+		else if  (playerName.equals("Player 2"))
+			query = "INSERT INTO toptrumps.ai2 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
+				else if  (playerName.equals("Player 3"))
+			query = "INSERT INTO toptrumps.ai3 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
+		else if  (playerName.equals("Player 4"))
+			query = "INSERT INTO toptrumps.ai4 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
+		
+				try {
 			stmt = connection.createStatement();
 			stmt.executeUpdate(query);
 
@@ -198,19 +230,31 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
-		
 	}
-	
-	public void ai1RoundsWon(int currentGameNo) {	//Pass current game no
+
+	public void playerRoundsWon(int currentGameNo, String playerName) {	//Pass current game no
 		Statement stmt = null;
-		String query = "SELECT roundswon FROM toptrumps.ai1 WHERE gameno='" + currentGameNo + "';";
+		String query = "";
+		
+		//change query according to player wanted
+		if (playerName.equals("You"))
+		query = "SELECT roundswon FROM toptrumps.human WHERE gameno='" + currentGameNo + "';";
+		else if (playerName.equals("Player 1"))
+			query = "SELECT roundswon FROM toptrumps.ai1 WHERE gameno='" + currentGameNo + "';";
+		else if (playerName.equals("Player 2"))
+			query = "SELECT roundswon FROM toptrumps.ai2 WHERE gameno='" + currentGameNo + "';";
+		else if (playerName.equals("Player 3"))
+			query = "SELECT roundswon FROM toptrumps.ai3 WHERE gameno='" + currentGameNo + "';";
+		else if (playerName.equals("Player 4"))
+			query = "SELECT roundswon FROM toptrumps.ai4 WHERE gameno='" + currentGameNo + "';";
+				
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
 				String ai1RoundsWon = rs.getString("roundswon");
-				System.out.println("AI1 won this many rounds: " + ai1RoundsWon);
+				System.out.println( playerName + " won this many rounds: " + ai1RoundsWon);
 			}
 
 		} catch (SQLException e) {
@@ -218,119 +262,8 @@ public class PostgresSQL {
 			System.err.println("error executing query " + query);
 		} 
 	}
-	
-	public void insertAI1Table(int currentGameNo, int roundsWon) {	//pass current game no and rounds AI1 has won (player 2)
-		Statement stmt = null;
-		String query = "INSERT INTO toptrumps.ai1 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate(query);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-		
-	}
-	
-	
-	public void ai2RoundsWon(int currentGameNo) {	//Pass current game no
-		Statement stmt = null;
-		String query = "SELECT roundswon FROM toptrumps.ai2 WHERE gameno='" + currentGameNo + "';";
-		try {
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
 
-			while (rs.next()) {
-				String ai2RoundsWon = rs.getString("roundswon");
-				System.out.println("AI2 won this many rounds: " + ai2RoundsWon);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-	}
-	
-	public void insertAI2Table(int currentGameNo, int roundsWon) {	//Pass current game no and how many rounds AI2 won (player 3)
-		Statement stmt = null;
-		String query = "INSERT INTO toptrumps.ai2 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate(query);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-		
-	}
-	
-	public void ai3RoundsWon(int currentGameNo) {	//pass current game no
-		Statement stmt = null;
-		String query = "SELECT roundswon FROM toptrumps.ai3 WHERE gameno='" + currentGameNo + "';";
-		try {
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			while (rs.next()) {
-				String ai3RoundsWon = rs.getString("roundswon");
-				System.out.println("AI3 won this many rounds: " + ai3RoundsWon);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-	}
-	
-	public void insertAI3Table(int currentGameNo, int roundsWon) {	//pass game no and ai3 rounds won (player 4)
-		Statement stmt = null;
-		String query = "INSERT INTO toptrumps.ai3 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate(query);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-		
-	}
-	
-	public void ai4RoundsWon(int currentGameNo) {	//pass current game no
-		Statement stmt = null;
-		String query = "SELECT roundswon FROM toptrumps.ai4 WHERE gameno='" + currentGameNo + "';";
-		try {
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			while (rs.next()) {
-				String ai4RoundsWon = rs.getString("roundswon");
-				System.out.println("AI4 won this many rounds: " + ai4RoundsWon);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-	}
-	
-	public void insertAI4Table(int currentGameNo, int roundsWon) { //pass current game no and how many ai4 rounds won (player 5)
-		Statement stmt = null;
-		String query = "INSERT INTO toptrumps.ai4 (gameno, roundswon) VALUES ('" + currentGameNo + "', '" + roundsWon + "')"; //Game no and rounds won
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate(query);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-		
-	}
-	
-	
-	
 	public void noOfGamesPlayed() { //Nothing passed
 		Statement stmt = null;
 		String query = "SELECT COUNT (gameno) FROM toptrumps.game;";
@@ -347,11 +280,11 @@ public class PostgresSQL {
 			System.err.println("error executing query " + query);
 		} 		
 	}
-	
-	
-	public void noOfAIWins() { //Nothing passed
+
+
+	public void noOfAIWins() { //Nothing passed	player 1 etc
 		Statement stmt = null;
-		String query = "SELECT COUNT (winner) FROM toptrumps.game WHERE winner = 'AI1' OR winner = 'AI2' OR winner = 'AI3' OR winner = 'AI4';";
+		String query = "SELECT COUNT (winner) FROM toptrumps.game WHERE winner = 'Player 1' OR winner = 'Player 2' OR winner = 'Player 3' OR winner = 'Player 4';";
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -365,11 +298,11 @@ public class PostgresSQL {
 			System.err.println("error executing query " + query);
 		} 		
 	}
-	
-	
-	public void noOfHumanWins() {	//Nothing passed
+
+
+	public void noOfHumanWins() {	//Nothing passed change to You etc
 		Statement stmt = null;
-		String query = "SELECT COUNT (winner) FROM toptrumps.game WHERE winner = 'Human';";
+		String query = "SELECT COUNT (winner) FROM toptrumps.game WHERE winner = 'You';";
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -383,10 +316,9 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 		
-		
 	}
-	
-	
+
+
 	public void avgNoOfDraws() { //Nothing passed
 		Statement stmt = null;
 		String query = "SELECT AVG (totaldraws) FROM toptrumps.game;";
@@ -404,7 +336,7 @@ public class PostgresSQL {
 			System.err.println("error executing query " + query);
 		} 		
 	}
-	
+
 	public void maxNoOfRoundsPlayed() {	//Nothing passed
 		Statement stmt = null;
 		String query = "SELECT MAX (totalrounds) FROM toptrumps.game;";
@@ -421,10 +353,6 @@ public class PostgresSQL {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 		
-		
 	}
-	
-	
-	
-	
+
 }

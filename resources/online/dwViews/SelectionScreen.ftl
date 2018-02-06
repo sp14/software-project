@@ -27,7 +27,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<style>
 			body{
-                background-color: aliceblue;
+                background-image: url("http://www.dq995.com/data/out/37/908673.jpg");
+                background-color: #cccccc
 			}
 		</style>
 
@@ -42,21 +43,19 @@
 
 	
 		<div class="row justify-content-md-center" id="titlebar">
-			<h1>Top Trumps</h1>
+			<img src="https://vignette.wikia.nocookie.net/logopedia/images/0/08/Top_Trumps.svg/revision/latest?cb=20160628161856" alt="Top trumps" style="width:450px;height:450px;" class="row justify-content-md-center" align="top">
 		</div>
 
     	<div class="container">
 
 			<!-- Add your HTML Here -->
-
-            <!-- two large block primary button with url -->
+		    <!-- two large block primary button with url -->
             <a href="http://localhost:7777/toptrumps/game"><button type="button" class="btn btn-primary  btn-lg btn-block" id="menubtn">Start A New Game</button></a>
+            <br>
             <a href="http://localhost:7777/toptrumps/stats"><button type="button" class="btn btn-primary btn-lg btn-block" id="menubtn">View Overall Statistics</button></a>
-
-
-
-
-
+			<br> 
+		<center>
+	
 		</div>
 		
 		<script type="text/javascript">
