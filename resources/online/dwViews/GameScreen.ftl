@@ -31,6 +31,9 @@
         #gameInfo{
             text-align: center;
         }
+        #gameButton{
+            text-align: center;
+        }
 
 
     </style>
@@ -42,19 +45,35 @@
     <div  id="navbar">
         <h1 >Top Trumps Games</h1><br/>
         <hr>
-        <h3>How many AI you want to play with?</h3>
+
+
+        <!--assume 4 AI for now-->
+
+
+        <#--<h3>How many AI you want to play with?</h3>-->
+        <#--<!-- AI players &ndash;&gt;-->
+        <#--<form>-->
+            <#--<input  type="radio" name="AI" value="1">1<br/>-->
+            <#--<input type="radio" name="AI" value="2">2<br/>-->
+            <#--<input type="radio" name="AI" value="3">3<br/>-->
+            <#--<input type="radio" name="AI" value="4">4<br/>-->
+        <#--&lt;#&ndash;<input type="submit" value="Start">&ndash;&gt;-->
+        <#--</form>-->
+    </div>
+
+    <!--Display game infomation here-->
+    <div id="gameInfo">
+        <p id="currentPlayer">Who's turn</p>
+        <p id="currentRound">round: 0</p>
+        <p id="winner">Winner: </p>
+
+
 
     </div>
 
-    <div id="gameInfo">
-        <!-- AI players -->
-        <form>
-            <input  type="radio" name="AI" value="1">1<br/>
-            <input type="radio" name="AI" value="2">2<br/>
-            <input type="radio" name="AI" value="3">3<br/>
-            <input type="radio" name="AI" value="4">4<br/>
-            <#--<input type="submit" value="Start">-->
-        </form>
+
+    <!-- Game Button here-->
+    <div id="gameButton">
         <!-- Button: Start Game-->
         <button onclick="startGame()"  type="button" class="btn-primary  btn-lg " id="startButton" >Start Game!</button></a>
 
@@ -66,76 +85,109 @@
         <!-- Choose category -->
 
     </div>
+
+
+
     <hr/>
 
     <!--card-->
 
     <div class="container" >
         <div class="row">
-            <!--YOU-->
-            <div class="col" id="Player 1">
-                <img class="card-img-top" id="p1CardImage" src="" alt="Card image" style="width:100%;height:200px ">
-                <div id="playerInfo">
-                    <h2 class="playerInfo" >Player 1</h2><hr/>
+            <!--Player 1-->
+            <div class="col" id="P1">
+                <img class="card-img-top" id="P1CardImage" src="" alt="Card image" style="width:100%;height:200px ">
+                <div id="P1Info">
+                    <h2 class="PlayerInfo" >Player 1</h2><hr/>
                 </div>
-                <div class="cardInfo" id="cardInfo">
+                <div class="cardInfo" id="P1CardInfo">
                     <div id="cardName">
-                        <h3 id="p1_cardName">m50</h3><hr/>
+                        <h3 id="P1CardName"></h3><hr/>
 
                     </div>
-                    <p id="p1_cat1"></p>
-                    <p id="p1_cat2"></p>
-                    <p id="p1_cat3"></p>
-                    <p id="p1_cat4"></p>
-                    <p id="p1_cat5"></p><hr/>
+                    <p id="P1Cat1"></p>
+                    <p id="P1Cat2"></p>
+                    <p id="P1Cat3"></p>
+                    <p id="P1Cat4"></p>
+                    <p id="P1Cat5"></p><hr/>
                 </div>
             </div>
 
             <!--AI 1-->
-            <div class="col">
-                <img class="card-img-top" id="a1CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div class="card-body">
-                    <h2 class="card-title" >AI 1</h2><hr/>
-                    <h4 class="card-title">350r</h4>
-                    <p class="card-text">350r 1 10 2 2 0</p>
+            <div class="col" id="A1">
+                <img class="card-img-top" id="A1CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A1Info">
+                    <h2 class="AI1Info" >AI 1</h2><hr/>
+                </div>
+                <div class="cardInfo" id="A1CardInfo">
+                    <div id="cardName">
+                        <h3 id="A1CardName"></h3><hr/>
 
-
+                    </div>
+                    <p id="A1Cat1"></p>
+                    <p id="A1Cat2"></p>
+                    <p id="A1Cat3"></p>
+                    <p id="A1Cat4"></p>
+                    <p id="A1Cat5"></p><hr/>
                 </div>
 
             </div>
 
             <!--AI 2-->
 
-            <div class="col">
-                <img class="card-img-top" id="a2CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div class="card-body">
-                    <h2 class="card-title" >AI 2</h2><hr/>
-                    <h4 class="card-title">350r</h4>
-                    <p class="card-text">350r 1 10 2 2 0</p>
-
-
+            <div class="col" id="A2">
+                <img class="card-img-top" id="A2CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A2Info">
+                    <h2 class="A21Info" >AI 2</h2><hr/>
                 </div>
+                <div class="cardInfo" id="A2CardInfo">
+                    <div id="cardName">
+                        <h3 id="A2CardName"></h3><hr/>
+
+                    </div>
+                    <p id="A2Cat1"></p>
+                    <p id="A2Cat2"></p>
+                    <p id="A2Cat3"></p>
+                    <p id="A2Cat4"></p>
+                    <p id="A2Cat5"></p><hr/>
+                </div>
+
             </div>
             <!--AI 3-->
-            <div  class="col">
-                <img class="card-img-top" id="a3CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div class="card-body">
-                    <h2 class="card-title" >AI 3</h2><hr/>
-                    <h4 class="card-title">350r</h4>
-                    <p class="card-text">350r 1 10 2 2 0</p>
-
-
+            <div class="col" id="A3">
+                <img class="card-img-top" id="A3CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A3Info">
+                    <h2 class="A31Info" >AI 3</h2><hr/>
                 </div>
+                <div class="cardInfo" id="A3CardInfo">
+                    <div id="cardName">
+                        <h3 id="A3CardName"></h3><hr/>
+
+                    </div>
+                    <p id="A3Cat1"></p>
+                    <p id="A3Cat2"></p>
+                    <p id="A3Cat3"></p>
+                    <p id="A3Cat4"></p>
+                    <p id="A3Cat5"></p><hr/>
+                </div>
+
             </div>
             <!--AI 4-->
-            <div  class="col">
-                <img class="card-img-top" id="a4CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div class="card-body">
-                    <h2 class="card-title" >AI 4</h2><hr/>
-                    <h4 class="card-title">350r</h4>
-                    <p class="card-text">350r 1 10 2 2 0</p>
+            <div class="col" id="A4">
+                <img class="card-img-top" id="A4CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A4Info">
+                    <h2 class="AI4Info" >AI 4</h2><hr/>
+                </div>
+                <div class="cardInfo" id="A4CardInfo">
+                    <div id="cardName">
+                        <h3 id="A4CardName"></h3><hr/>
 
-
+                    </div>
+                    <p id="A4Cat1"></p>
+                    <p id="A4Cat2"></p>
+                    <p id="A4Cat3"></p>
+                    <p id="A4Cat4"></p>
+                    <p id="A4Cat5"></p><hr/>
                 </div>
 
             </div>
@@ -172,6 +224,8 @@
 <script type="text/javascript">
 
     var gameNum = 0;
+    var currentPlayer = " ";
+    var currentRound = 0;
 
 
     // Method that is called on page load
@@ -246,11 +300,12 @@
             //code here
             var p1CardName = JSON.parse(responseText);
 
-            setImage("p1CardImage",p1CardName);
-            document.getElementById("p1_cardName").innerHTML = p1CardName;
+            setImage("P1CardImage",p1CardName);
+            document.getElementById("P1CardName").innerHTML = p1CardName;
 
             //set category
-            getUserTopCardCategories(0);
+            getUserTopCardCategories(gameNum);
+            getCurrentInfo(gameNum);
 
         };
 
@@ -282,7 +337,7 @@
 
                 //
                 // id="p1_cat1"
-                setCategory("p1_cat"+ (i+1),categoryArray[i]);
+                setCategory("P1Cat"+ (i+1),categoryArray[i]);
             }
 
         };
@@ -294,6 +349,7 @@
     }
 
 
+    // set the Category to html by id
     function setCategory(id,value) {
 
         document.getElementById(id).innerHTML = " " + value;
@@ -305,6 +361,7 @@
     //if the current player is AI,
     //if the current player is player1, let the player 1 choose category
     function selectCategory() {
+        if (currentPlayer != "You")
 
     }
 
@@ -331,14 +388,13 @@
         xhr.send();
 
     }
+    //------------------
+    //get current Info: currentPlayer , currentRound
+    //------------------
 
-
-
-    //
-    function getP1CardName() {
-
+    function getCurrentInfo(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
-        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getP1CardName"); // Request type and URL
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getCurrentInfo?gameNum=" + gameNum); // Request type and URL
 
         // Message is not sent yet, but we can check that the browser supports CORS
         if (!xhr) {
@@ -348,11 +404,14 @@
         // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
         // to do when the response arrives
         xhr.onload = function(e) {
-            var responseText = xhr.response; // the text of the response
-            var p1CardName = JSON.parse(responseText);
-            // p1CardName = "m50";
-            alert(p1CardName);
-            setImage("p1CardImage",p1CardName);
+            var responseText = xhr.response;
+
+            //code here
+            var currentInfo = JSON.parse(responseText);
+            currentPlayer = currentInfo[0];
+            currentRound = currentInfo[1];
+            document.getElementById("currentPlayer").innerHTML = "Who's turn: " + currentPlayer;
+            document.getElementById("currentRound").innerHTML = "Round: " + currentRound;
 
 
         };
@@ -360,7 +419,12 @@
         // We have done everything we need to prepare the CORS request, so send it
         xhr.send();
 
+
     }
+
+
+
+
 
 
 

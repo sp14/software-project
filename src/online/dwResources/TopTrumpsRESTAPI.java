@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
  * methods that allow a TopTrumps game to be controled from a Web page.
  */
 public class TopTrumpsRESTAPI {
-    Game game;
+
 
 
 	/** A Jackson Object writer. It allows us to turn Java objects
@@ -43,8 +43,11 @@ public class TopTrumpsRESTAPI {
 
 
 	//
+    Game game;
     int gameNum;
     int numAIPlayers;
+    Player currentPlayer;
+    ArrayList<Player> players;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -78,14 +81,14 @@ public class TopTrumpsRESTAPI {
 
         //round1
         game.drawCards();
-        ArrayList<Player> players = game.getPlayers();
-
-        Player currentPlayer = game.getCurrentPlayer();
+        players = game.getPlayers();
+        currentPlayer = game.getCurrentPlayer();
 
         Card card = players.get(0).getCurrentCard();
         Card card1 = players.get(4).getCurrentCard();
         String cardName = card.getName();
         System.out.println("player1's card name:"+cardName);
+        System.out.println("round number is "+ game.getRoundCounter()+1);
         String cardName2 = card1.getName();
         System.out.println(cardName2);
 
@@ -93,10 +96,10 @@ public class TopTrumpsRESTAPI {
         int cargo = card.getCargo();
         int speed = card.getSpeed();
         int range = card.getRange();
-        System.out.println("player1 current card size: " + size);
-        System.out.println("player1 current card cargo: "+ cargo);
-        System.out.println("player1 current card speed: "+ speed);
-        System.out.println("player1 current card range: "+ range);
+//        System.out.println("player1 current card size: " + size);
+//        System.out.println("player1 current card cargo: "+ cargo);
+//        System.out.println("player1 current card speed: "+ speed);
+//        System.out.println("player1 current card range: "+ range);
 
 
 
@@ -124,10 +127,6 @@ public class TopTrumpsRESTAPI {
     @Path("/displayUserCard")
     public String displayUserCard() throws IOException{
 
-        ArrayList<Player> players = game.getPlayers();
-
-        Player currentPlayer = game.getCurrentPlayer();
-
         Card card = players.get(0).getCurrentCard();
         String cardName = card.getName();
 
@@ -149,12 +148,31 @@ public class TopTrumpsRESTAPI {
 //        int cargo = card.getCargo();
 //        int speed = card.getSpeed();
 //        int range = card.getRange();
-        int[] categoryArray = {card.getSize(),card.getSpeed(),card.getRange(),card.getFirepower(),card.getCargo()};
+        String[] categoryArray = {"Size: "+card.getSize(),"Speed: "+card.getSpeed(), "Range: " + card.getRange(),"Firepower: " + card.getFirepower(),"Cargo: " + card.getCargo()};
         String categoryArrayAsJSONString = oWriter.writeValueAsString(categoryArray);
 
 	    return categoryArrayAsJSONString;
     }
 
+
+
+    //getCurrentInfo : currentPlayer , currentRound
+    @GET
+    @Path("/getCurrentInfo")
+    public String getCurrentInfo() throws IOException{
+
+	    String currentPlayerName = currentPlayer.getName();
+        System.out.println("current player from method :" + currentPlayerName);
+
+        int currentRound = game.getRoundCounter()  ;
+
+        Object[] currentInfo = {currentPlayerName,currentRound};
+
+        String currentPlayerNameAsJSONString = oWriter.writeValueAsString(currentInfo);
+
+        return currentPlayerNameAsJSONString;
+
+    }
 
 	//get p1 card name
     @GET
