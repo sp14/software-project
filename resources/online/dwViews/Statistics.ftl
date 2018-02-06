@@ -12,19 +12,69 @@
 		<!-- Optional Styling of the Website, for the demo I used Bootstrap (see https://getbootstrap.com/docs/4.0/getting-started/introduction/) -->
 		<link rel="stylesheet" href="http://dcs.gla.ac.uk/~richardm/TREC_IS/bootstrap.min.css">
     	<script src="http://dcs.gla.ac.uk/~richardm/vex.combined.min.js"></script>
+
     	<script>vex.defaultOptions.className = 'vex-theme-os';</script>
     	<link rel="stylesheet" href="http://dcs.gla.ac.uk/~richardm/assets/stylesheets/vex.css"/>
     	<link rel="stylesheet" href="http://dcs.gla.ac.uk/~richardm/assets/stylesheets/vex-theme-os.css"/>
-    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+    	<#--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<style>
+			body{
+                background-color: aliceblue;
+			}
+		</style>
+
 
 	</head>
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
     	
+<div class="row justify-content-md-center" id="titlebar">
+			<h1>Top Trumps</h1>
+		</div>
+
     	<div class="container">
 
 			<!-- Add your HTML Here -->
+
+            <!-- two large block primary button with url -->
+            <a href="http://localhost:7777/toptrumps/"><button type="button" class="btn btn-primary  btn-lg btn-block" id="menubtn">Return to the Main Menu</button></a>
+			<br>
+			<table style="width:100%">
+  <tr>
+    <th>Name</th>
+    <th>Rounds Played</th>
+    <th>Rounds Won</th>
+    <th>Rounds Lost</th>
+    <th>Games played</th>
+  </tr>
+  <tr>
+    <td>Player</td>
+    <td>5</td>
+    <td>5</td>
+    <td>7</td>
+    <td>7</td>
+  </tr>
+  <tr>
+  	<td>Computer</td>
+  	<td>5</td>
+  	<td>7</td>
+  	<td>7</td>
+  	<td>7</td>
+</table>
+
+
+
+
+
+
 		
 		</div>
 		
@@ -36,10 +86,7 @@
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
 				// --------------------------------------------------------------------------
-				
-				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
+
 				
 			}
 			
