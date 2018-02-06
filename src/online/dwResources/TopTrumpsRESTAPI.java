@@ -40,6 +40,11 @@ public class TopTrumpsRESTAPI {
 	/** A Jackson Object writer. It allows us to turn Java objects
 	 * into JSON strings easily. */
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
+
+
+	//
+    int gameNum;
+    int numAIPlayers;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -51,6 +56,12 @@ public class TopTrumpsRESTAPI {
 		// ----------------------------------------------------
 		// Add relevant initalization here
 		// ----------------------------------------------------
+        gameNum = 0;
+        numAIPlayers = conf.getNumAIPlayers();
+
+
+		game = new Game(false,4);
+
 
 
 
@@ -64,19 +75,85 @@ public class TopTrumpsRESTAPI {
 	@Path("/startGame")
 	public String startGame() throws IOException{
         //Start the game logic
-        game = new Game(false,4);
 
+        //round1
+        game.drawCards();
         ArrayList<Player> players = game.getPlayers();
 
+        Player currentPlayer = game.getCurrentPlayer();
 
-        String p1CardName = String.valueOf(players.get(0).getCurrentCard());
-//        String p1NameAsJSONString = oWriter.writeValueAsString(p1CardName);
+        Card card = players.get(0).getCurrentCard();
+        Card card1 = players.get(4).getCurrentCard();
+        String cardName = card.getName();
+        System.out.println("player1's card name:"+cardName);
+        String cardName2 = card1.getName();
+        System.out.println(cardName2);
 
-//        p1NameAsJSONString = card.getName();
-		return "m50";
+        int size = card.getSize();
+        int cargo = card.getCargo();
+        int speed = card.getSpeed();
+        int range = card.getRange();
+        System.out.println("player1 current card size: " + size);
+        System.out.println("player1 current card cargo: "+ cargo);
+        System.out.println("player1 current card speed: "+ speed);
+        System.out.println("player1 current card range: "+ range);
+
+
+
+
+        String attribute1 = currentPlayer.getBestAttribute();
+
+        // compare
+        Player winner = game.playRound(attribute1);
+//        show the winner
+        System.out.println("  winner name: "+winner.getName());
+
+        //--------------------------------------------------
+        // record game number here, connect to database later
+        //--------------------------------------------------
+
+        int gameNum = 0;
+        String stringAsJSONString = oWriter.writeValueAsString(gameNum);
+
+		return stringAsJSONString;
 	}
 
 
+	//displayUserCard
+    @GET
+    @Path("/displayUserCard")
+    public String displayUserCard() throws IOException{
+
+        ArrayList<Player> players = game.getPlayers();
+
+        Player currentPlayer = game.getCurrentPlayer();
+
+        Card card = players.get(0).getCurrentCard();
+        String cardName = card.getName();
+
+        String cardNameAsJSONString = oWriter.writeValueAsString(cardName);
+	    return cardNameAsJSONString;
+    }
+
+
+
+    //getUserTopCardCategories
+    @GET
+    @Path("/getUserTopCardCategories")
+    public String getUserTopCardCategories() throws IOException{
+        ArrayList<Player> players = game.getPlayers();
+
+        Card card = players.get(0).getCurrentCard();
+//	    Size Speed Range Firepower Cargo
+//        int size = card.getSize();
+//        int cargo = card.getCargo();
+//        int speed = card.getSpeed();
+//        int range = card.getRange();
+        int[] categoryArray = {card.getSize(),card.getSpeed(),card.getRange(),card.getFirepower(),card.getCargo()};
+        String categoryArrayAsJSONString = oWriter.writeValueAsString(categoryArray);
+
+	    return categoryArrayAsJSONString;
+    }
 
 
 	//get p1 card name
@@ -110,7 +187,7 @@ public class TopTrumpsRESTAPI {
 		// Jackson seralization, assuming that the Java objects are not too complex.
 		String listAsJSONString = oWriter.writeValueAsString(listOfWords);
 		
-		return "test";
+		return "test~~~~";
 	}
 	
 	@GET
