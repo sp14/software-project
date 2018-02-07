@@ -42,165 +42,166 @@
 
 <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
 <!--header-->
-    <div  id="navbar">
-        <h1 >Top Trumps Games</h1><br/>
-        <hr>
+<div  id="navbar">
+    <h1 >Top Trumps Games</h1><br/>
+    <hr>
 
 
-        <!--assume 4 AI for now-->
+    <!--assume 4 AI for now-->
 
 
-        <#--<h3>How many AI you want to play with?</h3>-->
-        <#--<!-- AI players &ndash;&gt;-->
-        <#--<form>-->
-            <#--<input  type="radio" name="AI" value="1">1<br/>-->
-            <#--<input type="radio" name="AI" value="2">2<br/>-->
-            <#--<input type="radio" name="AI" value="3">3<br/>-->
-            <#--<input type="radio" name="AI" value="4">4<br/>-->
-        <#--&lt;#&ndash;<input type="submit" value="Start">&ndash;&gt;-->
-        <#--</form>-->
-    </div>
+<#--<h3>How many AI you want to play with?</h3>-->
+<#--<!-- AI players &ndash;&gt;-->
+<#--<form>-->
+<#--<input  type="radio" name="AI" value="1">1<br/>-->
+<#--<input type="radio" name="AI" value="2">2<br/>-->
+<#--<input type="radio" name="AI" value="3">3<br/>-->
+<#--<input type="radio" name="AI" value="4">4<br/>-->
+<#--&lt;#&ndash;<input type="submit" value="Start">&ndash;&gt;-->
+<#--</form>-->
+</div>
 
-    <!--Display game infomation here-->
-    <div id="gameInfo">
-        <p id="currentPlayer">Who's turn</p>
-        <p id="currentRound">round: 0</p>
-        <p id="winner">Winner: </p>
-
-
-
-    </div>
-
-
-    <!-- Game Button here-->
-    <div id="gameButton">
-        <!-- Button: Start Game-->
-        <button onclick="startGame()"  type="button" class="btn-primary  btn-lg " id="startButton" >Start Game!</button></a>
-
-        <br/>
-        <br/>
-        <!-- Button next round -->
-        <button type="button"  onclick="nextRound()" class="btn-primary  btn-lg " id="roundButton">Next Round</button></a>
-
-        <!-- Choose category -->
-
-    </div>
+<!--Display game infomation here-->
+<div id="gameInfo">
+    <p id="currentPlayer">Who's turn</p>
+    <p id="currentRound">round: 0</p>
+<#--<p id="winner">Winner: </p>-->
+    <p id="message"> </p>
 
 
 
-    <hr/>
+</div>
 
-    <!--card-->
 
-    <div class="container" >
-        <div class="row">
-            <!--Player 1-->
-            <div class="col" id="P1">
-                <img class="card-img-top" id="P1CardImage" src="" alt="Card image" style="width:100%;height:200px ">
-                <div id="P1Info">
-                    <h2 class="PlayerInfo" >Player 1</h2><hr/>
+<!-- Game Button here-->
+<div id="gameButton">
+    <!-- Button: Start Game-->
+    <button onclick="buttonControl()"  type="button" class="btn-primary  btn-lg " id="startButton" >Start Game!</button></a>
+
+    <br/>
+    <br/>
+    <!-- Button next round -->
+<#--<button type="button"  onclick="nextRound()" class="btn-primary  btn-lg " id="roundButton">Next Round</button></a>-->
+
+    <!-- Choose category -->
+
+</div>
+
+
+
+<hr/>
+
+<!--card-->
+
+<div class="container" >
+    <div class="row">
+        <!--Player 1-->
+        <div class="col" id="P1">
+            <img class="card-img-top" id="P1CardImage" src="" alt="Card image" style="width:100%;height:200px ">
+            <div id="P1Info">
+                <h2 class="PlayerInfo" >You</h2><hr/>
+            </div>
+            <div class="cardInfo" id="P1CardInfo">
+                <div id="cardName">
+                    <h3 id="P1CardName"></h3><hr/>
+
                 </div>
-                <div class="cardInfo" id="P1CardInfo">
-                    <div id="cardName">
-                        <h3 id="P1CardName"></h3><hr/>
+                <p id="P1Cat1"></p>
+                <p id="P1Cat2"></p>
+                <p id="P1Cat3"></p>
+                <p id="P1Cat4"></p>
+                <p id="P1Cat5"></p><hr/>
+            </div>
+        </div>
 
-                    </div>
-                    <p id="P1Cat1"></p>
-                    <p id="P1Cat2"></p>
-                    <p id="P1Cat3"></p>
-                    <p id="P1Cat4"></p>
-                    <p id="P1Cat5"></p><hr/>
+        <!--AI 1-->
+        <div class="col" id="A1">
+            <img class="card-img-top" id="A1CardImage" src="" alt="Card image" style="width:100%;height:200px">
+            <div id="A1Info">
+                <h2 class="AI1Info" >AI Player 1</h2><hr/>
+            </div>
+            <div class="cardInfo" id="A1CardInfo">
+                <div id="cardName">
+                    <h3 id="A1CardName"></h3><hr/>
+
                 </div>
+                <p id="A1Cat1"></p>
+                <p id="A1Cat2"></p>
+                <p id="A1Cat3"></p>
+                <p id="A1Cat4"></p>
+                <p id="A1Cat5"></p><hr/>
             </div>
 
-            <!--AI 1-->
-            <div class="col" id="A1">
-                <img class="card-img-top" id="A1CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div id="A1Info">
-                    <h2 class="AI1Info" >AI 1</h2><hr/>
-                </div>
-                <div class="cardInfo" id="A1CardInfo">
-                    <div id="cardName">
-                        <h3 id="A1CardName"></h3><hr/>
+        </div>
 
-                    </div>
-                    <p id="A1Cat1"></p>
-                    <p id="A1Cat2"></p>
-                    <p id="A1Cat3"></p>
-                    <p id="A1Cat4"></p>
-                    <p id="A1Cat5"></p><hr/>
-                </div>
+        <!--AI 2-->
 
+        <div class="col" id="A2">
+            <img class="card-img-top" id="A2CardImage" src="" alt="Card image" style="width:100%;height:200px">
+            <div id="A2Info">
+                <h2 class="A21Info" >AI Player 2</h2><hr/>
+            </div>
+            <div class="cardInfo" id="A2CardInfo">
+                <div id="cardName">
+                    <h3 id="A2CardName"></h3><hr/>
+
+                </div>
+                <p id="A2Cat1"></p>
+                <p id="A2Cat2"></p>
+                <p id="A2Cat3"></p>
+                <p id="A2Cat4"></p>
+                <p id="A2Cat5"></p><hr/>
             </div>
 
-            <!--AI 2-->
-
-            <div class="col" id="A2">
-                <img class="card-img-top" id="A2CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div id="A2Info">
-                    <h2 class="A21Info" >AI 2</h2><hr/>
-                </div>
-                <div class="cardInfo" id="A2CardInfo">
-                    <div id="cardName">
-                        <h3 id="A2CardName"></h3><hr/>
-
-                    </div>
-                    <p id="A2Cat1"></p>
-                    <p id="A2Cat2"></p>
-                    <p id="A2Cat3"></p>
-                    <p id="A2Cat4"></p>
-                    <p id="A2Cat5"></p><hr/>
-                </div>
-
+        </div>
+        <!--AI 3-->
+        <div class="col" id="A3">
+            <img class="card-img-top" id="A3CardImage" src="" alt="Card image" style="width:100%;height:200px">
+            <div id="A3Info">
+                <h2 class="A31Info" >AI Player 3</h2><hr/>
             </div>
-            <!--AI 3-->
-            <div class="col" id="A3">
-                <img class="card-img-top" id="A3CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div id="A3Info">
-                    <h2 class="A31Info" >AI 3</h2><hr/>
-                </div>
-                <div class="cardInfo" id="A3CardInfo">
-                    <div id="cardName">
-                        <h3 id="A3CardName"></h3><hr/>
+            <div class="cardInfo" id="A3CardInfo">
+                <div id="cardName">
+                    <h3 id="A3CardName"></h3><hr/>
 
-                    </div>
-                    <p id="A3Cat1"></p>
-                    <p id="A3Cat2"></p>
-                    <p id="A3Cat3"></p>
-                    <p id="A3Cat4"></p>
-                    <p id="A3Cat5"></p><hr/>
                 </div>
-
-            </div>
-            <!--AI 4-->
-            <div class="col" id="A4">
-                <img class="card-img-top" id="A4CardImage" src="" alt="Card image" style="width:100%;height:200px">
-                <div id="A4Info">
-                    <h2 class="AI4Info" >AI 4</h2><hr/>
-                </div>
-                <div class="cardInfo" id="A4CardInfo">
-                    <div id="cardName">
-                        <h3 id="A4CardName"></h3><hr/>
-
-                    </div>
-                    <p id="A4Cat1"></p>
-                    <p id="A4Cat2"></p>
-                    <p id="A4Cat3"></p>
-                    <p id="A4Cat4"></p>
-                    <p id="A4Cat5"></p><hr/>
-                </div>
-
+                <p id="A3Cat1"></p>
+                <p id="A3Cat2"></p>
+                <p id="A3Cat3"></p>
+                <p id="A3Cat4"></p>
+                <p id="A3Cat5"></p><hr/>
             </div>
 
+        </div>
+        <!--AI 4-->
+        <div class="col" id="A4">
+            <img class="card-img-top" id="A4CardImage" src="" alt="Card image" style="width:100%;height:200px">
+            <div id="A4Info">
+                <h2 class="AI4Info" >AI Player 4</h2><hr/>
+            </div>
+            <div class="cardInfo" id="A4CardInfo">
+                <div id="cardName">
+                    <h3 id="A4CardName"></h3><hr/>
+
+                </div>
+                <p id="A4Cat1"></p>
+                <p id="A4Cat2"></p>
+                <p id="A4Cat3"></p>
+                <p id="A4Cat4"></p>
+                <p id="A4Cat5"></p><hr/>
+            </div>
 
         </div>
 
 
-
-
-
-
     </div>
+
+
+
+
+
+
+</div>
 
 
 
@@ -226,6 +227,7 @@
     var gameNum = 0;
     var currentPlayer = " ";
     var currentRound = 0;
+    var bestAttribute = " ";
 
 
     // Method that is called on page load
@@ -237,14 +239,16 @@
 
         // For example, lets call our sample methods
 
-
-
     }
 
     // -----------------------------------------
     // Add your other Javascript methods Here
     // -----------------------------------------
-    // This calls the startGame REST method from TopTrumpsRESTAPI
+
+
+    //===========================
+    // FIRST PART I: Start Game
+    //===========================
     function startGame() {
 
         // First create a CORS request, this is the message we are going to send (a get request in this case)
@@ -263,24 +267,58 @@
 
             gameNum = JSON.parse(responseText);
 
-
-            //test
-            alert("start game here");
-            alert("The game number is:" + gameNum);
-
-            //------------------------
-            //start function here
-            //------------------------
-            displayUserCard(gameNum);
-
-
-
         };
 
         // We have done everything we need to prepare the CORS request, so send it
         xhr.send();
 
     }
+
+    function drawCard() {
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/drawCard"); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response; // the text of the response
+            //
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+    }
+
+
+
+    function buttonControl() {
+        var firstButtonName = document.getElementById("startButton").innerHTML;
+
+        if (firstButtonName == "Start Game!" ){
+            startGame();
+            displayUserCard(gameNum);
+
+        }else if(firstButtonName == "Category Selection") {
+            selectCategory();
+        }else if (firstButtonName == "Show Winner")           {
+
+            showWinner();
+        }
+    }
+
+
+
+
+
+    //===================================
+    // deal with display card name, image
+    //===================================
 
 
     //display the contents of the user's top card: set the player1 image and name
@@ -314,6 +352,88 @@
 
     }
 
+
+    //displayAICard
+    function displayAICard(gameNum) {
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/displayAICard?gameNum=" + gameNum); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+            //code here
+            var AICardName = JSON.parse(responseText);
+
+            //set AI card Image
+            for (var i= 0; i < AICardName.length; i++) {
+
+                setImage("A"+(i+1)+"CardImage", AICardName[i]);
+
+                //set AI card name
+                document.getElementById("A"+(i+1)+"CardName").innerHTML = AICardName[i];
+
+            }
+
+            //set AI card category
+            getAITopCardCategories(gameNum);
+
+        };
+
+
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+
+    }
+
+
+
+    function getAITopCardCategories(gameNum) {
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getAITopCardCategories?gameNum="+gameNum); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+            //code here
+
+            var categoryArray = JSON.parse(responseText);
+
+            //test alert
+            // alert("categoryArray: "+categoryArray);
+
+            //
+            for (var i= 0; i < 4; i++) {
+
+                var AIName = "A"+(i+1)+"Cat";
+
+                for (var j= 0; j < 5; j++){
+                    setCategory(AIName+(j+1),categoryArray[i][j]);
+
+                }
+            }
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+
+    }
+
     //get player1's card categories
     function getUserTopCardCategories(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
@@ -332,7 +452,11 @@
 
             var categoryArray = JSON.parse(responseText);
 
-            alert("categoryArray: "+categoryArray);
+            //test alert
+            // alert("categoryArray: "+categoryArray);
+
+
+            //
             for (var i= 0; i < categoryArray.length; i++) {
 
                 //
@@ -349,27 +473,87 @@
     }
 
 
-    // set the Category to html by id
-    function setCategory(id,value) {
-
-        document.getElementById(id).innerHTML = " " + value;
 
 
-    }
 
+
+    // ============================
+    // SECOND PART II: Select Category
+    // ============================
 
     //if the current player is AI,
     //if the current player is player1, let the player 1 choose category
-    function selectCategory() {
-        if (currentPlayer != "You")
+    function selectCategory(gameNum) {
+        if (currentPlayer != "You"){
+
+            //AI player select Category
+
+            AISelectCategory(gameNum);
+
+
+
+            //show AI players' card detail:category and name
+
+
+
+
+
+            //change the button
+            setFirstButton("startButton","Show Winner");
+
+        }else {
+            document.getElementById("message").innerHTML = "It is your turn now, choose a category";
+
+            //User select
+
+            //change the button
+            setFirstButton("startButton","Show Winner");
+
+        }
+
+
+    }
+
+    //AI player select Category
+    function AISelectCategory(gameNum) {
+
+
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AISelectCategory?gameNum="+gameNum); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+            bestAttribute = JSON.parse(responseText);
+            //1.display AI card image 2. display AI card category
+
+            //set message
+            displayAICard();
+            document.getElementById("message").innerHTML = currentPlayer + " has chosen " + bestAttribute;
+
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
 
     }
 
 
-    //next round
-    function nextRound() {
+
+    // ===========================
+    // THIRD PART III: Show Winner
+    // ===========================
+
+    function showWinner(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
-        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/nextRound"); // Request type and URL
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/showWinner?gameNum="+gameNum ); // Request type and URL
 
         // Message is not sent yet, but we can check that the browser supports CORS
         if (!xhr) {
@@ -381,6 +565,24 @@
         xhr.onload = function(e) {
             var responseText = xhr.response;
             //code here
+            var winnerName = JSON.parse(responseText);
+
+
+            if (winnerName=="draw"){
+
+                document.getElementById("message").innerHTML = "This round is  a draw, Cards added to the communal pile.";
+
+                setFirstButton("firstButton", "Next Round");
+
+
+            }else {
+                alert(winnerName);
+                document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
+
+                setFirstButton("startButton", "Next Round");
+
+            }
+
 
         };
 
@@ -388,9 +590,12 @@
         xhr.send();
 
     }
-    //------------------
+
+
+
+    //===============================================
     //get current Info: currentPlayer , currentRound
-    //------------------
+    //===============================================
 
     function getCurrentInfo(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
@@ -413,6 +618,8 @@
             document.getElementById("currentPlayer").innerHTML = "Who's turn: " + currentPlayer;
             document.getElementById("currentRound").innerHTML = "Round: " + currentRound;
 
+            //change the button to category selection
+            setFirstButton("startButton","Category Selection");
 
         };
 
@@ -424,8 +631,26 @@
 
 
 
+    //=======================
+    //  set methods here
+    //=======================
+
+    //set the first button name
+    function setFirstButton(id,newButtonName) {
+
+        document.getElementById(id).innerHTML = newButtonName;
+
+    }
 
 
+
+    // set the Category to html by id
+    function setCategory(id,value) {
+
+        document.getElementById(id).innerHTML = " " + value;
+
+
+    }
 
 
     /*
@@ -437,6 +662,11 @@
     }
 
 
+
+
+    //=====================
+    //  reusable method
+    //=====================
 
     // This is a reusable method for creating a CORS request. Do not edit this.
     function createCORSRequest(method, url) {
@@ -489,7 +719,7 @@
             var responseText = xhr.response;
             var test = JSON.parse(responseText);
             alert(test);
-                                                    // the text of the response
+            // the text of the response
             alert(responseText); // lets produce an alert
         };
 
