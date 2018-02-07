@@ -106,6 +106,7 @@
                     <h3 id="P1CardName"></h3><hr/>
 
                 </div>
+
                 <p id="P1Cat1"></p>
                 <p id="P1Cat2"></p>
                 <p id="P1Cat3"></p>
@@ -228,7 +229,9 @@
     var currentPlayer = " ";
     var currentRound = 0;
     var bestAttribute = " ";
+    var userSelectedCate = " ";
 
+    var userCategoryArray = "";
 
     // Method that is called on page load
     function initalize() {
@@ -239,6 +242,8 @@
 
         // For example, lets call our sample methods
 
+
+        startGame();
     }
 
     // -----------------------------------------
@@ -306,9 +311,11 @@
 
         }else if(firstButtonName == "Category Selection") {
             selectCategory(gameNum);
-        }else if (firstButtonName == "Show Winner")           {
+
+        }else if (firstButtonName == "Show Winner"){
 
             showWinner(gameNum);
+
         }else if (firstButtonName == "Next Round"){
 
             nextRound(gameNum);
@@ -456,18 +463,18 @@
             var responseText = xhr.response;
             //code here
 
-            var categoryArray = JSON.parse(responseText);
+             userCategoryArray = JSON.parse(responseText);
 
             //test alert
             // alert("categoryArray: "+categoryArray);
 
 
             //
-            for (var i= 0; i < categoryArray.length; i++) {
+            for (var i= 0; i < userCategoryArray.length; i++) {
 
                 //
                 // id="p1_cat1"
-                setCategory("P1Cat"+ (i+1),categoryArray[i]);
+                setCategory("P1Cat"+ (i+1),userCategoryArray[i]);
             }
 
         };
@@ -501,9 +508,14 @@
             setFirstButton("startButton","Show Winner");
 
         }else {
-            document.getElementById("message").innerHTML = "It is your turn now, choose a category";
+            document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
 
             //User select
+            for (i=0; i<5;i++){
+
+                UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
+
+            }
 
             //change the button
             setFirstButton("startButton","Show Winner");
@@ -511,6 +523,60 @@
         }
 
 
+    }
+
+
+
+    // User Player 1 select category
+    function UserSelectCategory(id,cate) {
+
+        //<p id="P1Cat1"></p>
+    // <p id="P1Cat2"></p>
+    //             <p id="P1Cat3"></p>
+    //             <p id="P1Cat4"></p>
+    //             <p id="P1Cat5"></p><hr/>
+
+
+            document.getElementById(id).addEventListener("click",function () {
+                userSelectedCate = cate;
+                document.getElementById("message").innerHTML = "You have chosen:" + userSelectedCate;
+
+                var tc = id + "";
+                transferCategory(tc);
+                displayAICard();
+
+            })
+        
+            // document.getElementById(id).onclick=function (ev) {
+            //     ID = this.id;
+
+        // document.getElementById("message").innerHTML = "You have chosen:" + document.getElementById(id).innerText;
+
+    }
+
+
+
+    // deal with user selecte Category
+    function transferCategory(userSelectedCate) {
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/transferCategory?userSelectedCate="+userSelectedCate); // Request type and URL+parameters
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response; // the text of the response
+            alert(responseText); // lets produce an alert
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+        
     }
 
     //AI player select Category

@@ -49,6 +49,7 @@ public class TopTrumpsRESTAPI {
     Player currentPlayer;
     ArrayList<Player> players;
     String bestAttribute;
+    String userSelectedCate;
 
 
     /**
@@ -63,11 +64,11 @@ public class TopTrumpsRESTAPI {
         // ----------------------------------------------------
         gameNum = 0;
 
-        game = new Game(false,4);
-        game.drawCards();
-
-        currentPlayer = game.getCurrentPlayer();
-        players = game.getPlayers();
+//        game = new Game(false,4);
+//        game.drawCards();
+//
+//        currentPlayer = game.getCurrentPlayer();
+//        players = game.getPlayers();
 
     }
 
@@ -85,9 +86,12 @@ public class TopTrumpsRESTAPI {
         //Start the game logic
 
         //round1
-//        game = new Game(false,4);
+        game = new Game(false,4);
 
+        game.drawCards();
 
+        currentPlayer = game.getCurrentPlayer();
+        players = game.getPlayers();
 
 
 
@@ -98,6 +102,10 @@ public class TopTrumpsRESTAPI {
 
         int gameNum = 0;
         String stringAsJSONString = oWriter.writeValueAsString(gameNum);
+
+
+
+
 
         return stringAsJSONString;
     }
@@ -135,7 +143,8 @@ public class TopTrumpsRESTAPI {
         String[] AICardName = new String[4];
 //        String[] AICardName = {players.get(1).getCurrentCard().getName(),players.get(2).getCurrentCard().getName() };
 
-        for (int i = 1; i <5 ; i++) {
+        players = game.getPlayers();
+        for (int i = 1; i < 5 ; i++) {
             AICardName[(i-1)]= players.get(i).getCurrentCard().getName();
         }
 
@@ -233,9 +242,23 @@ public class TopTrumpsRESTAPI {
     public String showWinner() throws IOException{
 
 
-        bestAttribute = currentPlayer.getBestAttribute();
+        if (currentPlayer.getName() == "You"){
+            System.out.println("current player  is you!!!! Form rest1:" + userSelectedCate);
 
-        System.out.println("best attribute from method" + bestAttribute);
+
+
+//            bestAttribute = userSelectedCate;
+            System.out.println("current player  is you!!!! Form rest2" + bestAttribute);
+
+
+        }else {
+            bestAttribute = currentPlayer.getBestAttribute();
+
+            System.out.println("best attribute from method" + bestAttribute);
+
+
+        }
+
 
 
         // compare
@@ -274,6 +297,44 @@ public class TopTrumpsRESTAPI {
         game.drawCards();
 
         return " ";
+    }
+
+
+    @GET
+    @Path("/transferCategory")
+    public String transferCategory(@QueryParam("userSelectedCate") String userSelectedCate) throws IOException{
+
+        //Size: 2
+        //
+        //Speed: 7
+        //
+        //Range: 2
+        //
+        //Firepower: 5
+        //
+        //Cargo: 0
+        switch (userSelectedCate){
+            case "P1Cat1" :
+                bestAttribute = "Size";
+                break;
+            case "P1Cat2" :
+                bestAttribute = "Speed";
+                break;
+            case "P1Cat3" :
+                bestAttribute = "Range";
+                break;
+            case "P1Cat4" :
+                bestAttribute = "Firepower";
+                break;
+            case "P1Cat5" :
+                bestAttribute = "Cargo";
+                break;
+
+        }
+
+
+
+        return bestAttribute;
     }
 
 
@@ -316,6 +377,9 @@ public class TopTrumpsRESTAPI {
      * @throws IOException
      */
     public String helloWord(@QueryParam("Word") String Word) throws IOException {
+
+
+        System.out.println("the word in rest is"+Word);
         return "Hello "+Word;
     }
 
