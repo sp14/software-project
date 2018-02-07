@@ -8,13 +8,13 @@ import org.postgresql.util.PSQLException;
 public class PostgresSQL {
 
 	private Connection connection = null;
-	int currentGameNo;
+	private int currentGameNo;
 
 	public PostgresSQL() {	//Constructor
 
 	}
 
-	public void sqlConnection() {	//Establish connection to the database
+	private void sqlConnection() {	//Establish connection to the database
 
 		//connection for home
 //		String databaseName = "postgres";
@@ -47,7 +47,7 @@ public class PostgresSQL {
 		}
 	}
 
-	public void close() {	//Close the connection to the database
+	private void close() {	//Close the connection to the database
 		try {
 			connection.close();
 			System.out.println("Connection closed");
@@ -59,22 +59,8 @@ public class PostgresSQL {
 
 
 
-	//So the program would need to insert values every step of the game into the SQL database. 
-	//This begins when the game starts up it inserts a value which is one greater than the previous game number.
-	//This would mean all methods would need parameters which are from the counters in the main Game class.
-	//These would be currentGameNo to be the primary key in all the SQL tables
-	//currentGameNo is one more than the previous so at the start of each game it would need to be incremented. 
-	//We would need a variable to keep track of total number of rounds played in that game - totalRounds.
-	//Need one to keep track of how many rounds each player has won. roundsWon.
-	//Need a variable to keep track of the number of draws in the current game. totalDraws.
-	//Need a variable of type STRING to keep track of the winner. "Human" / "AI1" / "AI2" / "AI3" / "AI4"
 
-
-
-	//String winner needs to be - "Human" "AI1" "AI2" "AI3" "AI4"
-
-
-	public int setCurrentGameNo() { // Sets current game number for the SQL table. There needs to be an instance
+	public int setCurrentGameNo() { // Sets current game number for the SQL table. Value derived from incrementing latest game no
 		// currentGameNo variable
 		System.err.println(currentGameNo);
 		sqlConnection();
