@@ -2,6 +2,7 @@ package commandline;
 
 import game.*;
 import DBHandler.*;
+import statisticsPrint.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -56,6 +57,12 @@ public class TopTrumpsCLIApplication {
 			//display db data
 			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
 				con.playerRoundsWon(game.getGameID(), game.getStartingPlayers().get(i).getName());
+			}
+			
+			//trying printer package and methods
+			StatsPrinter pr = new StatsPrinter();
+			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+				pr.showPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName());
 			}
 			con.noOfGamesPlayed();
 			con.noOfAIWins();

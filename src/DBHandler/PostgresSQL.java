@@ -16,23 +16,22 @@ public class PostgresSQL {
 
 	public void sqlConnection() {	//Establish connection to the database
 
-		/*//connection for home
+		//connection for home
 		String databaseName = "postgres";
 		String userName = "postgres";
-		String password = "kats1kampee?";
-
+		String password = "postgres";
 		try {
 			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + databaseName,
-					userName, password);*/
+					userName, password);
 
 		//connection for uni
-		String databaseName = "m_17_2352834c";
-		String userName = "m_17_2352834c";
-		String password = "2352834c";
-
-		try {
-			connection = DriverManager.getConnection("jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/" + databaseName,
-					userName, password);
+//		String databaseName = "m_17_2352834c";
+//		String userName = "m_17_2352834c";
+//		String password = "2352834c";
+//
+//		try {
+//			connection = DriverManager.getConnection("jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/" + databaseName,
+//					userName, password);
 		}
 
 		catch (SQLException e) {
@@ -118,26 +117,27 @@ public class PostgresSQL {
 	}
 
 
-	public void viewNoOfDraws(int currentGameNo) {	//Pass current game number 
+	public String viewNoOfDraws(int currentGameNo) {	//Pass current game number 
 
 		sqlConnection();
 		Statement stmt = null;
 		String query = "SELECT totaldraws FROM toptrumps.game WHERE gameno='" + currentGameNo + "' ;"; //REPLACE X WITH CURRENT GAME NUMBER
-
+		String noOfDraws = "";
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
-				String noOfDraws = rs.getString("totaldraws");
+				noOfDraws = rs.getString("totaldraws");
 				System.out.println("The number of draws in this game was: " + noOfDraws);	//Game no?
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("error executing query " + query);
+			noOfDraws = ("error executing query " + query);
 		} 
 		close();
+		return noOfDraws;
 	}
 
 
@@ -232,10 +232,10 @@ public class PostgresSQL {
 		} 
 	}
 
-	public void playerRoundsWon(int currentGameNo, String playerName) {	//Pass current game no
+	public String playerRoundsWon(int currentGameNo, String playerName) {	//Pass current game no
 		Statement stmt = null;
 		String query = "";
-		
+		String roundsWon = "";
 		//change query according to player wanted
 		if (playerName.equals("You"))
 		query = "SELECT roundswon FROM toptrumps.human WHERE gameno='" + currentGameNo + "';";
@@ -253,14 +253,15 @@ public class PostgresSQL {
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
-				String ai1RoundsWon = rs.getString("roundswon");
-				System.out.println( playerName + " won this many rounds: " + ai1RoundsWon);
+				roundsWon = rs.getString("roundswon");
+				System.out.println(playerName + " won this many rounds: " + roundsWon);
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("error executing query " + query);
 		} 
+		return roundsWon;
 	}
 
 
