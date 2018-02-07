@@ -58,7 +58,7 @@ public class TopTrumpsCLIApplication {
 			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
 				con.playerRoundsWon(game.getGameID(), game.getStartingPlayers().get(i).getName());
 			}
-			
+
 			//trying printer package and methods
 			StatsPrinter pr = new StatsPrinter();
 			for (int i=0 ; i < (game.getStartingPlayers().size()-1); i ++) {
@@ -69,9 +69,9 @@ public class TopTrumpsCLIApplication {
 			con.noOfHumanWins();
 			con.avgNoOfDraws();
 			con.maxNoOfRoundsPlayed();
-			
-			
-			
+
+
+
 			//The game is over. Display winner
 			System.out.println("Game over. The winner is " + game.getWinner() + "\nWould you like to play a new game? type y for a new game or anything else to quit");
 
@@ -125,9 +125,12 @@ public class TopTrumpsCLIApplication {
 
 			//displayRemaingCardCount
 
-			//Wait for user input to start the next round
-			System.out.println("Type anything to play the next round");
-			String nextRound = scanner.nextLine();
+			//If the human player is still in the game
+			if (!players.get(0).isAI()) {
+				//Wait for user input to start the next round
+				System.out.println("Type anything to play the next round");
+				String nextRound = scanner.nextLine();
+			}
 		}
 	}
 
