@@ -17,21 +17,21 @@ public class PostgresSQL {
 	public void sqlConnection() {	//Establish connection to the database
 
 		//connection for home
-		String databaseName = "postgres";
-		String userName = "postgres";
-		String password = "postgres";
-		try {
-			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + databaseName,
-					userName, password);
+//		String databaseName = "postgres";
+//		String userName = "postgres";
+//		String password = "postgres";
+//		try {
+//			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + databaseName,
+//					userName, password);
 
 		//connection for uni
-//		String databaseName = "m_17_2352834c";
-//		String userName = "m_17_2352834c";
-//		String password = "2352834c";
-//
-//		try {
-//			connection = DriverManager.getConnection("jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/" + databaseName,
-//					userName, password);
+		String databaseName = "m_17_2352834c";
+		String userName = "m_17_2352834c";
+		String password = "2352834c";
+
+		try {
+			connection = DriverManager.getConnection("jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/" + databaseName,
+					userName, password);
 		}
 
 		catch (SQLException e) {

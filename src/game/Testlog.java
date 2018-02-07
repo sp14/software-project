@@ -15,9 +15,14 @@ public class Testlog {
 		openLogWriter();
 	}
 	
-	public void printDeckToLog(Deck deck, String description) {
+	public void printWinnerToLog(Player winner) {
 		
-		writer.print(description + ": ");
+		writer.println("Winner: " + winner);
+	}
+	
+	public void printDeckToLog(CardPile deck, String description) {
+		
+		writer.print(System.lineSeparator() + description + ": ");
 		for (int i=0;i<deck.getPile().size();i++)
 			writer.print(deck.getPile().get(i).getName() + " ");
 	}
@@ -27,7 +32,7 @@ public class Testlog {
 		writer.println("Cards in play");
 		for (int i = 0; i < players.size(); i++) {
 
-			writer.println(players.get(i).getCurrentCard());
+			writer.println(players.get(i).getName() + ": " + players.get(i).getCurrentCard());
 		}
 	}
 	
@@ -36,11 +41,11 @@ public class Testlog {
 	 */
 	public void printHandsToLog(ArrayList<Player> players) {
 
+		writer.print(System.lineSeparator() + "players hands");
 		//Loop through each player in the array list
 		for (int i = 0; i < players.size(); i++) {
 
-			writer.println("players hands");
-			writer.println(players.get(i) + ": ");
+			writer.print(System.lineSeparator() + players.get(i) + ": ");
 			for (int j=0; j<players.get(i).getHand().getPile().size();j++) {
 				//Prints the players hand to the test log file
 				writer.print(players.get(i).getHand().getPile().get(j).getName() + " ");
@@ -54,7 +59,7 @@ public class Testlog {
 	 */
 	public void printRoundSeparator(int round) {
 		
-		writer.println("----------- Round" + round + " -----------");
+		writer.println(System.lineSeparator() + "----------- Round" + round + " -----------");
 	}
 	
 	/**
