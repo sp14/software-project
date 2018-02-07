@@ -85,6 +85,7 @@ public class TopTrumpsRESTAPI {
         //Start the game logic
 
         //round1
+//        game = new Game(false,4);
 
 
 
@@ -198,11 +199,12 @@ public class TopTrumpsRESTAPI {
     @Path("/getCurrentInfo")
     public String getCurrentInfo() throws IOException{
 
+        Player currentPlayer = game.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
         System.out.println("current player from method :" + currentPlayerName);
 
-        int currentRound = game.getRoundCounter() +1 ;
-        System.out.println("current round is " +currentRound);
+        int currentRound = game.getRoundCounter()  ;
+        System.out.println("current round from method is " +currentRound);
 
         Object[] currentInfo = {currentPlayerName,currentRound};
 
@@ -242,27 +244,36 @@ public class TopTrumpsRESTAPI {
 
 
 
-
-
-        String winnerName = winner.getName();
-
-        String winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
         if (winner == null) {
 
             System.out.println("The round was a draw. Cards added to the communal pile.");
 
-            return "draw";
+            String draw = "draw";
+            String drawASJSONString = oWriter.writeValueAsString(draw);
+
+            return drawASJSONString;
         } else {
 
-            winnerName = winner.getName();
+            String winnerName = winner.getName();
 
-            winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
+            String winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
             return winnerNameASJSONString;
 
         }
 
 
 
+    }
+
+
+    @GET
+    @Path("/nextRound")
+    public String nextRound() throws IOException{
+        game.clearPlayers();
+
+        game.drawCards();
+
+        return " ";
     }
 
 

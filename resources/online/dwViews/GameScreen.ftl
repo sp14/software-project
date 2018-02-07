@@ -305,10 +305,16 @@
             displayUserCard(gameNum);
 
         }else if(firstButtonName == "Category Selection") {
-            selectCategory();
+            selectCategory(gameNum);
         }else if (firstButtonName == "Show Winner")           {
 
-            showWinner();
+            showWinner(gameNum);
+        }else if (firstButtonName == "Next Round"){
+
+            nextRound(gameNum);
+            displayUserCard(gameNum);
+            getCurrentInfo(gameNum);
+
         }
     }
 
@@ -487,16 +493,9 @@
         if (currentPlayer != "You"){
 
             //AI player select Category
-
-            AISelectCategory(gameNum);
-
-
-
             //show AI players' card detail:category and name
 
-
-
-
+            AISelectCategory(gameNum);
 
             //change the button
             setFirstButton("startButton","Show Winner");
@@ -572,11 +571,11 @@
 
                 document.getElementById("message").innerHTML = "This round is  a draw, Cards added to the communal pile.";
 
-                setFirstButton("firstButton", "Next Round");
+                setFirstButton("startButton", "Next Round");
 
 
             }else {
-                alert(winnerName);
+
                 document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
 
                 setFirstButton("startButton", "Next Round");
@@ -590,6 +589,39 @@
         xhr.send();
 
     }
+
+
+
+    // ==========================
+    // FOUTH PART IV: Next Round
+    // ==========================
+    function nextRound(gameNum) {
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/nextRound?gameNum=" + gameNum); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+
+            //code here
+            document.getElementById("message").innerHTML = "The winner of this round is: " ;
+
+
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+
+    }
+
 
 
 
