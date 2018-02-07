@@ -168,25 +168,6 @@ public class PostgresSQL {
 		close();
 	}
 
-	public void humanRoundsWon(int currentGameNo) {	//pass current game number
-		sqlConnection();
-		Statement stmt = null;
-		String query = "SELECT roundswon FROM toptrumps.human WHERE gameno='" + currentGameNo + "';";	//Cos its null atm
-
-		try {
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			while (rs.next()) {
-				String humanRoundsWon = rs.getString("roundswon");
-				System.out.println("The number of rounds you won was: " + humanRoundsWon);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("error executing query " + query);
-		} 
-		close();
-	}
 
 	/**
 	 * Universal insert method to insert data in players' tables
