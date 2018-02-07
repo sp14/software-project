@@ -61,7 +61,7 @@ public class TopTrumpsCLIApplication {
 			
 			//trying printer package and methods
 			StatsPrinter pr = new StatsPrinter();
-			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+			for (int i=0 ; i < (game.getStartingPlayers().size()-1); i ++) {
 				pr.showPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName());
 			}
 			con.noOfGamesPlayed();

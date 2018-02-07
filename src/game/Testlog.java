@@ -15,9 +15,14 @@ public class Testlog {
 		openLogWriter();
 	}
 	
+	public void printSelectedAttribute(String attribute) {
+		
+		writer.println("the chosen catagory was: " + attribute);
+	}
+	
 	public void printWinnerToLog(Player winner) {
 		
-		writer.println("Winner: " + winner);
+		writer.println(System.lineSeparator() + "Winner: " + winner);
 	}
 	
 	public void printDeckToLog(CardPile deck, String description) {
@@ -25,6 +30,7 @@ public class Testlog {
 		writer.print(System.lineSeparator() + description + ": ");
 		for (int i=0;i<deck.getPile().size();i++)
 			writer.print(deck.getPile().get(i).getName() + " ");
+		writer.print(System.lineSeparator());
 	}
 	
 	public void printCurrentCardsToLog(ArrayList<Player> players){
@@ -41,7 +47,7 @@ public class Testlog {
 	 */
 	public void printHandsToLog(ArrayList<Player> players) {
 
-		writer.print(System.lineSeparator() + "players hands");
+		writer.print(System.lineSeparator() + "players hands after cards have been allocated");
 		//Loop through each player in the array list
 		for (int i = 0; i < players.size(); i++) {
 
