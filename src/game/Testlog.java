@@ -5,49 +5,59 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Testlog {
-	
+
 	//Initialise the test log variables
 	private String filename = "toptrumps.log";
 	private PrintWriter writer = null;
-	
+
 	public Testlog() {
-		
+
 		openLogWriter();
 	}
-	
-	public void printSelectedAttribute(String attribute) {
-		
-		writer.println("the chosen catagory was: " + attribute);
+
+	public void printSelectedAttributeToLog(Player player, String attribute) {
+
+		writer.println(System.lineSeparator() + player + " chose the catagory: " + attribute);
 	}
-	
+
+	public void printRoundWinnerToLog(Player roundWinner) {
+
+		if (roundWinner == null) {
+			writer.println(System.lineSeparator() + "The round was a draw.");
+		}
+		else {
+			writer.println(System.lineSeparator() + roundWinner + " won the round.");
+		}
+	}
+
 	public void printWinnerToLog(Player winner) {
-		
-		writer.println(System.lineSeparator() + "Winner: " + winner);
+
+		writer.println(System.lineSeparator() + System.lineSeparator() + winner + " won the game");
 	}
-	
+
 	public void printDeckToLog(CardPile deck, String description) {
-		
+
 		writer.print(System.lineSeparator() + description + ": ");
 		for (int i=0;i<deck.getPile().size();i++)
 			writer.print(deck.getPile().get(i).getName() + " ");
 		writer.print(System.lineSeparator());
 	}
-	
+
 	public void printCurrentCardsToLog(ArrayList<Player> players){
-		
+
 		writer.println("Cards in play");
 		for (int i = 0; i < players.size(); i++) {
 
 			writer.println(players.get(i).getName() + ": " + players.get(i).getCurrentCard());
 		}
 	}
-	
+
 	/**
 	 * Prints every players hand to the testlog file
 	 */
 	public void printHandsToLog(ArrayList<Player> players) {
 
-		writer.print(System.lineSeparator() + "players hands after cards have been allocated");
+		writer.print(System.lineSeparator() + "Players hands after cards have been allocated");
 		//Loop through each player in the array list
 		for (int i = 0; i < players.size(); i++) {
 
@@ -58,16 +68,16 @@ public class Testlog {
 			}
 		}
 	}
-	
+
 	/**
 	 * Prints a separator with the current round number into the log file
 	 * @param round - round number
 	 */
 	public void printRoundSeparator(int round) {
-		
+
 		writer.println(System.lineSeparator() + "----------- Round" + round + " -----------");
 	}
-	
+
 	/**
 	 * Opens a print writer to write to the test log file
 	 */
@@ -85,7 +95,7 @@ public class Testlog {
 			System.out.println("The file could not be found");
 		}
 	}
-	
+
 	/**
 	 * Closes the print writer when it is no longer needed
 	 */

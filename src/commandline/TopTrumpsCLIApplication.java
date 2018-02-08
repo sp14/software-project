@@ -82,6 +82,8 @@ public class TopTrumpsCLIApplication {
 	 * @param game
 	 */
 	private static void roundLogic(Scanner scanner, Game game) {
+		
+		boolean skipGame = false;
 
 		while (game.continueGame()) {
 
@@ -114,12 +116,22 @@ public class TopTrumpsCLIApplication {
 			displayEliminatedPlayers(eliminated);
 
 			//displayRemaingCardCount
-
+			
 			//If the human player is still in the game
 			if (!players.get(0).isAI()) {
 				//Wait for user input to start the next round
 				System.out.println("Type anything to play the next round");
 				String nextRound = scanner.nextLine();
+			}
+			//If human is out play the remaining rounds without input
+			else {
+				//Only wait for input immediately after the player has been eliminated
+				while (!skipGame) {
+					
+					System.out.println("Sorry you're out. Type anything to skip the rest of the game");
+					skipGame = true;
+					String nextRound = scanner.nextLine();
+				}
 			}
 		}
 	}
@@ -143,7 +155,7 @@ public class TopTrumpsCLIApplication {
 				// Print statistics
 				StatsPrinter pr = new StatsPrinter();
 				System.out.println(pr.printStatsStart());
-							
+
 			}
 			else {
 

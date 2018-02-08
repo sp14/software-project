@@ -252,6 +252,9 @@ public class Game {
 
 		//variable for the attribute the user chooses to compare
 		String selectedAttribute = attribute;
+		
+		//print the selected attribute to the testlog if testlog mode is active
+		if (testlogMode) testlog.printSelectedAttributeToLog(currentPlayer, selectedAttribute);
 
 		//variable to store the winner of the round
 		Player winningPlayer=null;
@@ -262,15 +265,21 @@ public class Game {
 		//allocate the cards to the winner/communal pile
 		allocateDeck(winnerIndex);
 
-		if (testlogMode) {
-			testlog.printHandsToLog(players);
-		}
-
 		//findWinner returns -1 if there has been a draw
 		if (winnerIndex >=0) {
 			winningPlayer = players.get(winnerIndex);
 			//Set the winner to go next
 			currentPlayer = winningPlayer;
+		}
+		
+		///If testlog is active
+		if (testlogMode) {
+			//Print round winner to log
+			testlog.printRoundWinnerToLog(winningPlayer);
+			//Print the communal pile to the log
+			testlog.printDeckToLog(communalPile, "Contents of communal pile after round");
+			//Print players hands after the round to log
+			testlog.printHandsToLog(players);
 		}
 
 		//update game statistics
@@ -355,9 +364,6 @@ public class Game {
 				clearCommunalPile();
 			}		
 		}
-
-		//If testlog mode is active, print the communal pile to the testlog
-		if (testlogMode) testlog.printDeckToLog(communalPile, "Communal pile");;
 	}
 
 	/**
