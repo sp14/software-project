@@ -42,9 +42,7 @@ public class PostgresSQL {
 			e.printStackTrace();
 			return;
 		}
-		if (connection != null) {
-			System.out.println("Connection successful");
-		} else {
+		if (connection == null) {
 			System.err.println("Failed to make connection!");
 		}
 	}
@@ -204,7 +202,7 @@ public class PostgresSQL {
 		return winner;
 	}
 
-	
+
 	/**
 	 * Method that returns the number of rounds of a given game
 	 * @param currentGameNo: the ID of game of interest

@@ -1,6 +1,7 @@
 package statisticsPrint;
 
 import DBHandler.*;
+import game.Game;
 
 public class StatsPrinter {
 
@@ -17,7 +18,7 @@ public class StatsPrinter {
 	 * @param playerName: the name of the player of interest
 	 * @return s: the String to be displayed
 	 */
-	public String printPlayerWins(int currentGameNo, String playerName) {
+	private String printPlayerWins(int currentGameNo, String playerName) {
 		// The string that will contain the information asked
 		String s="";
 
@@ -28,7 +29,7 @@ public class StatsPrinter {
 		String wins = con.playerRoundsWon(currentGameNo, playerName);
 
 		// Set the string in its final form
-		s = playerName + " won this many rounds: " + wins;
+		s = playerName + " won " + wins + " round/s.";
 
 		return s;
 	}
@@ -39,7 +40,7 @@ public class StatsPrinter {
 	 * @param gameNo: the ID of game of interest
 	 * @return s: the String to be displayed
 	 */
-	public String printDraws(int gameNo) {
+	private String printDraws(int gameNo) {
 
 		// The string that will contain the information asked
 		String s="";
@@ -61,7 +62,7 @@ public class StatsPrinter {
 	 * Method to return a ready-to-display String with the average number of draws per game
 	 * @return s: the String to be displayed
 	 */
-	public String printAvgDraws() {
+	private String printAvgDraws() {
 
 		// The string that will contain the information asked
 		String s = "";
@@ -87,7 +88,7 @@ public class StatsPrinter {
 	 * @param gameNo: the ID of game of interest
 	 * @return s: the String to be displayed
 	 */
-	public String printWinner(int gameNo) {
+	private String printWinner(int gameNo) {
 		// The string that will contain the information asked
 		String s = "";
 
@@ -109,7 +110,7 @@ public class StatsPrinter {
 	 * @param gameNo
 	 * @returns s: the String to be displayed
 	 */
-	public String printTotalRounds(int gameNo) {
+	private String printTotalRounds(int gameNo) {
 
 		// The string that will contain the information asked
 		String s = "";
@@ -131,7 +132,7 @@ public class StatsPrinter {
 	 *  Method to return a ready-to-display String with the total number of games played so far
 	 * @returns s: the String to be displayed
 	 */
-	public String printSumGames() {
+	private String printSumGames() {
 
 		// The string that will contain the information asked
 		String s = "";
@@ -153,7 +154,7 @@ public class StatsPrinter {
 	 *  Method to return a ready-to-display String with the total number of AI wins
 	 * @returns s: the String to be displayed
 	 */
-	public String printAiWins() {
+	private String printAiWins() {
 
 		// The string that will contain the information asked
 		String s = "";
@@ -175,7 +176,7 @@ public class StatsPrinter {
 	 *  Method to return a ready-to-display String with the total number of Human wins
 	 * @returns s: the String to be displayed
 	 */
-	public String printHumanWins() {
+	private String printHumanWins() {
 
 		// The string that will contain the information asked
 		String s = "";
@@ -197,7 +198,7 @@ public class StatsPrinter {
 	 *  Method to return a ready-to-display String with the longest game, in terms of rounds played
 	 * @returns s: the String to be displayed
 	 */
-	public String printMaxRounds() {
+	private String printMaxRounds() {
 
 		// The string that will contain the information asked
 		String s = "";
@@ -214,11 +215,16 @@ public class StatsPrinter {
 		return s;
 	}
 
-	public String printAllStats() {
 
+	/**
+	 * Method to print all the statistics in the beginning of the game
+	 * @return s: the String containing all the statistics in the beginning of the game
+	 */
+	public String printStatsStart() {
 
 		// The string that will contain the information asked
 		String s = "";
+
 		s= printSumGames() + "\n" +
 				printAiWins()+ "\n" +
 				printHumanWins()+ "\n" +
@@ -226,6 +232,34 @@ public class StatsPrinter {
 				printMaxRounds();
 
 		return s;
+	}
+
+
+	/**
+	 * Method to print all the statistics in the end of the game
+	 * @return s: the String containing all the statistics in the end of the game
+	 */
+	public String printStatsEnd(Game game) {
+
+		// The string that will contain the information asked
+		String s = "";
+
+		// The string for displaying each player's number of wins
+		String playersWins = "";
+
+		// Iterate through players and add each player's number of wins on the corresponding String
+		for (int i = 0; i < game.getStartingPlayers().size(); i++)
+			playersWins += printPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName());
+
+		// Add all parts to the final String
+		s= "----- GAME OVER -----"+ "\n" +
+			"----- STATISTICS -----" + "\n" +
+				printDraws(game.getGameID()) + "\n" +
+				printWinner(game.getGameID())+ "\n" +
+				printTotalRounds(game.getGameID())+ "\n" +
+				playersWins;
+
+		return s;		
 	}
 
 }

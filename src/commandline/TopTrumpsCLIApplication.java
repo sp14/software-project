@@ -50,25 +50,17 @@ public class TopTrumpsCLIApplication {
 			//Play rounds until there is a winner
 			roundLogic(scanner, game);
 
-			//The game is over. Update Datanase
+			//The game is over. Update Database
+			// Update game table
 			con.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
+			// Update players' tables
 			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
 				con.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
 			}
 
 			// Display end of game statistics
 			StatsPrinter pr = new StatsPrinter();
-			pr.printDraws(game.getGameID());
-			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-				System.out.println(pr.printPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName()));
-			}
-			//			pr.noOfGamesPlayed();
-			//			con.noOfAIWins();
-			//			con.noOfHumanWins();
-			//			con.avgNoOfDraws();
-			//			con.maxNoOfRoundsPlayed();
-
-
+			System.out.println(pr.printStatsEnd(game));
 
 			//The game is over. Display winner
 			System.out.println("Game over. The winner is " + game.getWinner() + "\nWould you like to play a new game? type y for a new game or anything else to quit");
@@ -150,7 +142,7 @@ public class TopTrumpsCLIApplication {
 
 				// Print statistics
 				StatsPrinter pr = new StatsPrinter();
-				System.out.println(pr.printAllStats());
+				System.out.println(pr.printStatsStart());
 							
 			}
 			else {
