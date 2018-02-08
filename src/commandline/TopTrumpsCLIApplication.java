@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class TopTrumpsCLIApplication {
 
-	private static PostgresSQL con = new PostgresSQL();
+
 
 	/**
 	 * This main method is called by TopTrumps.java when the user specifies that they want to run in
@@ -21,7 +21,9 @@ public class TopTrumpsCLIApplication {
 	 */
 	public static void main(String[] args) {
 
+		PostgresSQL con = new PostgresSQL(); // SQL object, to be used for interaction with the database
 		boolean writeGameLogsToFile = false; // Should we write game logs to file?
+
 		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
 
 		//Create a scanner object to read user input
@@ -48,27 +50,23 @@ public class TopTrumpsCLIApplication {
 			//Play rounds until there is a winner
 			roundLogic(scanner, game);
 
-			//The game is over. Update DB
+			//The game is over. Update Datanase
 			con.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
 			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
 				con.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
 			}
 
-			//display db data
-			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-				con.playerRoundsWon(game.getGameID(), game.getStartingPlayers().get(i).getName());
-			}
-
-			//trying printer package and methods
+			// Display end of game statistics
 			StatsPrinter pr = new StatsPrinter();
-			for (int i=0 ; i < (game.getStartingPlayers().size()-1); i ++) {
-				pr.showPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName());
+			pr.printDraws(game.getGameID());
+			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+				System.out.println(pr.printPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName()));
 			}
-			con.noOfGamesPlayed();
-			con.noOfAIWins();
-			con.noOfHumanWins();
-			con.avgNoOfDraws();
-			con.maxNoOfRoundsPlayed();
+			//			pr.noOfGamesPlayed();
+			//			con.noOfAIWins();
+			//			con.noOfHumanWins();
+			//			con.avgNoOfDraws();
+			//			con.maxNoOfRoundsPlayed();
 
 
 
@@ -150,7 +148,10 @@ public class TopTrumpsCLIApplication {
 
 			if (stats.equals("s")) {
 
-				//Print statistics here
+				// Print statistics
+				StatsPrinter pr = new StatsPrinter();
+				System.out.println(pr.printAllStats());
+							
 			}
 			else {
 
@@ -266,8 +267,9 @@ public class TopTrumpsCLIApplication {
 
 			System.out.println("The round was a draw. Cards added to the communal pile.");
 		} else {
-
-			System.out.println(winner + " won the round");
+			if (!winner.isAI())
+				System.out.println("You won the round");
+			else System.out.println(winner + " won the round");
 		}
 	}
 

@@ -19,7 +19,7 @@ public class Game {
 	private CardPile communalPile = new Deck(); // Variable for the communal pile
 	private Player currentPlayer;
 	private Player winner; //variable for the winner of the Game
-	private int roundCounter = 1; //variable for the number of rounds
+	private int roundCounter = 0; //variable for the number of rounds
 	private int drawCounter = 0; //variable for the number of draws
 	private int gameID;
 
