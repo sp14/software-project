@@ -513,4 +513,8 @@ public class Game {
 	public ArrayList<Player> getStartingPlayers() {
 		return startingPlayers;
 	}
+
+	public CardPile getCommunalPile() {
+		return communalPile;
+	}
 }
