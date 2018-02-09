@@ -174,7 +174,6 @@
 				// to do when the response arrives 
 				xhr.onload = function(e) {
  					var responseText = xhr.response; // the text of the response
- 					alert(responseText); // lets produce an alert
 					document.getElementById("one").innerHTML = responseText.split(" ")[0];
 					document.getElementById("two").innerHTML = responseText.split(" ")[1];
 					document.getElementById("three").innerHTML = responseText.split(" ")[2];
