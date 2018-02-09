@@ -344,7 +344,7 @@ public class PostgresSQL {
 	 * Method that returns the total number of games that have been recorded in the database
 	 * @return noOfGamesPlayed: the total number of games recorded in the database 
 	 */
-	public String noOfGamesPlayed() { 
+	public static String noOfGamesPlayed() { 
 
 		// Variable for the number of games
 		String noOfGamesPlayed = "";
@@ -380,7 +380,7 @@ public class PostgresSQL {
 	 *  Method that returns the total number of games that AI players have won
 	 *  @return noOfAIWins: the total number of games that AI players have won
 	 */
-	public String noOfAIWins() {
+	public static String noOfAIWins() {
 		// Variable for the number of AI wins
 		String noOfAIWins = "";
 
@@ -414,7 +414,7 @@ public class PostgresSQL {
 	 *  Method that returns the total number of games that the user has won
 	 *  @return noOfHumanWins: the total number of games that the user has won
 	 */
-	public String noOfHumanWins() {
+	public static String noOfHumanWins() {
 		// Variable for the number of Human wins
 		String noOfHumanWins = "";
 
@@ -449,7 +449,7 @@ public class PostgresSQL {
 	 *  Method that returns the average number of draws of the games recorded in the database
 	 *  @return avgDraws: the average number of draws
 	 */
-	public String avgNoOfDraws() {
+	public static String avgNoOfDraws() {
 
 		// Variable for the average number of draws
 		String avgDraws = "";
@@ -485,7 +485,7 @@ public class PostgresSQL {
 	 *  Method that returns the highest number of rounds in a single game recorded in the database
 	 *  @return maxRounds: the highest number of rounds in a single game
 	 */
-	public String maxNoOfRoundsPlayed() {
+	public static String maxNoOfRoundsPlayed() {
 
 		// Variable for the maximum number of rounds
 		String maxRounds = "";
