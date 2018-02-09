@@ -251,7 +251,7 @@ public class Game {
 	public Player playRound(String attribute) {
 
 		//variable for the attribute the user chooses to compare
-		String selectedAttribute = attribute;
+		String selectedAttribute = attribute.toLowerCase();
 		
 		//print the selected attribute to the testlog if testlog mode is active
 		if (testlogMode) testlog.printSelectedAttributeToLog(currentPlayer, selectedAttribute);
