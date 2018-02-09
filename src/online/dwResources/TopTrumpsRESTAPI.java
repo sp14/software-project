@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import game.*;
 import online.configuration.TopTrumpsJSONConfiguration;
+import DBHandler.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -45,6 +46,8 @@ public class TopTrumpsRESTAPI {
     int numAIPlayers;
     Player currentPlayer;
     ArrayList<Player> players;
+    ArrayList<Player> changePlayers;
+
     String bestAttribute;
     String userSelectedCate;
     String userSelectAttribute;
@@ -60,7 +63,11 @@ public class TopTrumpsRESTAPI {
         // ----------------------------------------------------
         // Add relevant initalization here
         // ----------------------------------------------------
-        gameNum = 0;
+
+
+//        PostgresSQL db = new PostgresSQL();
+//        game.setGameID(db.setCurrentGameNo());
+//        gameNum = game
 
 //        game = new Game(false,4);
 //        game.drawCards();
@@ -93,12 +100,15 @@ public class TopTrumpsRESTAPI {
 
 
 
+        //DB
+//        gameNum = game.getGameID();
+
+
+        gameNum = 0;
 
         //--------------------------------------------------
         // record game number here, connect to database later
         //--------------------------------------------------
-
-        int gameNum = 0;
         String stringAsJSONString = oWriter.writeValueAsString(gameNum);
 
         return stringAsJSONString;
@@ -142,7 +152,7 @@ public class TopTrumpsRESTAPI {
         String[] AICardName = new String[4];
 //        String[] AICardName = {players.get(1).getCurrentCard().getName(),players.get(2).getCurrentCard().getName() };
 
-        players = game.getPlayers();
+        players = game.getStartingPlayers();
         for (int i = 1; i < 5 ; i++) {
             AICardName[(i-1)]= players.get(i).getCurrentCard().getName();
         }
@@ -175,7 +185,7 @@ public class TopTrumpsRESTAPI {
     @GET
     @Path("/getAITopCardCategories")
     public String getAITopCardCategories() throws IOException{
-        ArrayList<Player> players = game.getPlayers();
+        ArrayList<Player> players = game.getStartingPlayers();
 
         Card card ;
 
@@ -243,25 +253,43 @@ public class TopTrumpsRESTAPI {
 
 
 
+
     @GET
     @Path("/showWinner")
     public String showWinner() throws IOException{
 
         currentPlayer = game.getCurrentPlayer();
-        
+        players = game.getStartingPlayers();
+
+
+//        System.out.println("showWInner method p1:" + players.get(0).getName() );
+//        System.out.println("showWInner method A1:" + players.get(1).getName() );
+//        System.out.println("showWInner method A2:" + players.get(2).getName() );
+//        System.out.println("showWInner method A3:" + players.get(3).getName() );
+//        System.out.println("showWInner method A4:" + players.get(4).getName() );
+
+
         Player winner;
 
-        if (currentPlayer.getName() == "You"){
+//        // only have one player
+//        if (playerNumber == 1){
+//            return currentPlayer.getName()+" win";
+//        }
 
-            System.out.println("current player  is you!!!! Form rest1:" + bestAttribute);
+        //currentPlayer.getName().equals("You")
+        if (currentPlayer.getName().equals("You") ){
 
-//            bestAttribute = userSelectAttribute;
             System.out.println("current player  is you!!!! Form rest2:" + userSelectAttribute);
-
-//            bestAttribute = userSelectedCate;
-            System.out.println("current player  is you!!!! Form rest2" + bestAttribute);
+//
+////            bestAttribute = userSelectedCate;
 
              winner = game.playRound(userSelectAttribute);
+
+
+            System.out.println("WINNER NAME "+ winner.getName());
+
+            return displayWinner(winner);
+
 
         }else {
             bestAttribute = currentPlayer.getBestAttribute();
@@ -269,19 +297,77 @@ public class TopTrumpsRESTAPI {
             System.out.println("best attribute from method   444" + bestAttribute);
              winner = game.playRound(bestAttribute);
 
+//            System.out.println("AI ---> WINNER NAME"+ winner.getName());
+
+            return displayWinner(winner);
 
         }
 
 
-        System.out.println("how many player now ,before compare:" + game.getPlayers());
-        // compare
-//        Player winner = game.playRound(bestAttribute);
-//        show the winner
+//        System.out.println("how many player now ,before compare:" + game.getPlayers());
+//        // compare
+////        Player winner = game.playRound(bestAttribute);
+////        show the winner
+//
+//        System.out.println("how many player now ,after compare!:" + game.getPlayers());
+//
+//        System.out.println("winner name is" + winner.getName());
 
-        System.out.println("how many player now ,after compare!:" + game.getPlayers());
 
-        System.out.println("winner name is" + winner.getName());
 
+
+
+//        if (winner == null) {
+//
+////            System.out.println("(REST)The round was a draw. Cards added to the communal pile.");
+//
+//            String draw = "draw";
+//            String drawASJSONString = oWriter.writeValueAsString(draw);
+//
+//            return drawASJSONString;
+//        } else {
+//
+//            String winnerName = winner.getName();
+//
+//            String winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
+//            return winnerNameASJSONString;
+//
+//        }
+
+
+
+
+    }
+
+    @GET
+    @Path("/checkPlayersLeft")
+    public String checkPlayersLeft() throws IOException{
+        changePlayers = game.getPlayers();
+        int playerNumber = changePlayers.size();
+        String pnAsJSONString = oWriter.writeValueAsString(playerNumber);
+
+
+
+        return pnAsJSONString;
+    }
+
+
+
+
+    public String displayWinner(Player winner) throws IOException{
+
+
+
+
+        //No winner. The round was a draw, inform user
+//        if (winner == null) {
+//
+//            System.out.println("The round was a draw. Cards added to the communal pile.");
+//        } else {
+//            if (!winner.isAI())
+//                System.out.println("You won the round");
+//            else System.out.println(winner + " won the round");
+//        }
 
         if (winner == null) {
 
@@ -293,17 +379,25 @@ public class TopTrumpsRESTAPI {
             return drawASJSONString;
         } else {
 
-            String winnerName = winner.getName();
+            if (!winner.isAI()){
+                String winnerName = "You";
 
-            String winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
-            return winnerNameASJSONString;
+                String winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
+                return winnerNameASJSONString;
+            }else {
+                String winnerName = winner.getName();
+
+                String winnerNameASJSONString = oWriter.writeValueAsString(winnerName);
+                return winnerNameASJSONString;
+
+            }
+
 
         }
 
 
-
-
     }
+
 
 
     @GET
@@ -360,7 +454,7 @@ public class TopTrumpsRESTAPI {
     @GET
     @Path("/getLeftCards")
     public String getLeftCards() throws IOException{
-        players =game.getPlayers();
+        players =game.getStartingPlayers();
 
         int[] leftCards = {players.get(0).getRemainingCards(),players.get(1).getRemainingCards(),players.get(2).getRemainingCards(),players.get(3).getRemainingCards(),players.get(4).getRemainingCards()};
 
@@ -369,6 +463,23 @@ public class TopTrumpsRESTAPI {
     }
 
 
+    @GET
+    @Path("/playerLeft")
+    public String playerLeft() throws IOException{
+        players =game.getPlayers();
+        int playerLeft = players.size();
+        System.out.println("player left is" + playerLeft);
+        String[] playerLeftArray = new String[players.size()];
+
+        for (int i = 0; i < players.size() ; i++) {
+            playerLeftArray[i]= players.get(i).getName();
+
+        }
+
+        String playerLeftAsJSONStirng = oWriter.writeValueAsString(playerLeftArray);
+
+        return playerLeftAsJSONStirng;
+    }
 
 
 

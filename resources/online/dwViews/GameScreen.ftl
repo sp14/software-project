@@ -67,16 +67,16 @@
 
     <p id="currentPlayer">Who's turn</p>
     <p id="communalPile">Communal Pile: </p>
-<#--<p id="winner">Winner: </p>-->
     <p id="message"> </p>
 
-
+<#--<p id="winner">Winner: </p>-->
+    <p id="playerLeft"></p>
 
 </div>
 
 
 <!-- Game Button here-->
-<div id="gameButton">
+<div id="gameButton"><br/>
     <!-- Button: Start Game-->
     <button onclick="buttonControl()"  type="button" class="btn-primary  btn-lg " id="startButton" >Start Game!</button></a>
 
@@ -237,11 +237,13 @@
 <script type="text/javascript">
 
     var gameNum = 0;
-    var currentPlayer = " ";
+    var currentPlayer = "";
     var currentRound = 0;
     var communalPileCount = 0;
     var bestAttribute = " ";
     var userSelectedCate = " ";
+
+    var winnerName;
 
     var userCategoryArray ;
 
@@ -294,6 +296,33 @@
 
             getLeftCards(gameNum);
 
+
+            // if (currentPlayer == "You"){
+            //     document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
+            //
+            //     //User select, return a selected category to RESTAPI
+            //     for (var i=0; i<5;i++){
+            //
+            //         UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
+            //
+            //     }
+            // }
+
+            //
+            // alert("current play after get leftCard"+currentPlayer);
+            //
+            // if (currentPlayer.valueOf() == "You"){
+            //     document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
+            //
+            //     //User select, return a selected category to RESTAPI
+            //     for (var i=0; i<5;i++){
+            //
+            //         UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
+            //
+            //     }
+            // }
+
+
         };
 
         // We have done everything we need to prepare the CORS request, so send it
@@ -330,16 +359,22 @@
         if (firstButtonName == "Start Game!" ){
             startGame();
 
+             setFirstButton("startButton","Category Selection");
+
+
 
         }else if(firstButtonName == "Category Selection") {
             selectCategory(gameNum);
+            playerLeft(gameNum);
 
 
         }else if (firstButtonName == "Show Winner"){
 
             showWinner(gameNum);
             getLeftCards(gameNum);
+            checkPlayersLeft(gameNum);
 
+            playerLeft(gameNum);
 
         }else if (firstButtonName == "Next Round"){
 
@@ -348,7 +383,12 @@
             getLeftCards(gameNum);
 
             getCurrentInfo(gameNum);
+            setFirstButton("startButton","Category Selection");
 
+            playerLeft(gameNum);
+
+        }else if (firstButtonName == "Game Finished"){
+            gameFinished(gameNum);
         }
     }
 
@@ -384,6 +424,10 @@
             //set category
             getUserTopCardCategories(gameNum);
             getCurrentInfo(gameNum);
+            // setFirstButton("startButton","Category Selection");
+
+
+
 
         };
 
@@ -517,6 +561,7 @@
 
 
 
+
     // ============================
     // SECOND PART II: Select Category
     // ============================
@@ -524,7 +569,9 @@
     //if the current player is AI,
     //if the current player is player1, let the player 1 choose category
     function selectCategory(gameNum) {
-        if (currentPlayer != "You"){
+
+
+        if (currentPlayer !== "You"){
 
             //AI player select Category
             //show AI players' card detail:category and name
@@ -535,16 +582,18 @@
             setFirstButton("startButton","Show Winner");
 
         }else {
-            document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
-
-            //User select, return a selected category to RESTAPI
-            for (var i=0; i<5;i++){
-
-                UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
-
-            }
+            // document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
+            //
+            // //User select, return a selected category to RESTAPI
+            // for (var i=0; i<5;i++){
+            //
+            //     UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
+            //
+            // }
 
             //change the button
+            displayAICard();
+
             setFirstButton("startButton","Show Winner");
 
         }
@@ -565,7 +614,7 @@
 
                 var tc = id + "";
                 transferCategory(tc);
-                displayAICard();
+                // displayAICard();
 
             })
 
@@ -588,7 +637,7 @@
         // to do when the response arrives
         xhr.onload = function(e) {
             var responseText = xhr.response; // the text of the response
-            alert(responseText); // lets produce an alert
+            // alert(responseText); // lets produce an alert
 
         };
 
@@ -648,24 +697,32 @@
         xhr.onload = function(e) {
             var responseText = xhr.response;
             //code here
-            var winnerName = JSON.parse(responseText);
+             winnerName = JSON.parse(responseText);
 
 
-            if (winnerName=="draw"){
+
+
+            if (winnerName === "draw"){
 
                 document.getElementById("message").innerHTML = "This round is  a draw, Cards added to the communal pile.";
 
+
+
                 getCurrentInfo(gameNum);
+
+
                 setFirstButton("startButton", "Next Round");
 
 
-            }else {
+            }else  {
+                //((winnerName === "You")||(winnerName === "Player 1")||(winnerName === "Player 2")||(winnerName === "Player 3")||(winnerName === "Player 4"))
 
-                document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
+                 document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
 
-                setFirstButton("startButton", "Next Round");
+                    setFirstButton("startButton", "Next Round");
 
             }
+
 
 
         };
@@ -674,6 +731,41 @@
         xhr.send();
 
     }
+
+    function checkPlayersLeft(gameNum) {
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/checkPlayersLeft?gameNum="+gameNum ); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+            //code here
+            var playerLeft = JSON.parse(responseText);
+
+            if (playerLeft == 1){
+
+                document.getElementById("message").innerHTML =  winnerName + " win this game";
+
+                setFirstButton("startButton","Game Finished");
+
+            }
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+    }
+
+
+
+
 
 
 
@@ -696,6 +788,7 @@
 
             //code here
             document.getElementById("message").innerHTML = "The winner of this round is: " ;
+
 
 
 
@@ -737,8 +830,25 @@
             document.getElementById("currentRound").innerHTML = "Round: " + currentRound;
             document.getElementById("communalPile").innerHTML = "Communal Pile: " + communalPileCount;
 
+
+
+
+            // alert("current play after get leftCard"+currentPlayer);
+
+            if (currentPlayer.valueOf() === "You"){
+                document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
+
+                //User select, return a selected category to RESTAPI
+                for (var i=0; i<5;i++){
+
+                    UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
+
+                }
+            }
+
+
             //change the button to category selection
-            setFirstButton("startButton","Category Selection");
+            // setFirstButton("startButton","Category Selection");
 
         };
 
@@ -751,6 +861,8 @@
 
 
     function getLeftCards(gameNum) {
+
+
 
         // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getLeftCards?gameNum=" + gameNum); // Request type and URL
@@ -782,6 +894,48 @@
         xhr.send();
     }
 
+
+    //game finished
+    function gameFinished(gameNum) {
+        document.getElementById("startButton").onclick = function () {
+            location.href = "http://localhost:7777/toptrumps";
+        };
+
+    }
+
+    //player left
+    function playerLeft(gameNum) {
+
+
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/playerLeft?gameNum=" + gameNum); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+
+            //code here
+            var playerLeftArray = JSON.parse(responseText);
+
+
+
+            document.getElementById("playerLeft").innerHTML = "Player in game:" + playerLeftArray.toString();
+
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+    }
+
+
+
     //=======================
     //  set methods here
     //=======================
@@ -811,6 +965,7 @@
         document.getElementById(id).src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + imageName + ".jpg";
 
     }
+
 
 
 
