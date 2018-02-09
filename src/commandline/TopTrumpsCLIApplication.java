@@ -53,6 +53,7 @@ public class TopTrumpsCLIApplication {
 			//The game is over. Update Database
 			// Update game table
 			con.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
+			
 			// Update players' tables
 			for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
 				con.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );

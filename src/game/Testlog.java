@@ -75,7 +75,7 @@ public class Testlog {
 	 */
 	public void printRoundSeparator(int round) {
 
-		writer.println(System.lineSeparator() + "----------- Round" + round + " -----------");
+		writer.println(System.lineSeparator() + "----------- Round " + round + " -----------");
 	}
 
 	/**
