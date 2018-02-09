@@ -7,7 +7,7 @@ import org.postgresql.util.PSQLException;
 
 public class PostgresSQL {
 
-	private Connection connection = null;
+	private static Connection connection = null;
 
 	public PostgresSQL() {	//Constructor
 
@@ -16,7 +16,7 @@ public class PostgresSQL {
 	/**
 	 * Method to establish connection to the database
 	 */
-	private void sqlConnection() {	
+	private static void sqlConnection() {	
 
 		//connection for home
 //		String databaseName = "postgres";
@@ -50,13 +50,13 @@ public class PostgresSQL {
 	/**
 	 * Method to close the connection to the database
 	 */
-	private void close() {	//Close the connection to the database
+	private static void close() {	//Close the connection to the database
 
 		try {
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Connection could not be closed � SQL exception");
+			System.out.println("Connection could not be closed ï¿½ SQL exception");
 		}
 	}
 
