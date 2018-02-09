@@ -11,10 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import game.Card;
-import game.Deck;
-import game.Game;
-import game.Player;
+import game.*;
 import online.configuration.TopTrumpsJSONConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +47,7 @@ public class TopTrumpsRESTAPI {
     ArrayList<Player> players;
     String bestAttribute;
     String userSelectedCate;
+    String userSelectAttribute;
 
 
     /**
@@ -103,10 +101,6 @@ public class TopTrumpsRESTAPI {
         int gameNum = 0;
         String stringAsJSONString = oWriter.writeValueAsString(gameNum);
 
-
-
-
-
         return stringAsJSONString;
     }
 
@@ -116,7 +110,12 @@ public class TopTrumpsRESTAPI {
     @GET
     @Path("/drawCard")
     public String drawCard() throws IOException{
+
         game.drawCards();
+
+        currentPlayer = game.getCurrentPlayer();
+        players = game.getPlayers();
+
         return "";
     }
 
@@ -125,11 +124,11 @@ public class TopTrumpsRESTAPI {
     @Path("/displayUserCard")
     public String displayUserCard() throws IOException{
 
-        players = game.getPlayers();
+//       players = game.getPlayers();
 
         Card card = players.get(0).getCurrentCard();
-        String cardName = card.getName();
-        System.out.println("P1 CARD NAME IS " + cardName);
+            String cardName = card.getName();
+            System.out.println("(From method)P1 CARD NAME IS " + cardName);
 
         String cardNameAsJSONString = oWriter.writeValueAsString(cardName);
         return cardNameAsJSONString;
@@ -208,14 +207,18 @@ public class TopTrumpsRESTAPI {
     @Path("/getCurrentInfo")
     public String getCurrentInfo() throws IOException{
 
-        Player currentPlayer = game.getCurrentPlayer();
+         currentPlayer = game.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
         System.out.println("current player from method :" + currentPlayerName);
+        System.out.println("current player's best attribute is from method :" + currentPlayer.getBestAttribute());
 
-        int currentRound = game.getRoundCounter()  ;
+        int communalPile = game.getCommunalPile().getCardCount();
+
+
+        int currentRound = game.getRoundCounter()+1  ;
         System.out.println("current round from method is " +currentRound);
 
-        Object[] currentInfo = {currentPlayerName,currentRound};
+        Object[] currentInfo = {currentPlayerName,currentRound,communalPile};
 
         String currentPlayerNameAsJSONString = oWriter.writeValueAsString(currentInfo);
 
@@ -229,7 +232,10 @@ public class TopTrumpsRESTAPI {
     @Path("/AISelectCategory")
     public String AISelectCategory() throws IOException{
 
+        currentPlayer = game.getCurrentPlayer();
+        System.out.println("AI ROUND: current player is :" + currentPlayer );
         String currentPlayerBestAttribute = currentPlayer.getBestAttribute();
+        System.out.println("AI ROUND: current BEST ATTRIBUTE is :" + currentPlayerBestAttribute );
 
         String currentPlayerBestAttributeAsJSONString = oWriter.writeValueAsString(currentPlayerBestAttribute);
         return currentPlayerBestAttributeAsJSONString;
@@ -241,35 +247,45 @@ public class TopTrumpsRESTAPI {
     @Path("/showWinner")
     public String showWinner() throws IOException{
 
+        currentPlayer = game.getCurrentPlayer();
+        
+        Player winner;
 
         if (currentPlayer.getName() == "You"){
-            System.out.println("current player  is you!!!! Form rest1:" + userSelectedCate);
 
+            System.out.println("current player  is you!!!! Form rest1:" + bestAttribute);
 
+//            bestAttribute = userSelectAttribute;
+            System.out.println("current player  is you!!!! Form rest2:" + userSelectAttribute);
 
 //            bestAttribute = userSelectedCate;
             System.out.println("current player  is you!!!! Form rest2" + bestAttribute);
 
+             winner = game.playRound(userSelectAttribute);
 
         }else {
             bestAttribute = currentPlayer.getBestAttribute();
 
-            System.out.println("best attribute from method" + bestAttribute);
+            System.out.println("best attribute from method   444" + bestAttribute);
+             winner = game.playRound(bestAttribute);
 
 
         }
 
 
-
+        System.out.println("how many player now ,before compare:" + game.getPlayers());
         // compare
-        Player winner = game.playRound(bestAttribute);
+//        Player winner = game.playRound(bestAttribute);
 //        show the winner
 
+        System.out.println("how many player now ,after compare!:" + game.getPlayers());
+
+        System.out.println("winner name is" + winner.getName());
 
 
         if (winner == null) {
 
-            System.out.println("The round was a draw. Cards added to the communal pile.");
+//            System.out.println("(REST)The round was a draw. Cards added to the communal pile.");
 
             String draw = "draw";
             String drawASJSONString = oWriter.writeValueAsString(draw);
@@ -283,6 +299,7 @@ public class TopTrumpsRESTAPI {
             return winnerNameASJSONString;
 
         }
+
 
 
 
@@ -331,12 +348,25 @@ public class TopTrumpsRESTAPI {
                 break;
 
         }
+        userSelectAttribute = bestAttribute;
+
 
 
 
         return bestAttribute;
     }
 
+
+    @GET
+    @Path("/getLeftCards")
+    public String getLeftCards() throws IOException{
+        players =game.getPlayers();
+
+        int[] leftCards = {players.get(0).getRemainingCards(),players.get(1).getRemainingCards(),players.get(2).getRemainingCards(),players.get(3).getRemainingCards(),players.get(4).getRemainingCards()};
+
+        String leftCardsAsJSONString = oWriter.writeValueAsString(leftCards);
+        return leftCardsAsJSONString;
+    }
 
 
 
