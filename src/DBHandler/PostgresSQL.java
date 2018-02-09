@@ -145,7 +145,7 @@ public class PostgresSQL {
 
 		// Execute query
 		Statement stmt = null;
-		String query = "SELECT totaldraws FROM toptrumps.game WHERE gameno='" + currentGameNo + "' ;"; //REPLACE X WITH CURRENT GAME NUMBER
+		String query = "SELECT totaldraws FROM toptrumps.game WHERE gameno='" + currentGameNo + "' ;"; 
 
 		try {
 			stmt = connection.createStatement();
@@ -515,6 +515,4 @@ public class PostgresSQL {
 
 		return maxRounds;
 	}
-
-
 }
