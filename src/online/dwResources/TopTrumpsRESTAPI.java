@@ -42,13 +42,13 @@ public class TopTrumpsRESTAPI {
 
 
     //
-    Game game = new Game();
+    Game game;
     int gameNum;
     int numAIPlayers = 0;
     Player currentPlayer;
     ArrayList<Player> players;
     ArrayList<Player> changePlayers;
-    PostgresSQL db = new PostgresSQL(); ;
+//    PostgresSQL db = new PostgresSQL();
 
     String bestAttribute;
     String userSelectedCate;
@@ -92,35 +92,24 @@ public class TopTrumpsRESTAPI {
     public String startGame() throws IOException{
         //Start the game logic
 
-
-//        game = new Game();
+       game = new Game();
         
+        //=============
+        //  DB PART
+        //=============
         
-        //
-        
-        
-        game.setGameID(db.setCurrentGameNo());
-        gameNum = game.getGameID();
-        
-        System.out.println("the game id is " + gameNum);
+//        game.setGameID(db.setCurrentGameNo());
+//        gameNum = game.getGameID();
+//
+//        System.out.println("the game id is " + gameNum);
 
 
         //round1
         game.initGame(false,numAIPlayers);
-//        game = new Game(false,numAIPlayers);
-
         game.drawCards();
 
         currentPlayer = game.getCurrentPlayer();
         players = game.getPlayers();
-
-
-
-        //DB
-//        gameNum = game.getGameID();
-
-
-//        gameNum = 0;
 
 
         //basic information include gameNumber(gameID) and number of AI players
@@ -156,12 +145,12 @@ public class TopTrumpsRESTAPI {
     @Path("/displayUserCard")
     public String displayUserCard() throws IOException{
 
-//       players = game.getPlayers();
-
+        players = game.getStartingPlayers();
+        //get user card
         Card card = players.get(0).getCurrentCard();
-            String cardName = card.getName();
-            System.out.println("(From method)P1 CARD NAME IS " + cardName);
-
+        //get user card name
+        String cardName = card.getName();
+        //change to JSONString
         String cardNameAsJSONString = oWriter.writeValueAsString(cardName);
         return cardNameAsJSONString;
     }
@@ -190,17 +179,15 @@ public class TopTrumpsRESTAPI {
     @GET
     @Path("/getUserTopCardCategories")
     public String getUserTopCardCategories() throws IOException{
-        ArrayList<Player> players = game.getPlayers();
-
+        //get user card
+        players = game.getStartingPlayers();
         Card card = players.get(0).getCurrentCard();
-//	    Size Speed Range Firepower Cargo
-//        int size = card.getSize();
-//        int cargo = card.getCargo();
-//        int speed = card.getSpeed();
-//        int range = card.getRange();
-        String[] categoryArray = {"Size: "+card.getSize(),"Speed: "+card.getSpeed(), "Range: " + card.getRange(),"Firepower: " + card.getFirepower(),"Cargo: " + card.getCargo()};
-        String categoryArrayAsJSONString = oWriter.writeValueAsString(categoryArray);
 
+        //Categories order:  Size Speed Range Firepower Cargo
+        //build the category array
+        String[] categoryArray = {"Size: "+card.getSize(),"Speed: "+card.getSpeed(), "Range: " + card.getRange(),"Firepower: " + card.getFirepower(),"Cargo: " + card.getCargo()};
+        // change to JSONString
+        String categoryArrayAsJSONString = oWriter.writeValueAsString(categoryArray);
         return categoryArrayAsJSONString;
     }
 
@@ -240,21 +227,16 @@ public class TopTrumpsRESTAPI {
     @Path("/getCurrentInfo")
     public String getCurrentInfo() throws IOException{
 
-         currentPlayer = game.getCurrentPlayer();
+        currentPlayer = game.getCurrentPlayer();
+
+        //0.currentPlayerName 1.currentRound 2.communalPileCount 3.drawCount
         String currentPlayerName = currentPlayer.getName();
-        System.out.println("current player from method :" + currentPlayerName);
-        System.out.println("current player's best attribute is from method :" + currentPlayer.getBestAttribute());
-
         int communalPile = game.getCommunalPile().getCardCount();
-
-
-        int currentRound = game.getRoundCounter()+1  ;
-
+        int currentRound = game.getRoundCounter()+1;
         int drawCount = game.getDrawCounter();
-        System.out.println("current round from method is " +currentRound);
 
+        //build current info array
         Object[] currentInfo = {currentPlayerName,currentRound,communalPile,drawCount};
-
         String currentPlayerNameAsJSONString = oWriter.writeValueAsString(currentInfo);
 
         return currentPlayerNameAsJSONString;
@@ -479,15 +461,16 @@ public class TopTrumpsRESTAPI {
     @GET
     @Path("/getLeftCards")
     public String getLeftCards() throws IOException{
+
+        // get all the players
         players =game.getStartingPlayers();
 
+        //build the left cards Array
         int[] leftCards =  new int[players.size()];
-
         for (int i = 0; i < players.size(); i++){
             leftCards[i] = players.get(i).getRemainingCards();
         }
 
-//         {players.get(0).getRemainingCards(),players.get(1).getRemainingCards(),players.get(2).getRemainingCards(),players.get(3).getRemainingCards(),players.get(4).getRemainingCards()};
 
         String leftCardsAsJSONString = oWriter.writeValueAsString(leftCards);
         return leftCardsAsJSONString;
@@ -525,23 +508,28 @@ public class TopTrumpsRESTAPI {
 
         return out;
     }
-    
-    @GET
-    @Path("/updateDatabase")
-    public String updateDatabase() throws IOException{
-    	
-    	//The game is over. Update Database
-		// Update game table
-		db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
-		
-		// Update players' tables
-		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
-		}
 
-    	
-    	return "";
-    }
+
+
+    //====================
+    //  Database Part
+    //====================
+//    @GET
+//    @Path("/updateDatabase")
+//    public String updateDatabase() throws IOException{
+//
+//    	//The game is over. Update Database
+//		// Update game table
+//		db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
+//
+//		// Update players' tables
+//		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+//			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
+//		}
+//
+//
+//    	return "";
+//    }
     
     
     // =============

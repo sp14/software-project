@@ -47,12 +47,8 @@
 <div  id="navbar">
     <h1 >Top Trumps Games</h1><br/>
     <hr>
-
-
-    <!--assume 4 AI for now-->
-
-
-<h3>How many AI you want to play with?</h3>
+</div>
+<#--<h3>How many AI you want to play with?</h3>-->
 <!-- AI players -->
 <#--<form>-->
 <#--<input  type="radio" id="value1" value="1">1<br/>-->
@@ -61,19 +57,16 @@
 <#--<input type="radio" name="AI" value="4">4<br/>-->
 <#--<input type="submit" value="Start">-->
 <#--</form>-->
-</div>
+
 
 <!--Display game infomation here-->
 <div id="gameInfo">
     <p id="currentRound">Round:</p>
-
-    <p id="currentPlayer">Who's Turn:</p>
+    <p id="currentPlayerName">Who's Turn:</p>
     <p id="drawCount">Draw Count:</p>
     <p id="communalPile">Communal Pile:</p>
-    <p id="message"> </p>
-
-<#--<p id="winner">Winner: </p>-->
     <p id="playerLeft"></p>
+    <strong><p id="message"> </p></strong>
 
 </div>
 
@@ -85,21 +78,14 @@
 
     <br/>
     <br/>
-    <!-- Button next round -->
-<#--<button type="button"  onclick="nextRound()" class="btn-primary  btn-lg " id="roundButton">Next Round</button></a>-->
-
-    <!-- Choose category -->
-
 </div>
-
-
-
 <hr/>
 
 <!--card-->
 
 <div class="container" >
     <div class="row">
+
         <!--Player 1-->
         <div class="col" id="P1">
             <img class="card-img-top" id="P1CardImage" src="" alt="Card image" style="width:100%;height:200px ">
@@ -144,7 +130,6 @@
         </div>
 
         <!--AI 2-->
-
         <div class="col" id="A2">
                 <img class="card-img-top" id="A2CardImage" src="" alt="Card image" style="width:100%;height:200px">
                 <div id="A2Info">
@@ -163,10 +148,8 @@
                     <p id="A2Cat4"></p>
                     <p id="A2Cat5"></p><hr/>
                 </div>
-
-
-
         </div>
+
         <!--AI 3-->
         <div class="col" id="A3">
                 <img class="card-img-top" id="A3CardImage" src="" alt="Card image" style="width:100%;height:200px">
@@ -186,11 +169,8 @@
                     <p id="A3Cat4"></p>
                     <p id="A3Cat5"></p><hr/>
                 </div>
-
-
-
-
         </div>
+
         <!--AI 4-->
         <div class="col" id="A4">
                 <img class="card-img-top" id="A4CardImage" src="" alt="Card image" style="width:100%;height:200px">
@@ -210,36 +190,10 @@
                     <p id="A4Cat4"></p>
                     <p id="A4Cat5"></p><hr/>
                 </div>
-
-
-
         </div>
 
-
     </div>
-
-
-
-
-
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-<!-- Add your HTML Here -->
-
-
-
-
 
 
 
@@ -248,7 +202,7 @@
 
     var gameNum = 0;
     var numAIPlayers = 0;
-    var currentPlayer = "";
+    var currentPlayerName = "";
     var currentRound = 0;
     var communalPileCount = 0;
     var bestAttribute = " ";
@@ -268,40 +222,57 @@
 
         // For example, lets call our sample methods
 
-
-        // startGame();
     }
 
-    // -----------------------------------------
-    // Add your other Javascript methods Here
-    // -----------------------------------------
 
+    //=======================
+    // button control
+    //=======================
+
+    function buttonControl() {
+        var firstButtonName = document.getElementById("startButton").innerHTML;
+
+        if (firstButtonName === "Start Game!" ){
+            startGame();
+            //change button to category selection
+            setFirstButton("startButton","Category Selection");
+
+        }else if(firstButtonName === "Category Selection") {
+            selectCategory(gameNum);
+            playerLeft(gameNum);
+
+
+        }else if (firstButtonName === "Show Winner"){
+
+            showWinner(gameNum);
+            getLeftCards(gameNum);
+            checkPlayersLeft(gameNum);
+
+            playerLeft(gameNum);
+
+        }else if (firstButtonName === "Next Round"){
+
+            nextRound(gameNum);
+            displayUserCard(gameNum);
+            getLeftCards(gameNum);
+
+            getCurrentInfo(gameNum);
+            setFirstButton("startButton","Category Selection");
+
+            playerLeft(gameNum);
+
+        }else if (firstButtonName === "Game Finished"){
+            gameFinished(gameNum);
+
+        }
+    }
 
     //===========================
     // FIRST PART I: Start Game
     //===========================
 
-
-    function showAICards(gameNum,numAIPlayers) {
-        if (numAIPlayers === 3){
-
-            // alert("showAICards method alert");
-            hiddenElements("A4");
-        }else if (numAIPlayers === 2){
-            hiddenElements("A4");
-            hiddenElements("A3");
-
-        }else if (numAIPlayers === 1){
-            hiddenElements("A4");
-            hiddenElements("A3");
-            hiddenElements("A2");
-
-        }
-
-    }
+    // start game
     function startGame() {
-
-
 
         // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/startGame"); // Request type and URL
@@ -324,37 +295,15 @@
             gameNum = basicInfo[0];
             numAIPlayers = basicInfo[1];
 
+
+            // display the user card
             displayUserCard(gameNum);
+
+            getCurrentInfo(gameNum);
 
             getLeftCards(gameNum);
 
             showAICards(gameNum,numAIPlayers);
-
-            // if (currentPlayer == "You"){
-            //     document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
-            //
-            //     //User select, return a selected category to RESTAPI
-            //     for (var i=0; i<5;i++){
-            //
-            //         UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
-            //
-            //     }
-            // }
-
-            //
-            // alert("current play after get leftCard"+currentPlayer);
-            //
-            // if (currentPlayer.valueOf() == "You"){
-            //     document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
-            //
-            //     //User select, return a selected category to RESTAPI
-            //     for (var i=0; i<5;i++){
-            //
-            //         UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
-            //
-            //     }
-            // }
-
 
         };
 
@@ -384,48 +333,25 @@
         xhr.send();
     }
 
+    function showAICards(gameNum,numAIPlayers) {
+        if (numAIPlayers === 3){
 
+            // alert("showAICards method alert");
+            hiddenElements("A4");
+        }else if (numAIPlayers === 2){
+            hiddenElements("A4");
+            hiddenElements("A3");
 
-    function buttonControl() {
-        var firstButtonName = document.getElementById("startButton").innerHTML;
+        }else if (numAIPlayers === 1){
+            hiddenElements("A4");
+            hiddenElements("A3");
+            hiddenElements("A2");
 
-        if (firstButtonName === "Start Game!" ){
-            startGame();
-
-
-             setFirstButton("startButton","Category Selection");
-
-
-
-        }else if(firstButtonName === "Category Selection") {
-            selectCategory(gameNum);
-            playerLeft(gameNum);
-
-
-        }else if (firstButtonName === "Show Winner"){
-
-            showWinner(gameNum);
-            getLeftCards(gameNum);
-            checkPlayersLeft(gameNum);
-
-            playerLeft(gameNum);
-
-        }else if (firstButtonName === "Next Round"){
-
-            nextRound(gameNum);
-            displayUserCard(gameNum);
-            getLeftCards(gameNum);
-
-            getCurrentInfo(gameNum);
-            setFirstButton("startButton","Category Selection");
-
-            playerLeft(gameNum);
-
-        }else if (firstButtonName === "Game Finished"){
-            gameFinished(gameNum);
-            
         }
+
     }
+
+
 
 
 
@@ -453,16 +379,12 @@
             //code here
             var p1CardName = JSON.parse(responseText);
 
+            //set card name
+            document.getElementById("P1CardName").innerHTML = p1CardName
+            //set card image
             setImage("P1CardImage",p1CardName);
-            document.getElementById("P1CardName").innerHTML = p1CardName;
-
-            //set category
+            //set card categories
             getUserTopCardCategories(gameNum);
-            getCurrentInfo(gameNum);
-            // setFirstButton("startButton","Category Selection");
-
-
-
 
         };
 
@@ -567,19 +489,11 @@
         // to do when the response arrives
         xhr.onload = function(e) {
             var responseText = xhr.response;
-            //code here
+            //get the user category array
+            userCategoryArray = JSON.parse(responseText);
 
-             userCategoryArray = JSON.parse(responseText);
-
-            //test alert
-            // alert("categoryArray: "+categoryArray);
-
-
-            //
+            // set the user categories
             for (var i= 0; i < userCategoryArray.length; i++) {
-
-                //
-                // id="p1_cat1"
                 setCategory("P1Cat"+ (i+1),userCategoryArray[i]);
             }
 
@@ -606,34 +520,29 @@
     function selectCategory(gameNum) {
 
 
-        if (currentPlayer !== "You"){
+        if (currentPlayerName !== "You"){
 
             //AI player select Category
-            //show AI players' card detail:category and name
-
+            //show AI players' card
             AISelectCategory(gameNum);
 
             //change the button
             setFirstButton("startButton","Show Winner");
 
         }else {
-            // document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
-            //
-            // //User select, return a selected category to RESTAPI
-            // for (var i=0; i<5;i++){
-            //
-            //     UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
-            //
-            // }
 
-            //change the button
-            displayAICard();
+            // if the current player is You, show let the user to choose the category
+            if (currentPlayerName.valueOf() === "You"){
+                document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
 
-            setFirstButton("startButton","Show Winner");
+                //User select, return a selected category to RESTAPI
+                for (var i=0; i<5;i++){
+                    UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
+                }
 
+            }
+          
         }
-
-
     }
 
 
@@ -642,23 +551,26 @@
     function UserSelectCategory(id,cate) {
 
 
-
-            document.getElementById(id).addEventListener("click",function () {
-                userSelectedCate = cate;
-                document.getElementById("message").innerHTML = "You have chosen:" + userSelectedCate;
-
-                var tc = id + "";
-                transferCategory(tc);
-                // displayAICard();
-
-            })
+        document.getElementById(id).addEventListener("click",function () {
+            userSelectedCate = cate;
+            document.getElementById("message").innerHTML = "You have chosen:" + userSelectedCate;
 
 
+            //when  the user selected the category, show the AI cards and change button to show winner
+            displayAICard(gameNum);
+            setFirstButton("startButton","Show Winner");
+
+
+            //transger the category to RESTAPI
+            var tc = id + "";
+            transferCategory(tc);
+
+        })
     }
 
 
 
-    // deal with user selecte Category
+    // deal with user selected Category
     function transferCategory(userSelectedCate) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/transferCategory?userSelectedCate="+userSelectedCate); // Request type and URL+parameters
@@ -702,7 +614,7 @@
 
             //set message
             displayAICard();
-            document.getElementById("message").innerHTML = currentPlayer + " has chosen " + bestAttribute;
+            document.getElementById("message").innerHTML = currentPlayerName + " has chosen " + bestAttribute;
 
 
         };
@@ -733,9 +645,6 @@
             var responseText = xhr.response;
             //code here
              winnerName = JSON.parse(responseText);
-
-
-
 
             if (winnerName === "draw"){
 
@@ -786,9 +695,9 @@
             if (playerLeft == 1){
 
                 document.getElementById("message").innerHTML =  winnerName + " win this game";
-                
-                
-                updateDatabase(gameNum);
+
+
+                // updateDatabase(gameNum);
 
                 setFirstButton("startButton","Game Finished");
 
@@ -841,9 +750,9 @@
 
 
 
-    //===============================================
-    //get current Info: currentPlayer , currentRound
-    //===============================================
+    //====================================================
+    //  get current Info: currentPlayerName , currentRound
+    //====================================================
 
     function getCurrentInfo(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
@@ -857,53 +766,31 @@
         // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
         // to do when the response arrives
         xhr.onload = function(e) {
+            //get the current info array
             var responseText = xhr.response;
-
-            //code here
             var currentInfo = JSON.parse(responseText);
-            currentPlayer = currentInfo[0];
+
+
+            //get the elements: 0.currentPlayerName 1.currentRound 2.communalPileCount 3.drawCount
+            currentPlayerName = currentInfo[0];
             currentRound = currentInfo[1];
             communalPileCount = currentInfo[2];
             drawCount = currentInfo[3];
-            document.getElementById("currentPlayer").innerHTML = "Who's turn: " + currentPlayer;
+            //set the elements
+            document.getElementById("currentPlayerName").innerHTML = "Who's turn: " + currentPlayerName;
             document.getElementById("currentRound").innerHTML = "Round: " + currentRound;
             document.getElementById("communalPile").innerHTML = "Communal Pile: " + communalPileCount;
             document.getElementById("drawCount").innerHTML = "Draw Count: " + drawCount;
-
-
-
-
-            // alert("current play after get leftCard"+currentPlayer);
-
-            if (currentPlayer.valueOf() === "You"){
-                document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
-
-                //User select, return a selected category to RESTAPI
-                for (var i=0; i<5;i++){
-
-                    UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
-
-                }
-            }
-
-
-            //change the button to category selection
-            // setFirstButton("startButton","Category Selection");
 
         };
 
         // We have done everything we need to prepare the CORS request, so send it
         xhr.send();
-
-
     }
 
 
 
     function getLeftCards(gameNum) {
-
-
-
         // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getLeftCards?gameNum=" + gameNum); // Request type and URL
 
@@ -915,19 +802,16 @@
         // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
         // to do when the response arrives
         xhr.onload = function(e) {
+            //get the left cards array
             var responseText = xhr.response;
-
-            //code here
             var leftCardArray = JSON.parse(responseText);
 
-
+            //set the card left number to webpage
             document.getElementById("P1LeftCards").innerHTML = "Card left: " + leftCardArray[0];
             document.getElementById("A1LeftCards").innerHTML = "Card left: " + leftCardArray[1];
             document.getElementById("A2LeftCards").innerHTML = "Card left: " + leftCardArray[2];
             document.getElementById("A3LeftCards").innerHTML = "Card left: " + leftCardArray[3];
             document.getElementById("A4LeftCards").innerHTML = "Card left: " + leftCardArray[4];
-
-
         };
 
         // We have done everything we need to prepare the CORS request, so send it
