@@ -7,6 +7,7 @@
     <!-- Import JQuery, as it provides functions you will probably find useful (see https://jquery.com/) -->
     <script src="https://code.jquery.com/jquery-2.1.1.js"></script>
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/flick/jquery-ui.css">
 
     <!-- Optional Styling of the Website, for the demo I used Bootstrap (see https://getbootstrap.com/docs/4.0/getting-started/introduction/) -->
@@ -237,6 +238,7 @@
 <script type="text/javascript">
 
     var gameNum = 0;
+    var numAIPlayers = 0;
     var currentPlayer = "";
     var currentRound = 0;
     var communalPileCount = 0;
@@ -268,6 +270,25 @@
     //===========================
     // FIRST PART I: Start Game
     //===========================
+
+
+    function showAICards(gameNum,numAIPlayers) {
+        if (numAIPlayers === 3){
+
+            alert("showAICards method alert");
+            hiddenElements("A4");
+        }else if (numAIPlayers === 2){
+            hiddenElements("A4");
+            hiddenElements("A3");
+
+        }else if (numAIPlayers === 1){
+            hiddenElements("A4");
+            hiddenElements("A3");
+            hiddenElements("A2");
+
+        }
+
+    }
     function startGame() {
 
 
@@ -288,14 +309,16 @@
             var responseText = xhr.response; // the text of the response
             // getP1CardName();
 
-            gameNum = JSON.parse(responseText);
+            var basicInfo = JSON.parse(responseText);
 
-
+            gameNum = basicInfo[0];
+            numAIPlayers = basicInfo[1];
 
             displayUserCard(gameNum);
 
             getLeftCards(gameNum);
 
+            showAICards(gameNum,numAIPlayers);
 
             // if (currentPlayer == "You"){
             //     document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
@@ -358,6 +381,10 @@
 
         if (firstButtonName == "Start Game!" ){
             startGame();
+
+
+
+
 
              setFirstButton("startButton","Category Selection");
 
@@ -966,6 +993,17 @@
 
     }
 
+
+    //hidden element by id
+    function hiddenElements(id) {
+        $(".id").hide();
+        
+    }
+
+    //show element by id
+    function showElements(id) {
+        $(".id").show();
+    }
 
 
 

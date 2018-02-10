@@ -75,6 +75,7 @@ public class TopTrumpsRESTAPI {
 //
 //        currentPlayer = game.getCurrentPlayer();
 //        players = game.getPlayers();
+        numAIPlayers = 3;
 
     }
 
@@ -91,8 +92,9 @@ public class TopTrumpsRESTAPI {
     public String startGame() throws IOException{
         //Start the game logic
 
+
         //round1
-        game = new Game(false,4);
+        game = new Game(false,numAIPlayers);
 
         game.drawCards();
 
@@ -107,10 +109,16 @@ public class TopTrumpsRESTAPI {
 
         gameNum = 0;
 
+
+        //basic information include gameNumber(gameID) and number of AI players
+        int[] basicInfo = new int[2];
+        basicInfo[0]=gameNum;
+        basicInfo[1]= numAIPlayers;
+
         //--------------------------------------------------
         // record game number here, connect to database later
         //--------------------------------------------------
-        String stringAsJSONString = oWriter.writeValueAsString(gameNum);
+        String stringAsJSONString = oWriter.writeValueAsString(basicInfo);
 
         return stringAsJSONString;
     }
@@ -150,11 +158,12 @@ public class TopTrumpsRESTAPI {
     @GET
     @Path("/displayAICard")
     public String displayAICard() throws IOException{
-        String[] AICardName = new String[4];
+        players = game.getStartingPlayers();
+
+        String[] AICardName = new String[players.size()-1];
 //        String[] AICardName = {players.get(1).getCurrentCard().getName(),players.get(2).getCurrentCard().getName() };
 
-        players = game.getStartingPlayers();
-        for (int i = 1; i < 5 ; i++) {
+        for (int i = 1; i < players.size() ; i++) {
             AICardName[(i-1)]= players.get(i).getCurrentCard().getName();
         }
 
@@ -190,12 +199,12 @@ public class TopTrumpsRESTAPI {
 
         Card card ;
 
-        String[][] categoryArray= new String[4][5];
+        String[][] categoryArray= new String[players.size()-1][5];
 
 //        categoryArray[0] = {"Size: "+card.getSize(),"Speed: "+card.getSpeed(), "Range: " + card.getRange(),"Firepower: " + card.getFirepower(),"Cargo: " + card.getCargo()};
 
 //        String[][] categoryArray ={};
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < players.size()-1; i++) {
             card = players.get(i+1).getCurrentCard();
             categoryArray[i][0] = ("Size: "+card.getSize());
             categoryArray[i][1] = ("Speed: "+card.getSpeed());
@@ -457,7 +466,13 @@ public class TopTrumpsRESTAPI {
     public String getLeftCards() throws IOException{
         players =game.getStartingPlayers();
 
-        int[] leftCards = {players.get(0).getRemainingCards(),players.get(1).getRemainingCards(),players.get(2).getRemainingCards(),players.get(3).getRemainingCards(),players.get(4).getRemainingCards()};
+        int[] leftCards =  new int[players.size()];
+
+        for (int i = 0; i < players.size(); i++){
+            leftCards[i] = players.get(i).getRemainingCards();
+        }
+
+//         {players.get(0).getRemainingCards(),players.get(1).getRemainingCards(),players.get(2).getRemainingCards(),players.get(3).getRemainingCards(),players.get(4).getRemainingCards()};
 
         String leftCardsAsJSONString = oWriter.writeValueAsString(leftCards);
         return leftCardsAsJSONString;
