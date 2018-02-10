@@ -139,33 +139,4 @@ public class Card
 		default: return "";
 		}
 	}
-
-
-
-
-
-	//
-	//	/**
-	//	 * compares the given attribute of Cards objects 
-	//	 * and returns a negative or positive integer or zero according to the result 
-	//	 **/
-	//	//@Override
-	//	public int compareTo(Card card, String attribute) {
-	//		int result=0;
-	//		switch (attribute) {
-	//		case "speed": result =Integer.compare(this.speed, card.speed);
-	//		case "firepower":return Integer.compare(this.firepower, card.firepower);
-	//		case "cargo":return Integer.compare(this.cargo, card.cargo);
-	//		case "range": return Integer.compare(this.range, card.range);
-	//		case "size":return Integer.compare(this.size, card.size);
-	//		}
-	//		return result;
-	//	}
-	//
-	//	@Override
-	//	public int compareTo(Card o) {
-	//		// TODO Auto-generated method stub
-	//		return 0;
-	//	}
-
 }

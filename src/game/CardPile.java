@@ -1,7 +1,7 @@
 package game;
 import java.util.ArrayList;
 
-public abstract class CardPile {
+public class CardPile {
 
 	//instance variables
 	protected ArrayList<Card> pile;

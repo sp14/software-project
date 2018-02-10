@@ -16,7 +16,7 @@ public class Game {
 	private int numberOfPlayers; // number of starting players
 	private ArrayList<Player> startingPlayers = new ArrayList<Player>(); //ArrayList to hold the initial players
 	private ArrayList<Player> players = new ArrayList<Player>(); // ArrayList to hold the players still in game
-	private CardPile communalPile = new Deck(); // Variable for the communal pile
+	private CardPile communalPile = new CardPile(); // Variable for the communal pile
 	private Player currentPlayer; // Variable to hold the player whose turn it is
 	private Player winner; // Variable for the winner of the Game
 	private int roundCounter = 0; // Variable for the number of rounds
