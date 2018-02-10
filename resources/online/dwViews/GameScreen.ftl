@@ -39,6 +39,7 @@
 
     </style>
 
+
 </head>
 
 <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
@@ -51,23 +52,24 @@
     <!--assume 4 AI for now-->
 
 
-<#--<h3>How many AI you want to play with?</h3>-->
-<#--<!-- AI players &ndash;&gt;-->
+<h3>How many AI you want to play with?</h3>
+<!-- AI players -->
 <#--<form>-->
-<#--<input  type="radio" name="AI" value="1">1<br/>-->
+<#--<input  type="radio" id="value1" value="1">1<br/>-->
 <#--<input type="radio" name="AI" value="2">2<br/>-->
 <#--<input type="radio" name="AI" value="3">3<br/>-->
 <#--<input type="radio" name="AI" value="4">4<br/>-->
-<#--&lt;#&ndash;<input type="submit" value="Start">&ndash;&gt;-->
+<#--<input type="submit" value="Start">-->
 <#--</form>-->
 </div>
 
 <!--Display game infomation here-->
 <div id="gameInfo">
-    <p id="currentRound">round: 0</p>
+    <p id="currentRound">Round:</p>
 
-    <p id="currentPlayer">Who's turn</p>
-    <p id="communalPile">Communal Pile: </p>
+    <p id="currentPlayer">Who's Turn:</p>
+    <p id="drawCount">Draw Count:</p>
+    <p id="communalPile">Communal Pile:</p>
     <p id="message"> </p>
 
 <#--<p id="winner">Winner: </p>-->
@@ -144,65 +146,72 @@
         <!--AI 2-->
 
         <div class="col" id="A2">
-            <img class="card-img-top" id="A2CardImage" src="" alt="Card image" style="width:100%;height:200px">
-            <div id="A2Info">
-                <h2 class="A21Info" >AI Player 2</h2><br/>
-                <h4 id="A2LeftCards">Card left:</h4><hr/>
-
-            </div>
-            <div class="cardInfo" id="A2CardInfo">
-                <div id="cardName">
-                    <h3 id="A2CardName"></h3><hr/>
+                <img class="card-img-top" id="A2CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A2Info">
+                    <h2 class="A21Info" >AI Player 2</h2><br/>
+                    <h4 id="A2LeftCards">Card left:</h4><hr/>
 
                 </div>
-                <p id="A2Cat1"></p>
-                <p id="A2Cat2"></p>
-                <p id="A2Cat3"></p>
-                <p id="A2Cat4"></p>
-                <p id="A2Cat5"></p><hr/>
-            </div>
+                <div class="cardInfo" id="A2CardInfo">
+                    <div id="cardName">
+                        <h3 id="A2CardName"></h3><hr/>
+
+                    </div>
+                    <p id="A2Cat1"></p>
+                    <p id="A2Cat2"></p>
+                    <p id="A2Cat3"></p>
+                    <p id="A2Cat4"></p>
+                    <p id="A2Cat5"></p><hr/>
+                </div>
+
+
 
         </div>
         <!--AI 3-->
         <div class="col" id="A3">
-            <img class="card-img-top" id="A3CardImage" src="" alt="Card image" style="width:100%;height:200px">
-            <div id="A3Info">
-                <h2 class="A31Info" >AI Player 3</h2><br/>
-                <h4 id="A3LeftCards">Card left:</h4><hr/>
-
-            </div>
-            <div class="cardInfo" id="A3CardInfo">
-                <div id="cardName">
-                    <h3 id="A3CardName"></h3><hr/>
+                <img class="card-img-top" id="A3CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A3Info">
+                    <h2 class="A31Info" >AI Player 3</h2><br/>
+                    <h4 id="A3LeftCards">Card left:</h4><hr/>
 
                 </div>
-                <p id="A3Cat1"></p>
-                <p id="A3Cat2"></p>
-                <p id="A3Cat3"></p>
-                <p id="A3Cat4"></p>
-                <p id="A3Cat5"></p><hr/>
-            </div>
+                <div class="cardInfo" id="A3CardInfo">
+                    <div id="cardName">
+                        <h3 id="A3CardName"></h3><hr/>
+
+                    </div>
+                    <p id="A3Cat1"></p>
+                    <p id="A3Cat2"></p>
+                    <p id="A3Cat3"></p>
+                    <p id="A3Cat4"></p>
+                    <p id="A3Cat5"></p><hr/>
+                </div>
+
+
+
 
         </div>
         <!--AI 4-->
         <div class="col" id="A4">
-            <img class="card-img-top" id="A4CardImage" src="" alt="Card image" style="width:100%;height:200px">
-            <div id="A4Info">
-                <h2 class="AI4Info" >AI Player 4</h2><br/>
-                <h4 id="A4LeftCards">Card left:</h4><hr/>
-
-            </div>
-            <div class="cardInfo" id="A4CardInfo">
-                <div id="cardName">
-                    <h3 id="A4CardName"></h3><hr/>
+                <img class="card-img-top" id="A4CardImage" src="" alt="Card image" style="width:100%;height:200px">
+                <div id="A4Info">
+                    <h2 class="AI4Info" >AI Player 4</h2><br/>
+                    <h4 id="A4LeftCards">Card left:</h4><hr/>
 
                 </div>
-                <p id="A4Cat1"></p>
-                <p id="A4Cat2"></p>
-                <p id="A4Cat3"></p>
-                <p id="A4Cat4"></p>
-                <p id="A4Cat5"></p><hr/>
-            </div>
+                <div class="cardInfo" id="A4CardInfo">
+                    <div id="cardName">
+                        <h3 id="A4CardName"></h3><hr/>
+
+                    </div>
+                    <p id="A4Cat1"></p>
+                    <p id="A4Cat2"></p>
+                    <p id="A4Cat3"></p>
+                    <p id="A4Cat4"></p>
+                    <p id="A4Cat5"></p><hr/>
+                </div>
+
+
 
         </div>
 
@@ -244,6 +253,7 @@
     var communalPileCount = 0;
     var bestAttribute = " ";
     var userSelectedCate = " ";
+    var drawCount= 0 ;
 
     var winnerName;
 
@@ -275,7 +285,7 @@
     function showAICards(gameNum,numAIPlayers) {
         if (numAIPlayers === 3){
 
-            alert("showAICards method alert");
+            // alert("showAICards method alert");
             hiddenElements("A4");
         }else if (numAIPlayers === 2){
             hiddenElements("A4");
@@ -379,23 +389,20 @@
     function buttonControl() {
         var firstButtonName = document.getElementById("startButton").innerHTML;
 
-        if (firstButtonName == "Start Game!" ){
+        if (firstButtonName === "Start Game!" ){
             startGame();
-
-
-
 
 
              setFirstButton("startButton","Category Selection");
 
 
 
-        }else if(firstButtonName == "Category Selection") {
+        }else if(firstButtonName === "Category Selection") {
             selectCategory(gameNum);
             playerLeft(gameNum);
 
 
-        }else if (firstButtonName == "Show Winner"){
+        }else if (firstButtonName === "Show Winner"){
 
             showWinner(gameNum);
             getLeftCards(gameNum);
@@ -403,7 +410,7 @@
 
             playerLeft(gameNum);
 
-        }else if (firstButtonName == "Next Round"){
+        }else if (firstButtonName === "Next Round"){
 
             nextRound(gameNum);
             displayUserCard(gameNum);
@@ -414,8 +421,9 @@
 
             playerLeft(gameNum);
 
-        }else if (firstButtonName == "Game Finished"){
+        }else if (firstButtonName === "Game Finished"){
             gameFinished(gameNum);
+            
         }
     }
 
@@ -853,9 +861,11 @@
             currentPlayer = currentInfo[0];
             currentRound = currentInfo[1];
             communalPileCount = currentInfo[2];
+            drawCount = currentInfo[3];
             document.getElementById("currentPlayer").innerHTML = "Who's turn: " + currentPlayer;
             document.getElementById("currentRound").innerHTML = "Round: " + currentRound;
             document.getElementById("communalPile").innerHTML = "Communal Pile: " + communalPileCount;
+            document.getElementById("drawCount").innerHTML = "Draw Count: " + drawCount;
 
 
 
@@ -996,15 +1006,22 @@
 
     //hidden element by id
     function hiddenElements(id) {
-        $(".id").hide();
-        
+        // document.getElementById(id).hidden = "hidden";
+        document.getElementById(id).hidden = true;
+
     }
 
     //show element by id
     function showElements(id) {
-        $(".id").show();
+        // $(".id").show();
+        document.getElementById(id).hidden = false;
     }
 
+    
+    
+    function updateDatabase(gameNum) {
+        
+    }
 
 
 

@@ -44,7 +44,7 @@ public class TopTrumpsRESTAPI {
     //
     Game game;
     int gameNum;
-    int numAIPlayers;
+    int numAIPlayers = 0;
     Player currentPlayer;
     ArrayList<Player> players;
     ArrayList<Player> changePlayers;
@@ -75,7 +75,9 @@ public class TopTrumpsRESTAPI {
 //
 //        currentPlayer = game.getCurrentPlayer();
 //        players = game.getPlayers();
-        numAIPlayers = 3;
+        numAIPlayers = 2;
+
+//        game = new Game();
 
     }
 
@@ -93,8 +95,11 @@ public class TopTrumpsRESTAPI {
         //Start the game logic
 
 
+        game = new Game();
+
         //round1
-        game = new Game(false,numAIPlayers);
+        game.initGame(false,numAIPlayers);
+//        game = new Game(false,numAIPlayers);
 
         game.drawCards();
 
@@ -236,9 +241,11 @@ public class TopTrumpsRESTAPI {
 
 
         int currentRound = game.getRoundCounter()+1  ;
+
+        int drawCount = game.getDrawCounter();
         System.out.println("current round from method is " +currentRound);
 
-        Object[] currentInfo = {currentPlayerName,currentRound,communalPile};
+        Object[] currentInfo = {currentPlayerName,currentRound,communalPile,drawCount};
 
         String currentPlayerNameAsJSONString = oWriter.writeValueAsString(currentInfo);
 
