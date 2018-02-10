@@ -1,10 +1,6 @@
 package DBHandler;
 import java.sql.*;
 
-import javax.swing.JOptionPane;
-
-import org.postgresql.util.PSQLException;
-
 public class PostgresSQL {
 
 	private static Connection connection = null;
