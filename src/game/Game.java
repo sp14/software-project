@@ -1,8 +1,6 @@
 package game;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -13,7 +11,7 @@ public class Game {
 
 	//Class instance variables
 	private Deck deck = new Deck();
-	private int numberOfPlayers; // number of starting players
+	private int numberOfPlayers; // Number of starting players
 	private ArrayList<Player> startingPlayers = new ArrayList<Player>(); //ArrayList to hold the initial players
 	private ArrayList<Player> players = new ArrayList<Player>(); // ArrayList to hold the players still in game
 	private CardPile communalPile = new CardPile(); // Variable for the communal pile

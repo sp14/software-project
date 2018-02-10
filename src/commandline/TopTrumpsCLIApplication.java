@@ -64,16 +64,17 @@ public class TopTrumpsCLIApplication {
 			System.out.println(pr.printStatsEnd(game));
 
 			//The game is over. Display winner
-			System.out.println("Game over. The winner is " + game.getWinner() + "\nWould you like to play a new game? type y for a new game or anything else to quit");
-
+			System.out.println("Game over. The winner is " + game.getWinner() +"\nWould you like to quit new game? Type q to quit the game or anything else to continue playing.");
+			
 			//Ask user whether they wish to continue with game
 			String keepPlaying = scanner.nextLine();
 
 			//Keep playing?
-			if (!keepPlaying.equals("y")) {
+			if (keepPlaying.equals("q")) {
 
 				userWantsToQuit=true;
 			}
+			else continue;
 		}
 	}
 
@@ -150,7 +151,7 @@ public class TopTrumpsCLIApplication {
 		for (;;) { 
 
 			//Prompt user whether they wish to see stats
-			System.out.println("Welcome to Top Trumps.\nType s to see stats or type anything else to play the game!");
+			System.out.println("Type s to see stats or type anything else to play a new game!");
 			//Wait for user input and put to lower case
 			String stats = scanner.nextLine().toLowerCase();
 

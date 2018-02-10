@@ -3,21 +3,23 @@ import java.util.ArrayList;
 
 public class CardPile {
 
-	//instance variables
+	// Class instance variables
 	protected ArrayList<Card> pile;
 	private int cardCount;
-	
+
+
 	/**
 	 * Constructor initialises the card array
 	 */
 	public CardPile() {
-		
+
 		pile = new ArrayList<Card>();
 		cardCount = 0;
 	}
 
+
 	/**
-	 * Adds a card to the pile
+	 * Method that adds a card to the pile
 	 * @param card
 	 */
 	public void add(Card card) {
@@ -25,19 +27,25 @@ public class CardPile {
 		pile.add(card);
 		cardCount++;
 	}
-	
+
+
 	/**
-	 * Removes the card at index i from the pile
+	 * Method that removes the card at index i from the pile
 	 * @param i
 	 */
 	public void remove(int i) {
-		
+
 		pile.remove(i);
 		cardCount--;
 	}
 
+
+	/*
+	 * Getters and Setters
+	 */
+
 	/**
-	 * Gets the number of cards in the pile
+	 * Method that returns the number of cards in the pile
 	 * @return card count
 	 */
 	public int getCardCount() {
@@ -45,15 +53,18 @@ public class CardPile {
 		return cardCount;
 	}
 
+
 	/**
-	 * returns Card object at index position i
-	 * @param i
+	 * Method that returns Card object at index position i
+	 * @param i: the index
 	 * @return Card at index position i
 	 */
 	public Card getCard(int i) {
-		
+
 		return pile.get(i);
 	}
+
+
 	/**
 	 * Prints the contents of the deck to the log file
 	 */
