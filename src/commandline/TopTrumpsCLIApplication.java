@@ -12,8 +12,7 @@ import java.util.Scanner;
  */
 public class TopTrumpsCLIApplication {
 
-
-
+	
 	/**
 	 * This main method is called by TopTrumps.java when the user specifies that they want to run in
 	 * command line mode. The contents of args[0] is whether we should write game logs to a file.
@@ -42,7 +41,8 @@ public class TopTrumpsCLIApplication {
 			int numPlayers = chooseAIPlayers(scanner);
 
 			//Start the game logic
-			Game game = new Game(writeGameLogsToFile, numPlayers);
+			Game game = new Game();
+			game.initGame(writeGameLogsToFile, numPlayers);
 
 			//retrieve new game number from database 
 			game.setGameID(con.setCurrentGameNo());
@@ -95,6 +95,9 @@ public class TopTrumpsCLIApplication {
 			//Get all the remaining players for output purposes
 			ArrayList<Player> players = game.getPlayers();
 
+			//Display which round we are in
+			System.out.println("\nRound " + (game.getRoundCounter()+1));
+			
 			//If the human player is still in the game
 			if (!players.get(0).isAI()) {
 
@@ -129,7 +132,7 @@ public class TopTrumpsCLIApplication {
 				//Only wait for input immediately after the player has been eliminated
 				while (!skipGame) {
 					
-					System.out.println("Sorry you're out. Type anything to skip the rest of the game");
+					System.out.println("Sorry you're out. Type anything to skip the rest of the game.");
 					skipGame = true;
 					String nextRound = scanner.nextLine();
 				}
@@ -194,6 +197,7 @@ public class TopTrumpsCLIApplication {
 				else {
 
 					System.out.println("You have chosen " + numPlayers + " AI players. Let the games begin.");
+					
 					//Use up carriage return
 					scanner.nextLine();
 					return numPlayers;
@@ -271,10 +275,8 @@ public class TopTrumpsCLIApplication {
 		if (winner == null) {
 
 			System.out.println("The round was a draw. Cards added to the communal pile.");
-		} else {
-			if (!winner.isAI())
-				System.out.println("You won the round");
-			else System.out.println(winner + " won the round");
+		} else {			
+		 System.out.println(winner.getName() + " won the round.");
 		}
 	}
 

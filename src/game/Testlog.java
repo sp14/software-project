@@ -103,9 +103,6 @@ public class Testlog {
 
 		//Close the writer if it has been opened
 		if (writer != null) {
-
-			System.out.println("I am here");
-			//Close the writer
 			writer.close();
 		}
 	}

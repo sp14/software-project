@@ -249,7 +249,7 @@ public class StatsPrinter {
 
 		// Iterate through players and add each player's number of wins on the corresponding String
 		for (int i = 0; i < game.getStartingPlayers().size(); i++)
-			playersWins += printPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName());
+			playersWins += printPlayerWins(game.getGameID(), game.getStartingPlayers().get(i).getName()) + "\n";
 
 		// Add all parts to the final String
 		s= "----- GAME OVER -----"+ "\n" +
