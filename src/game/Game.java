@@ -27,12 +27,14 @@ public class Game {
 	private boolean testlogMode = false;
 	private Testlog testlog;
 
+
 	/**
 	 * Default Constructor 
 	 */
-
 	public Game() {
+
 	}
+
 
 	/**
 	 * Method that initialises deck and sets up game
@@ -42,7 +44,7 @@ public class Game {
 	public void initGame(boolean testlogMode, int AIPlayers) {
 
 		this.testlogMode=testlogMode;
-		
+
 		//If the user wishes to print to the test log, open a print writer
 		if (testlogMode) testlog = new Testlog();
 
@@ -67,6 +69,7 @@ public class Game {
 		//Choose a random first player
 		setFirstPlayer();
 	}
+
 
 	/**
 	 * Populates the deck with cards from the input file
@@ -139,94 +142,76 @@ public class Game {
 		}
 	}
 
+
 	/**
-	 * Sets the number of players for the game
-	 * @param The number of players - p
+	 * Initialises the Player ArrayLists given the number of AI players
+	 * @param p: the number of AI players selected by the user
 	 */
 	private void setAIPlayers(int p) {
 
-		//total players is AI player + human player
+		// Total players is AI player + human player
 		numberOfPlayers = p + 1;
 
-		//Adds all players to the players arraylists
+		// Adds all players to the Player ArrayLists
 		for (int i = 0; i <= (numberOfPlayers-1); i++) {
 
-			//check if it's human or AI
-			//Put human player in first index
+			// First player is always human, create a human Player object and add it in the first index of the ArrayLists
 			if (i==0) { 
 
-				Player player = new Player("You",false);
+				Player player = new Player("You", false);
 				players.add(0, player);
 				startingPlayers.add(0, player);
 			}
+
 			else {
 
-				//Create an AI player object and add to the arraylists
+				// The rest are AI Players. Create an AI player object and add to the ArrayLists
 				Player player = new Player("Player " + i,true);
 				players.add(player);
 				startingPlayers.add(player);
 			}
-
-			//set player IDs
-			players.get(i).setID(i+1);
-			startingPlayers.get(i).setID(i+1);
 		}	
 	}
+
 
 	/**
 	 * Deals the cards to each player
 	 */
 	private void deal() {
 
-		//Deal cards from the deck to the player
+		// Deal cards from the deck to the player
 		deck.dealCards(players);
 
-		//If the user wishes to print to the testlog, print each hand
+		// If the user wishes to print to the testlog, print each hand
 		if (testlogMode) testlog.printHandsToLog(players);
 	}
 
+
 	/**
-	 * returns the random first player
+	 * Returns the random first player
 	 * @return first player
 	 */
 	private Player setFirstPlayer() {
 
-		//integer to store random index
+		// Integer to store random index
 		int fp;
-		//generate random number
+
+		// Generate random number
 		Random rn = new Random();
 
-		//Get a random integer in the correct range
+		// Get a random integer in the correct range
 		fp = rn.nextInt(numberOfPlayers);
 
-		//Set the first player as the current player.
+		// Set the first player as the current player.
 		currentPlayer = players.get(fp);
 
-		//Return the first player
+		// Return the first player
 		return players.get(fp);
 	}
 
-	/**
-	 * Method to get the player who's turn it is to play
-	 * @return the player who's turn it is
-	 */
-	public Player getCurrentPlayer() {
-
-		return currentPlayer;
-	}
-
-	/**
-	 * Method to get the number of players still in the game
-	 * @return number of players still in game
-	 */
-	public int getNumberOfPlayer() {
-
-		return players.size();
-	}
 
 	/**
 	 * Draws the first card of all remaining players hands so that it is ready to play.
-	 * Must be called before playRound().
 	 */
 	public void drawCards() {
 
@@ -244,47 +229,40 @@ public class Game {
 		}
 	}
 
-	/**
-	 * Method to get a list of all the remaining players in the game
-	 * @return list of remaining players
-	 */
-	public ArrayList<Player> getPlayers() {
-
-		return players;
-	}
 
 	/**
-	 * method with the logic of playing each round
-	 * @param attribute that has been selected to compare
-	 * @return the player who has won the round
+	 * Method with the logic of playing each round
+	 * @param attribute: the attribute that has been selected to compare
+	 * @return roundWinner: the player who has won the round
 	 */
 	public Player playRound(String attribute) {
 
-		//increase roundCounter
+		// Increase roundCounter
 		roundCounter++;
 
-		//variable for the attribute the user chooses to compare
+		// Variable for the attribute the user chooses to compare
 		String selectedAttribute = attribute.toLowerCase();
 
-		//print the selected attribute to the testlog if testlog mode is active
+		// If testlog mode is active, print the selected attribute to the testlog 
 		if (testlogMode) testlog.printSelectedAttributeToLog(currentPlayer, selectedAttribute);
 
-		//variable to store the winner of the round
+		// Variable to store the winner of the round
 		Player roundWinner = findWinner(selectedAttribute);
 
-		//allocate the cards to the winner/communal pile
+		// Allocate the cards to the winner/communal pile
 		allocateDeck(roundWinner);
 
-
-		//Set the winner to go next
+		// Set the winner to go next
 		if(roundWinner!=null)
 			currentPlayer = roundWinner;
 
-		///If testlog is active
+		// If testlog is active
 		if (testlogMode) {
 			testlog.printRoundWinnerToLog(roundWinner);
+
 			//Print the communal pile to the log
 			testlog.printDeckToLog(communalPile, "Contents of communal pile after round");
+
 			//Print players hands after the round to log
 			testlog.printHandsToLog(players);
 		}
@@ -295,81 +273,70 @@ public class Game {
 		return roundWinner;
 	}
 
+
 	/**
 	 * Finds the player that won
-	 * @param String selectedAttribute
-	 * @return the index of player with the winning card 
-	 * OR -1 if draw
+	 * @param selectedAttribute: the attribute that has been selected to compare
+	 * @return roundWinner: the player who has won the round OR null if it is a draw
 	 */
-	//	private int findWinner(String selectedAttribute) {
-
-	//NEW
 	private Player findWinner(String selectedAttribute) {
 
-		//variable for the highest value of selected attribute
+		// Variable for the highest value of selected attribute
 		int max = 0;
 
-		//variable for the index of the card with highest value
-		int winnerIndex = 0;
-
-		//NEW
+		// Variable to store the winner of the round
 		Player roundWinner = null;
 
-		//variable to store how many times highest value was found 
-		int counter = 0;
-
-		//variable for the value of the attribute that is currently being tested
+		// Variable for the value of the attribute that is currently being tested
 		int value = -1;
 
-		//go through each player's first card, find the max and hold its index
+		// Variable to store how many times highest value was found 
+		int counter = 0;
+
+		// Go through each player's first card, find the max and hold the player that has it
 		for (int i=0;i<players.size();i++) { 
 			value = players.get(i).getCurrentCard().getAttribute(selectedAttribute);
-			if (value>max) {
-				max = value; //if the currently-tested value is greater than max, set max to currently-tested value
-				winnerIndex = i; //update the index of max card
 
-				//NEW
-				roundWinner = players.get(i);
+			if (value>max) {
+				max = value; // if the currently-tested value is greater than max, set max to currently-tested value
+				roundWinner = players.get(i); // set player with the highest value as the round winner
 			}
 		}
 
-		//check if more than one card have the highest value 
+		// Check if more than one card has the highest value 
 		for (int j=0; j<players.size(); j++) {
 			if (players.get(j).getCurrentCard().getAttribute(selectedAttribute) == max)
 				counter++;
 		}
 
-		// check if it's a draw. return -1 if yes, else return winner index
+		// Check if it's a draw. Return null if it is.
 		if (counter>1) {
-			winnerIndex = -1;
 			roundWinner = null;
 		}
 
-		//return winnerIndex;
 		return roundWinner;
 	}
 
-	/**
-	 * Proceeds the result of the round;
-	 * @param selectedAttribute
-	 */
-	//	private void allocateDeck(int winnerIndex) {
 
-	//NEW
+	/**
+	 * Allocates the cards to the right place, according to the winner
+	 * @param roundWinner: the player that won the round, or null if it's a draw
+	 */
 	private void allocateDeck (Player roundWinner) {
 
-		// if it is a draw, put all current cards in the communalPile
+		// If it is a draw, put all current cards in the communalPile
 		if (roundWinner==null) {
 			for (int i = 0; i < players.size(); i++)
 				communalPile.add(players.get(i).getCurrentCard());
 		}
-		// if there is a winner
+
+		// If there is a winner
 		else {
-			// adds all the current cards to his hand
+			// Add all the current cards to his hand
 			for (int i = 0; i < players.size(); i++) {
 				roundWinner.addToHand(players.get(i).getCurrentCard());
 			}
-			// add the cards from communalPile (if any) to his hand 
+			// Add the cards from communalPile (if any) to his hand 
 			if (communalPile.getCardCount()>0) {
 				for (int i = 0; i< communalPile.getCardCount(); i++) {
 					roundWinner.addToHand(communalPile.getCard(i));
@@ -381,8 +348,9 @@ public class Game {
 		}
 	}
 
+
 	/**
-	 * Removes all cards from communal pile
+	 * Method to remove all cards from communal pile
 	 */
 	private void clearCommunalPile() {
 		for (int i = (communalPile.getCardCount()-1); i > -1 ; i--) {
@@ -390,9 +358,10 @@ public class Game {
 		}
 	}
 
+
 	/**
-	 * method to determine if the game is over: checks if more than one players have cards left
-	 * @return if game should continue
+	 * Method to determine if the game is over: checks if more than one players have cards left
+	 * @return continueGame: TRUE or FALSE. If game should continue
 	 */
 	/**
 	 * Method to determine if the game is over: checks if more than one players have cards left
@@ -400,64 +369,55 @@ public class Game {
 	 */
 	public boolean continueGame() {
 
-		//flag variable that shows if game should continue
+		// Flag variable that shows if game should continue
 		boolean continueGame = true;
 
-		//if there is only one player left, end game
+		// If there is only one player left, end game
 		if (players.size()<2) {
 			continueGame = false;
 
-			//The winner will be the only player left in the players array
+			// The winner will be the only player left in the players array
 			winner = players.get(0);
 
-			//If testlog is active, print the winner and then close the writer
+			// If testlog is active, print the winner and then close the writer
 			if (testlogMode) {
 				testlog.printWinnerToLog(winner);
 				testlog.closeLogWriter();
 			}
 		}
 
-		//Return whether the game should continue
 		return continueGame;
 	}
 
 
 	/**
-	 * Removes eliminated players from the list of players
+	 * Method to remove eliminated players from the list of players
 	 * Must be called at the end of every round
-	 * @return a list of all the eliminated players
+	 * @return eliminated: an ArrayList of all the eliminated players
 	 */
 	public ArrayList<Player> clearPlayers() {
 
-		//Array list to store all of the eliminated players
+		// ArrayList to store all of the eliminated players
 		ArrayList<Player> eliminated = new ArrayList<Player>();
 
-		//Loop through all remaining players
+		// Loop through all remaining players
 		for (int i=(players.size()-1); i >=0 ; i--) {
 
-			//If the player has no cards remaining
+			// If the player has no cards remaining
 			if (players.get(i).getRemainingCards() == 0 ) {
 
-				//Add to the list of eliminated players
+				// Add to the list of eliminated players
 				eliminated.add(players.get(i));
 
-				//Remove the player from the list of remaining players 
+				// Remove the player from the list of remaining players 
 				players.remove(i);
 			}
 		}
 
-		//Return the list of eliminated players
+		// Return the list of eliminated players
 		return eliminated;
 	}
 
-	/**
-	 * Returns the winner of the game
-	 * @return the winning player
-	 */
-	public Player getWinner(){
-
-		return winner;
-	}
 
 	/**
 	 * In the end of every round, updates the number of rounds played
@@ -476,37 +436,100 @@ public class Game {
 	}
 
 
+	/*
+	 *  Getters & Setters
+	 */
+
 	/**
-	 * Getters & Setters
-	 */ 	 
+	 * Method to get the gameID
+	 * @return gameID
+	 */
 	public int getGameID() {
 		return gameID;
 	}
 
+
+	/**
+	 * Method to set the gameID
+	 * @param gameID
+	 */
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
 	}
 
+
+	/**
+	 * Method to get the number of rounds
+	 * @return roundCounter: the number of rounds
+	 */
 	public int getRoundCounter() {
 		return roundCounter;
 	}
 
+
+	/**
+	 * Method to get the number of draws
+	 * @return roundCounter: the number of draws
+	 */
 	public int getDrawCounter() {
 		return drawCounter;
 	}
 
-	public void setDrawCounter(int drawCounter) {
-		this.drawCounter = drawCounter;
+
+	/**
+	 * Method to get the content of the communal pile
+	 * @return communalPile: the communal pile
+	 */
+	public CardPile getCommunalPile() {
+		return communalPile;
 	}
 
-	public void setWinner(Player winner) {
-		this.winner = winner;
+
+	/**
+	 * Method to get the player who's turn it is to play
+	 * @return the player who's turn it is
+	 */
+	public Player getCurrentPlayer() {
+
+		return currentPlayer;
 	}
+
+
+	/**
+	 * Method to get a list with the starting Players
+	 * @return startingPlayers: ArrayList with the starting Players
+	 */
 	public ArrayList<Player> getStartingPlayers() {
 		return startingPlayers;
 	}
 
-	public CardPile getCommunalPile() {
-		return communalPile;
+
+	/**
+	 * Method to get a list of all the remaining players in the game
+	 * @return list of remaining players
+	 */
+	public ArrayList<Player> getPlayers() {
+
+		return players;
+	}
+
+
+	/**
+	 * Method to get the number of players still in the game
+	 * @return number of players still in game
+	 */
+	public int getNumberOfPlayer() {
+
+		return players.size();
+	}
+
+
+	/**
+	 * Returns the winner of the game
+	 * @return winner: the winning player
+	 */
+	public Player getWinner(){
+
+		return winner;
 	}
 }

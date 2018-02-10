@@ -3,7 +3,7 @@ package game;
 public class Card 
 {
 
-	//Card details
+	// Variables for the card details
 	private String name;
 	private int size;
 	private int speed;
@@ -30,6 +30,7 @@ public class Card
 		this.cargo = Integer.parseInt(tokens[5]);		
 	}
 
+	
 	/**
 	 * Default object string is the card name
 	 */
@@ -38,6 +39,65 @@ public class Card
 		return name + ": size " +  size + " speed " + speed + " range " + range + " firepower " + firepower + " cargo " + cargo;
 	}
 
+	
+	/**
+	 * Universal getter: given a String with the attribute that the player has selected, returns the value of the attribute
+	 * @param selectedAttribute: the attribute that the user selected
+	 * @return the value of the selected attribute OR -1 if the selected attribute was not found
+	 */
+	public int getAttribute(String selectedAttribute) {
+
+		// Return the value of the appropriate attribute, according to the user selection 
+		switch (selectedAttribute) {
+		case "speed": return this.speed;
+		case "firepower":return this.firepower;
+		case "cargo":return this.cargo;
+		case "range":return this.range;
+		case "size":return this.size;
+		default: return -1;
+		}
+	}
+
+	
+	/**
+	 * Method that returns the highest attribute of a card
+	 * @return the highest attribute of the card
+	 */
+	public String getBestAttribute() {
+
+		int[] attributes = {size, speed, range, firepower, cargo};
+
+		int max = 0; // Variable for the highest value found
+		int maxIndex = 0; // Variable for the index of the highest value
+
+		// Iterate through attributes
+		for (int i = 0; i < attributes.length; i++) {
+
+			// If currently tested attribute is greater than the max, set max to currently selected attribute
+			if (attributes[i] > max) {
+
+				max = attributes[i];
+				maxIndex = i;
+			}
+		}
+
+		// Return the greater attribute
+		switch (maxIndex) {
+
+		case 0: return "size";
+		case 1: return "speed";
+		case 2: return "range";
+		case 3: return "firepower";
+		case 4: return "cargo";
+		default: return "";
+		}
+	}
+	
+		
+	/*
+	 *  Getters & Setters
+	 */
+	
 	/**
 	 * Returns the name of the card
 	 * @return name
@@ -56,6 +116,7 @@ public class Card
 		return size;
 	}
 
+	
 	/**
 	 * Returns the value of the speed attribute
 	 * @return speed
@@ -93,50 +154,5 @@ public class Card
 	public int getCargo() {
 
 		return cargo;
-	}
-
-	/**
-	 * universal getter: given a String representing the attribute that the user wants
-	 * returns the value of the attribute
-	 * @param selected attribute: the attribute asked by the user
-	 * @return the value of the selected attribute or -1 if the selected attribute was not found
-	 */
-	public int getAttribute(String selectedAttribute) {
-
-		switch (selectedAttribute) {
-		case "speed": return this.speed;
-		case "firepower":return this.firepower;
-		case "cargo":return this.cargo;
-		case "range":return this.range;
-		case "size":return this.size;
-		default: return -1;
-		}
-	}
-
-	public String getBestAttribute() {
-
-		int[] attributes = {size, speed, range, firepower, cargo};
-
-		int max = 0;
-		int maxIndex = 0;
-
-		for (int i = 0; i < attributes.length; i++) {
-
-			if (attributes[i] > max) {
-
-				max = attributes[i];
-				maxIndex = i;
-			}
-		}
-
-		switch (maxIndex) {
-
-		case 0: return "size";
-		case 1: return "speed";
-		case 2: return "range";
-		case 3: return "firepower";
-		case 4: return "cargo";
-		default: return "";
-		}
 	}
 }

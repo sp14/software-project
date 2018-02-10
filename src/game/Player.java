@@ -10,7 +10,6 @@ public class Player {
 		this.hand = hand;
 	}
 
-	private int ID;
 	private String name;
 	private boolean AI = false;
 	private int winCounter = 0;
@@ -26,7 +25,6 @@ public class Player {
 		this.name = name;
 		this.AI = AI;
 	}
-
 
 
 	/**
@@ -68,14 +66,7 @@ public class Player {
 	 * getters and setters for all Player attributes
 	 * @return
 	 */
-	public int getID() {
-		return ID;
-	}
-
-	public void setID(int iD) {
-		ID = iD;
-	}
-	
+		
 	public String getName() {
 		return name;
 	}
