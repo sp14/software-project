@@ -47,25 +47,37 @@
             <!-- two large block primary button with url -->
             <a href="http://localhost:7777/toptrumps/"><button type="button" class="btn btn-primary  btn-lg btn-block" id="menubtn">Return to the Main Menu</button></a>
 			<br>
+
+<!-- table to display the relevant statistics --> 
 <table>
-<table style="width:100%">
+<table style="width:100%" border="1">
   <colgroup>
     <col span="5" style="background-color:white">
     <col style="background-color:white">
   </colgroup>
   <tr>
-    <th>Number of Games</th>
-    <th>AI Wins</th>
-    <th>Player Wins</th>
-    <th>Average Number of Draws per Game</th>
-    <th>Maximum Number of Rounds Played</th>
+  	<th>Categories</th>
+  	<th>Results</th>
   </tr>
   <tr>
+    <td>The Overall Number of Games Played</td> 
     <td id="one"></td>
+  </tr>
+  <tr>
+    <td>The Number of Games Won by the AI</td>
     <td id="two"></td>
+  </tr>
+  <tr>
+    <td>The Number of Games Won by the Player</td>
     <td id="three"></td>
+  </tr>
+  <tr>
+    <td>The Average Number of Draws per Game </td>
     <td id="four"></td>
-    <td id="five"></td>
+  </tr>
+  <tr>
+  	<td>The Greatest Number of Rounds Played in a Single Game</td>
+  	<td id="five"></td>
   </tr>
 </table>
 
@@ -159,7 +171,7 @@
 				xhr.send();		
 			}
 			
-				// This calls the helloJSONList REST method from TopTrumpsRESTAPI
+				// This calls the getStatisticsForTheUser method from TopTrumpsRESTAPI
 			function getStatisticsForTheUser() {
 			
 				// First create a CORS request, this is the message we are going to send (a get request in this case)
@@ -174,6 +186,7 @@
 				// to do when the response arrives 
 				xhr.onload = function(e) {
  					var responseText = xhr.response; // the text of the response
+ 					//Split the response into sections to be displayed in the table
 					document.getElementById("one").innerHTML = responseText.split(" ")[0];
 					document.getElementById("two").innerHTML = responseText.split(" ")[1];
 					document.getElementById("three").innerHTML = responseText.split(" ")[2];
