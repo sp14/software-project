@@ -9,6 +9,9 @@
 	<!-- Specify which version of Dropwizard we are going to use for histing the REST API and Website -->
 	<properties>
 		<dropwizard.version>1.2.2</dropwizard.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		
 	</properties>
 
 	<!-- These are the other software libruaries developed by third parties that we need -->
@@ -55,6 +58,7 @@
 
 		<!-- Where do our Java sources come from? -->
 		<sourceDirectory>src</sourceDirectory>
+		<resources><resource><directory>resources</directory></resource></resources>
 
 		<!-- Plugin Management for users working with the Eclipse IDE. org.eclipse.m2e:lifecycle-mapping
              instructs eclipse how to build the maven project -->
@@ -194,10 +198,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>resources</directory>
-			</resource>
-		</resources>
 	</build>
 </project>
