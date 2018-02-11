@@ -62,10 +62,10 @@
 <!--Display game infomation here-->
 <div id="gameInfo">
     <p id="currentRound">Round:</p>
-    <p id="currentPlayerName">Who's Turn:</p>
     <p id="drawCount">Draw Count:</p>
     <p id="communalPile">Communal Pile:</p>
-    <p id="playerLeft"></p>
+    <p id="playerLeft">Players In Game:</p>
+    <p id="currentPlayerName">Who's Turn:</p>
     <strong><p id="message"> </p></strong>
 
 </div>
@@ -208,7 +208,7 @@
     var bestAttribute = " ";
     var userSelectedCate = " ";
     var drawCount= 0 ;
-
+    var playerLeftArray;
     var winnerName;
 
     var userCategoryArray ;
@@ -234,32 +234,35 @@
 
         if (firstButtonName === "Start Game!" ){
             startGame();
+
             //change button to category selection
             setFirstButton("startButton","Category Selection");
 
         }else if(firstButtonName === "Category Selection") {
             selectCategory(gameNum);
-            playerLeft(gameNum);
 
 
         }else if (firstButtonName === "Show Winner"){
 
-            showWinner(gameNum);
-            getLeftCards(gameNum);
-            checkPlayersLeft(gameNum);
-
             playerLeft(gameNum);
+
+            showWinner(gameNum);
 
         }else if (firstButtonName === "Next Round"){
 
-            nextRound(gameNum);
-            displayUserCard(gameNum);
-            getLeftCards(gameNum);
 
-            getCurrentInfo(gameNum);
+                nextRound(gameNum);
+                // display the user card
+                displayUserCard(gameNum);
+                //display the current information
+                getCurrentInfo(gameNum);
+                //display the left cards number
+                getLeftCards(gameNum);
+                //display the players in the game
+                playerLeft(gameNum);
+
             setFirstButton("startButton","Category Selection");
 
-            playerLeft(gameNum);
 
         }else if (firstButtonName === "Game Finished"){
             gameFinished(gameNum);
@@ -299,10 +302,14 @@
             // display the user card
             displayUserCard(gameNum);
 
+            //display the current information
             getCurrentInfo(gameNum);
-
+            //display the left cards number
             getLeftCards(gameNum);
 
+            //display the players in the game
+            playerLeft(gameNum);
+            //
             showAICards(gameNum,numAIPlayers);
 
         };
@@ -312,26 +319,6 @@
 
     }
 
-    function drawCard(gameNum) {
-        // First create a CORS request, this is the message we are going to send (a get request in this case)
-        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/drawCard?gameNum="+gameNum); // Request type and URL
-
-        // Message is not sent yet, but we can check that the browser supports CORS
-        if (!xhr) {
-            alert("CORS not supported");
-        }
-
-        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
-        // to do when the response arrives
-        xhr.onload = function(e) {
-            var responseText = xhr.response; // the text of the response
-            //
-
-        };
-
-        // We have done everything we need to prepare the CORS request, so send it
-        xhr.send();
-    }
 
     function showAICards(gameNum,numAIPlayers) {
         if (numAIPlayers === 3){
@@ -350,11 +337,6 @@
         }
 
     }
-
-
-
-
-
 
 
     //===================================
@@ -436,6 +418,7 @@
 
 
 
+    //get AI TOP card categories
     function getAITopCardCategories(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getAITopCardCategories?gameNum="+gameNum); // Request type and URL
@@ -453,10 +436,7 @@
 
             var categoryArray = JSON.parse(responseText);
 
-            //test alert
-            // alert("categoryArray: "+categoryArray);
-
-            //
+            //set AI categories
             for (var i= 0; i < 4; i++) {
 
                 var AIName = "A"+(i+1)+"Cat";
@@ -475,7 +455,7 @@
 
     }
 
-    //get player1's card categories
+    //get user card categories
     function getUserTopCardCategories(gameNum) {
         // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getUserTopCardCategories?gameNum="+gameNum); // Request type and URL
@@ -494,7 +474,7 @@
 
             // set the user categories
             for (var i= 0; i < userCategoryArray.length; i++) {
-                setCategory("P1Cat"+ (i+1),userCategoryArray[i]);
+                setCategory("P1Cat"+ (i+1), userCategoryArray[i]);
             }
 
         };
@@ -507,10 +487,6 @@
 
 
 
-
-
-
-
     // ============================
     // SECOND PART II: Select Category
     // ============================
@@ -519,7 +495,7 @@
     //if the current player is player1, let the player 1 choose category
     function selectCategory(gameNum) {
 
-
+        // currentPlayer is AI
         if (currentPlayerName !== "You"){
 
             //AI player select Category
@@ -530,21 +506,50 @@
             setFirstButton("startButton","Show Winner");
 
         }else {
-
             // if the current player is You, show let the user to choose the category
-            if (currentPlayerName.valueOf() === "You"){
+            // if (currentPlayerName.valueOf() === "You"){
                 document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
 
+                displayUserCard(gameNum);
+                getUserTopCardCategories(gameNum);
                 //User select, return a selected category to RESTAPI
                 for (var i=0; i<5;i++){
                     UserSelectCategory("P1Cat" +(i+1),userCategoryArray[i] );
                 }
-
-            }
-          
         }
     }
 
+
+
+    //AI player select Category
+    function AISelectCategory(gameNum) {
+
+
+        // First create a CORS request, this is the message we are going to send (a get request in this case)
+        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AISelectCategory?gameNum="+gameNum); // Request type and URL
+
+        // Message is not sent yet, but we can check that the browser supports CORS
+        if (!xhr) {
+            alert("CORS not supported");
+        }
+
+        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+        // to do when the response arrives
+        xhr.onload = function(e) {
+            var responseText = xhr.response;
+            bestAttribute = JSON.parse(responseText);
+            //1.display AI card image 2. display AI card category
+
+            //set message
+            displayAICard();
+            document.getElementById("message").innerHTML = currentPlayerName + " has chosen " + bestAttribute;
+
+        };
+
+        // We have done everything we need to prepare the CORS request, so send it
+        xhr.send();
+
+    }
 
 
     // User Player 1 select category
@@ -553,7 +558,23 @@
 
         document.getElementById(id).addEventListener("click",function () {
             userSelectedCate = cate;
-            document.getElementById("message").innerHTML = "You have chosen:" + userSelectedCate;
+
+
+            if (id === "P1Cat1"){
+                document.getElementById("message").innerHTML = "You have chosen Size";
+
+            }else if(id === "P1Cat2"){
+                document.getElementById("message").innerHTML = "You have chosen Speed";
+            }else if(id === "P1Cat3"){
+                document.getElementById("message").innerHTML = "You have chosen Range";
+
+            }else if(id === "P1Cat4"){
+                document.getElementById("message").innerHTML = "You have chosen Firepower";
+
+            }else if(id === "P1Cat5"){
+                document.getElementById("message").innerHTML = "You have chosen Cargo";
+
+            }
 
 
             //when  the user selected the category, show the AI cards and change button to show winner
@@ -562,7 +583,7 @@
 
 
             //transger the category to RESTAPI
-            var tc = id + "";
+            var tc = id;
             transferCategory(tc);
 
         })
@@ -593,36 +614,6 @@
 
     }
 
-    //AI player select Category
-    function AISelectCategory(gameNum) {
-
-
-        // First create a CORS request, this is the message we are going to send (a get request in this case)
-        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AISelectCategory?gameNum="+gameNum); // Request type and URL
-
-        // Message is not sent yet, but we can check that the browser supports CORS
-        if (!xhr) {
-            alert("CORS not supported");
-        }
-
-        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
-        // to do when the response arrives
-        xhr.onload = function(e) {
-            var responseText = xhr.response;
-            bestAttribute = JSON.parse(responseText);
-            //1.display AI card image 2. display AI card category
-
-            //set message
-            displayAICard();
-            document.getElementById("message").innerHTML = currentPlayerName + " has chosen " + bestAttribute;
-
-
-        };
-
-        // We have done everything we need to prepare the CORS request, so send it
-        xhr.send();
-
-    }
 
 
 
@@ -644,24 +635,23 @@
         xhr.onload = function(e) {
             var responseText = xhr.response;
             //code here
-             winnerName = JSON.parse(responseText);
+            winnerName = JSON.parse(responseText);
 
+
+            // when it is a draw
             if (winnerName === "draw"){
 
+                //set message
                 document.getElementById("message").innerHTML = "This round is  a draw, Cards added to the communal pile.";
-
-
-
-                getCurrentInfo(gameNum);
-
 
                 setFirstButton("startButton", "Next Round");
 
 
-            }else  {
-                //((winnerName === "You")||(winnerName === "Player 1")||(winnerName === "Player 2")||(winnerName === "Player 3")||(winnerName === "Player 4"))
 
-                 document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
+
+            }else  {
+
+                    document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
 
                     setFirstButton("startButton", "Next Round");
 
@@ -675,45 +665,6 @@
         xhr.send();
 
     }
-
-    function checkPlayersLeft(gameNum) {
-        // First create a CORS request, this is the message we are going to send (a get request in this case)
-        var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/checkPlayersLeft?gameNum="+gameNum ); // Request type and URL
-
-        // Message is not sent yet, but we can check that the browser supports CORS
-        if (!xhr) {
-            alert("CORS not supported");
-        }
-
-        // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
-        // to do when the response arrives
-        xhr.onload = function(e) {
-            var responseText = xhr.response;
-            //code here
-            var playerLeft = JSON.parse(responseText);
-
-            if (playerLeft == 1){
-
-                document.getElementById("message").innerHTML =  winnerName + " win this game";
-
-
-                // updateDatabase(gameNum);
-
-                setFirstButton("startButton","Game Finished");
-
-            }
-
-        };
-
-        // We have done everything we need to prepare the CORS request, so send it
-        xhr.send();
-
-    }
-
-
-
-
-
 
 
     // ==========================
@@ -733,13 +684,12 @@
         xhr.onload = function(e) {
             var responseText = xhr.response;
 
-            //code here
-            document.getElementById("message").innerHTML = "The winner of this round is: " ;
 
-
+            document.getElementById("message").innerHTML = " " ;
 
 
         };
+        // document.getElementById("message").innerHTML = showMessage ;
 
         // We have done everything we need to prepare the CORS request, so send it
         xhr.send();
@@ -777,7 +727,7 @@
             communalPileCount = currentInfo[2];
             drawCount = currentInfo[3];
             //set the elements
-            document.getElementById("currentPlayerName").innerHTML = "Who's turn: " + currentPlayerName;
+            document.getElementById("currentPlayerName").innerHTML = "Who's Turn: " + currentPlayerName;
             document.getElementById("currentRound").innerHTML = "Round: " + currentRound;
             document.getElementById("communalPile").innerHTML = "Communal Pile: " + communalPileCount;
             document.getElementById("drawCount").innerHTML = "Draw Count: " + drawCount;
@@ -822,8 +772,7 @@
     //game finished
     function gameFinished(gameNum) {
     
-       
-    
+        // click the button redirect to the home page
         document.getElementById("startButton").onclick = function () {
             location.href = "http://localhost:7777/toptrumps";
         };
@@ -852,7 +801,19 @@
 
 
 
-            document.getElementById("playerLeft").innerHTML = "Player in game:" + playerLeftArray.toString();
+            if (  playerLeftArray.length < 2 ){
+
+                document.getElementById("message").innerHTML =  playerLeftArray.toString() + " win this game";
+
+
+                // updateDatabase(gameNum);
+
+                setFirstButton("startButton","Game Finished");
+            }
+
+            document.getElementById("playerLeft").innerHTML = "Players In Game: " + playerLeftArray.toString();
+
+            // checkPlayersLeft(gameNum);
 
 
         };
