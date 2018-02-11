@@ -821,9 +821,10 @@
                 document.getElementById("message").innerHTML =  playerLeftArray.toString() + " win this game";
 
 
-                // updateDatabase(gameNum);
 
                 setFirstButton("startButton","Game Finished");
+                updateDatabase(gameNum);
+
             }
 
             document.getElementById("playerLeft").innerHTML = "Players In Game: " + playerLeftArray.toString();
@@ -888,7 +889,7 @@
     
 
     //========================================
-    // when the game finished, update database
+    // Fifth PART V: Update Database
     //========================================
     function updateDatabase(gameNum) {
       // First create a CORS request, this is the message we are going to send (a get request in this case)

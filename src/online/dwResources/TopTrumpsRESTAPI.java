@@ -43,17 +43,17 @@ public class TopTrumpsRESTAPI {
 
 
     //
-    Game game;
-    int gameNum;
-    int numAIPlayers = 0;
-    Player currentPlayer;
-    ArrayList<Player> players;
-    ArrayList<Player> changePlayers;
-//    PostgresSQL db = new PostgresSQL();
+    private Game game;
+     int gameNum;
+    private int numAIPlayers = 0;
+    private Player currentPlayer;
+    private ArrayList<Player> players;
+    private ArrayList<Player> changePlayers;
+    PostgresSQL db ;
 
-    String bestAttribute;
+    private String bestAttribute;
     String userSelectedCate;
-    String userSelectAttribute;
+    private String userSelectAttribute;
 
 
     /**
@@ -83,18 +83,23 @@ public class TopTrumpsRESTAPI {
 
        game = new Game();
         
-        //=============
-        //  DB PART
-        //=============
-        
-//        game.setGameID(db.setCurrentGameNo());
-//        gameNum = game.getGameID();
-//
-//        System.out.println("the game id is " + gameNum);
+
 
 
         //round1
         game.initGame(false,numAIPlayers);
+
+        //=============
+        //  DB PART
+        //=============
+
+        db = new PostgresSQL();
+        game.setGameID(db.setCurrentGameNo());
+        gameNum = game.getGameID();
+
+        System.out.println("the game id is " + gameNum);
+
+
         game.drawCards();
 
         currentPlayer = game.getCurrentPlayer();
@@ -407,22 +412,22 @@ public class TopTrumpsRESTAPI {
     //====================
     //  Database Part
     //====================
-//    @GET
-//    @Path("/updateDatabase")
-//    public String updateDatabase() throws IOException{
-//
-//    	//The game is over. Update Database
-//		// Update game table
-//		db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
-//
-//		// Update players' tables
-//		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-//			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
-//		}
-//
-//
-//    	return "";
-//    }
+    @GET
+    @Path("/updateDatabase")
+    public String updateDatabase() throws IOException{
+
+    	//The game is over. Update Database
+		// Update game table
+		db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
+
+		// Update players' tables
+		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
+		}
+
+
+    	return "";
+    }
     
     
     // =============
