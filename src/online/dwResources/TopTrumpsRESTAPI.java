@@ -262,14 +262,12 @@ public class TopTrumpsRESTAPI {
         // when the current player is user
         if (currentPlayer.getName().equals("You") ){
 
-            System.out.println("current player  is you?????"+currentPlayer.getName()+ "!!!! tHE CATEGORY: " + userSelectAttribute);
             winner = game.playRound(userSelectAttribute);
             return displayWinner(winner);
         }else {
             //when the current player is AI
             bestAttribute = currentPlayer.getBestAttribute();
 
-            System.out.println("current player  is AI?????"+currentPlayer.getName()+ "!!!! tHE CATEGORY: " + bestAttribute);
             winner = game.playRound(bestAttribute);
 
             return displayWinner(winner);
