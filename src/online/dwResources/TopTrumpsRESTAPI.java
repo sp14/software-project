@@ -67,23 +67,11 @@ public class TopTrumpsRESTAPI {
         // Add relevant initalization here
         // ----------------------------------------------------
 
+        // game works : AI number:1,2,3,4
+          numAIPlayers = 4;
 
-       
-//        game = new Game(false,4);
-//        game.drawCards();
-//
-//        currentPlayer = game.getCurrentPlayer();
-//        players = game.getPlayers();
-        numAIPlayers = 4;
-
-//        game = new Game();
 
     }
-
-
-
-
-
 
     // ----------------------------------------------------
     // Add relevant API methods here
@@ -164,7 +152,6 @@ public class TopTrumpsRESTAPI {
         players = game.getStartingPlayers();
 
         String[] AICardName = new String[players.size()-1];
-//        String[] AICardName = {players.get(1).getCurrentCard().getName(),players.get(2).getCurrentCard().getName() };
 
         for (int i = 1; i < players.size() ; i++) {
             AICardName[(i-1)]= players.get(i).getCurrentCard().getName();
@@ -200,11 +187,9 @@ public class TopTrumpsRESTAPI {
 
         Card card ;
 
+        //build category array
         String[][] categoryArray= new String[players.size()-1][5];
 
-//        categoryArray[0] = {"Size: "+card.getSize(),"Speed: "+card.getSpeed(), "Range: " + card.getRange(),"Firepower: " + card.getFirepower(),"Cargo: " + card.getCargo()};
-
-//        String[][] categoryArray ={};
         for (int i = 0; i < players.size()-1; i++) {
             card = players.get(i+1).getCurrentCard();
             categoryArray[i][0] = ("Size: "+card.getSize());
@@ -251,9 +236,7 @@ public class TopTrumpsRESTAPI {
     public String AISelectCategory() throws IOException{
 
         currentPlayer = game.getCurrentPlayer();
-        System.out.println("AI ROUND: current player is :" + currentPlayer );
         String currentPlayerBestAttribute = currentPlayer.getBestAttribute();
-        System.out.println("AI ROUND: current BEST ATTRIBUTE is :" + currentPlayerBestAttribute );
 
         String currentPlayerBestAttributeAsJSONString = oWriter.writeValueAsString(currentPlayerBestAttribute);
         return currentPlayerBestAttributeAsJSONString;
@@ -262,6 +245,7 @@ public class TopTrumpsRESTAPI {
 
 
 
+    //show the winner of the round
     @GET
     @Path("/showWinner")
     public String showWinner() throws IOException{
@@ -276,8 +260,6 @@ public class TopTrumpsRESTAPI {
             System.out.println("current player  is you?????"+currentPlayer.getName()+ "!!!! tHE CATEGORY: " + userSelectAttribute);
             winner = game.playRound(userSelectAttribute);
             return displayWinner(winner);
-
-
         }else {
             //when the current player is AI
             bestAttribute = currentPlayer.getBestAttribute();
@@ -289,21 +271,17 @@ public class TopTrumpsRESTAPI {
         }
     }
 
+    //get left players
     @GET
     @Path("/getPlayersLeft")
     public String getPlayersLeft() throws IOException{
         changePlayers = game.getPlayers();
         int playerNumber = changePlayers.size();
         String pnAsJSONString = oWriter.writeValueAsString(playerNumber);
-
-
-
         return pnAsJSONString;
     }
 
-
-
-
+    // display winner
     public String displayWinner(Player winner) throws IOException{
 
 
@@ -325,37 +303,10 @@ public class TopTrumpsRESTAPI {
 
 
 
+    //next round
     @GET
     @Path("/nextRound")
     public String nextRound() throws IOException{
-
-        //Get a list of all eliminated players and display in the console
-//        ArrayList<Player> eliminated = game.clearPlayers();
-
-//        String returnMessage;
-//
-//        // get eliminated players
-//        if (!(eliminated == null)) {
-//            for (int i = 0; i < eliminated.size(); i++) {
-//
-//                Player elimPlayer = eliminated.get(i);
-//
-//                if (elimPlayer.isAI()) {
-//                    returnMessage = elimPlayer + " has been eliminated" ;
-//                    String asJSONString = oWriter.writeValueAsString(returnMessage);
-//                    return asJSONString;
-//                }
-//                else {
-//
-//                    returnMessage = "You have been eliminated";
-//
-//                    String asJSONString = oWriter.writeValueAsString(returnMessage);
-//
-//                    return asJSONString;
-//                }
-//            }
-//        }
-
 
         game.clearPlayers();
         // draw the cards
@@ -365,6 +316,7 @@ public class TopTrumpsRESTAPI {
     }
 
 
+    //transfer the category
     @GET
     @Path("/transferCategory")
     public String transferCategory(@QueryParam("userSelectedCate") String userSelectedCate) throws IOException{
@@ -395,6 +347,9 @@ public class TopTrumpsRESTAPI {
     }
 
 
+
+
+    // get left cards
     @GET
     @Path("/getLeftCards")
     public String getLeftCards() throws IOException{
@@ -414,14 +369,13 @@ public class TopTrumpsRESTAPI {
     }
 
 
+    //get the left player array
     @GET
     @Path("/playerLeft")
     public String playerLeft() throws IOException{
 
-
         ArrayList<Player> leftPlayersArray =game.getPlayers();
         int playerLeft = leftPlayersArray.size();
-        System.out.println("player left is" + leftPlayersArray.toString());
         String[] playerLeftArray = new String[leftPlayersArray.size()];
 
         for (int i = 0; i < leftPlayersArray.size() ; i++) {

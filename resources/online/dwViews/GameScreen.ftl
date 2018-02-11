@@ -20,8 +20,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 
-
-
     <style>
         body{
             background-color: aliceblue;
@@ -35,12 +33,22 @@
         #gameButton{
             text-align: center;
         }
+        #howManyAI{
+            text-align: center;
+
+        }
 
 
     </style>
+    <script>
+
+    </script>
+
 
 
 </head>
+
+
 
 <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
 <!--header-->
@@ -48,16 +56,6 @@
     <h1 >Top Trumps Games</h1><br/>
     <hr>
 </div>
-<#--<h3>How many AI you want to play with?</h3>-->
-<!-- AI players -->
-<#--<form>-->
-<#--<input  type="radio" id="value1" value="1">1<br/>-->
-<#--<input type="radio" name="AI" value="2">2<br/>-->
-<#--<input type="radio" name="AI" value="3">3<br/>-->
-<#--<input type="radio" name="AI" value="4">4<br/>-->
-<#--<input type="submit" value="Start">-->
-<#--</form>-->
-
 
 <!--Display game infomation here-->
 <div id="gameInfo">
@@ -68,6 +66,12 @@
     <p id="currentPlayerName">Who's Turn:</p>
     <strong><p id="message"> </p></strong>
 
+        <#--<p id="currentRound"></p>-->
+        <#--<p id="drawCount"></p>-->
+        <#--<p id="communalPile"></p>-->
+        <#--<p id="playerLeft"></p>-->
+        <#--<p id="currentPlayerName"></p>-->
+        <#--<strong><p id="message"> </p></strong>-->
 </div>
 
 
@@ -83,7 +87,7 @@
 
 <!--card-->
 
-<div class="container" >
+<div class="container" id="allCards">
     <div class="row">
 
         <!--Player 1-->
@@ -200,6 +204,7 @@
 
 <script type="text/javascript">
 
+    //variables will be used in this file
     var gameNum = 0;
     var numAIPlayers = 0;
     var currentPlayerName = "";
@@ -210,7 +215,6 @@
     var drawCount= 0 ;
     var playerLeftArray;
     var winnerName;
-
     var userCategoryArray ;
 
     // Method that is called on page load
@@ -220,7 +224,7 @@
         // You can call other methods you want to run when the page first loads here
         // --------------------------------------------------------------------------
 
-        // For example, lets call our sample methods
+        hiddenElements("allCards");
 
     }
 
@@ -241,7 +245,6 @@
         }else if(firstButtonName === "Category Selection") {
             selectCategory(gameNum);
 
-
         }else if (firstButtonName === "Show Winner"){
 
             playerLeft(gameNum);
@@ -249,22 +252,10 @@
             showWinner(gameNum);
 
         }else if (firstButtonName === "Next Round"){
-
-
-                nextRound(gameNum);
-                // display the user card
-                displayUserCard(gameNum);
-                //display the current information
-                getCurrentInfo(gameNum);
-                //display the left cards number
-                getLeftCards(gameNum);
-                //display the players in the game
-                playerLeft(gameNum);
-
-            setFirstButton("startButton","Category Selection");
-
+            nextRound(gameNum);
 
         }else if (firstButtonName === "Game Finished"){
+
             gameFinished(gameNum);
 
         }
@@ -299,6 +290,7 @@
             numAIPlayers = basicInfo[1];
 
 
+            showElements("P1");
             // display the user card
             displayUserCard(gameNum);
 
@@ -500,6 +492,11 @@
 
             //AI player select Category
             //show AI players' card
+            showElements("A1");
+            showElements("A2");
+            showElements("A3");
+            showElements("A4");
+
             AISelectCategory(gameNum);
 
             //change the button
@@ -510,7 +507,12 @@
             // if (currentPlayerName.valueOf() === "You"){
                 document.getElementById("message").innerHTML = "It is your turn now, choose a category on Card";
 
-                displayUserCard(gameNum);
+                showElements("A1");
+                showElements("A2");
+                showElements("A3");
+                showElements("A4");
+
+            displayUserCard(gameNum);
                 getUserTopCardCategories(gameNum);
                 //User select, return a selected category to RESTAPI
                 for (var i=0; i<5;i++){
@@ -605,17 +607,12 @@
         // to do when the response arrives
         xhr.onload = function(e) {
             var responseText = xhr.response; // the text of the response
-            // alert(responseText); // lets produce an alert
-
         };
 
         // We have done everything we need to prepare the CORS request, so send it
         xhr.send();
 
     }
-
-
-
 
     // ===========================
     // THIRD PART III: Show Winner
@@ -646,15 +643,11 @@
 
                 setFirstButton("startButton", "Next Round");
 
-
-
-
             }else  {
 
                     document.getElementById("message").innerHTML = "The winner of this round is: " + winnerName;
 
                     setFirstButton("startButton", "Next Round");
-
             }
 
 
@@ -686,6 +679,28 @@
 
 
             document.getElementById("message").innerHTML = " " ;
+
+
+
+            if (playerLeftArray.length < 2){
+
+                playerLeft(gameNum);
+            }else {
+                // display the user card
+                displayUserCard(gameNum);
+                //display the current information
+                getCurrentInfo(gameNum);
+                //display the left cards number
+                getLeftCards(gameNum);
+                //display the players in the game
+                playerLeft(gameNum);
+
+                setFirstButton("startButton","Category Selection");
+
+            }
+
+
+
 
 
         };
@@ -797,7 +812,7 @@
             var responseText = xhr.response;
 
             //code here
-            var playerLeftArray = JSON.parse(responseText);
+            playerLeftArray = JSON.parse(responseText);
 
 
 
@@ -858,18 +873,23 @@
     //hidden element by id
     function hiddenElements(id) {
         // document.getElementById(id).hidden = "hidden";
-        document.getElementById(id).hidden = true;
+        // document.getElementById(id).hidden = true;
+        document.getElementById(id).style.visibility = "hidden";
 
     }
 
     //show element by id
     function showElements(id) {
         // $(".id").show();
-        document.getElementById(id).hidden = false;
+        // document.getElementById(id).hidden = false;
+        document.getElementById(id).style.visibility ="visible";
     }
 
     
-    
+
+    //========================================
+    // when the game finished, update database
+    //========================================
     function updateDatabase(gameNum) {
       // First create a CORS request, this is the message we are going to send (a get request in this case)
         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/updateDatabase?gameNum=" + gameNum); // Request type and URL
