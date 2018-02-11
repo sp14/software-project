@@ -59,15 +59,11 @@ public class TopTrumpsCLIApplication {
 				con.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
 			}
 
-			// Display end of game statistics
-			StatsPrinter pr = new StatsPrinter();
-			System.out.println(pr.printStatsEnd(game));
-
 			//The game is over. Display winner
-			System.out.println("Game over. The winner is " + game.getWinner() +"\nWould you like to quit new game? Type q to quit the game or anything else to continue playing.");
+			System.out.println("\n------ Game Over ------ \nThe winner is " + game.getWinner() +"\n\nWould you like to play a new game? Type q to quit the game or anything else to continue playing.");
 			
 			//Ask user whether they wish to continue with game
-			String keepPlaying = scanner.nextLine();
+			String keepPlaying = scanner.nextLine().toLowerCase();
 
 			//Keep playing?
 			if (keepPlaying.equals("q")) {
