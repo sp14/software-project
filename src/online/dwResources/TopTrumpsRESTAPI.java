@@ -391,20 +391,27 @@ public class TopTrumpsRESTAPI {
         return playerLeftAsJSONStirng;
     }
 
-    //getStatisticsForTheUser
+        //getStatisticsForTheUser
     @GET
     @Path("/getStatisticsForTheUser")
     public String getStatisticsForTheUser() throws JsonProcessingException {
-        String a = PostgresSQL.noOfGamesPlayed();
+        //Create variables representing the
+    	//statistics we need t
+    	
+    	//Use temporary variables to set avg draws to two decimal places
+    	double temp = Double.parseDouble(PostgresSQL.avgNoOfDraws());
+    	String d1 = String.format("%.2f", temp);
+    	
+    	
+    	String a = PostgresSQL.noOfGamesPlayed();
         String b = PostgresSQL.noOfAIWins();
         String c = PostgresSQL.noOfHumanWins();
-        String d = PostgresSQL.avgNoOfDraws();
+        String d = d1;
         String e = PostgresSQL.maxNoOfRoundsPlayed();
         String out = a + " " + b + " " + c + " " + d + " " + e;
 
         return out;
     }
-
 
 
     //====================
