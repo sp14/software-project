@@ -685,6 +685,7 @@
             if (playerLeftArray.length < 2){
 
                 playerLeft(gameNum);
+               
             }else {
                 // display the user card
                 displayUserCard(gameNum);
@@ -823,7 +824,7 @@
 
 
                 setFirstButton("startButton","Game Finished");
-                // updateDatabase(gameNum);
+               updateDatabase(gameNum);
 
             }
 
@@ -891,27 +892,27 @@
     //========================================
     // Fifth PART V: Update Database
     //========================================
-    // function updateDatabase(gameNum) {
-    //   // First create a CORS request, this is the message we are going to send (a get request in this case)
-    //     var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/updateDatabase?gameNum=" + gameNum); // Request type and URL
-    //
-    //     // Message is not sent yet, but we can check that the browser supports CORS
-    //     if (!xhr) {
-    //         alert("CORS not supported");
-    //     }
-    //
-    //     // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
-    //     // to do when the response arrives
-    //     xhr.onload = function(e) {
-    //         var responseText = xhr.response;
-    //
-    //
-    //     };
-    //
-    //     // We have done everything we need to prepare the CORS request, so send it
-    //     xhr.send();
-    //
-    // }
+     function updateDatabase(gameNum) {
+       // First create a CORS request, this is the message we are going to send (a get request in this case)
+         var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/updateDatabase?gameNum=" + gameNum); // Request type and URL
+    
+         // Message is not sent yet, but we can check that the browser supports CORS
+         if (!xhr) {
+             alert("CORS not supported");
+         }
+    
+         // CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+         // to do when the response arrives
+         xhr.onload = function(e) {
+             var responseText = xhr.response;
+    
+    
+         };
+    
+         // We have done everything we need to prepare the CORS request, so send it
+         xhr.send();
+    
+     }
 
 
 
