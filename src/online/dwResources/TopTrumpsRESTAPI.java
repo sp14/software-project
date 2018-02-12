@@ -70,7 +70,7 @@ public class TopTrumpsRESTAPI {
         // game works : AI number:1,2,3,4
           numAIPlayers = conf.getNumAIPlayers();
 
-          numAIPlayers = 3;
+          
     }
 
     // ----------------------------------------------------
@@ -390,18 +390,7 @@ public class TopTrumpsRESTAPI {
         ArrayList<Player> leftPlayersArray =game.getPlayers();
         int playerLeft = leftPlayersArray.size();
     
-//        if (playerLeft < 2) {
-//
-//        	
-//        	db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), leftPlayersArray.get(0).getName());
-//
-//    		// Update players' tables
-//    		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-//    			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
-//    		}
-//    		
-//			System.out.println("databse updated");
-//		}
+
         String[] playerLeftArray = new String[leftPlayersArray.size()];
 
         for (int i = 0; i < leftPlayersArray.size() ; i++) {
