@@ -68,9 +68,9 @@ public class TopTrumpsRESTAPI {
         // ----------------------------------------------------
 
         // game works : AI number:1,2,3,4
-          numAIPlayers = 4;
+          numAIPlayers = conf.getNumAIPlayers();
 
-
+          numAIPlayers = 3;
     }
 
     // ----------------------------------------------------
