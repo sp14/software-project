@@ -131,12 +131,15 @@ public class Game {
 		catch (IOException e) {
 
 			//File loading error
-			JOptionPane.showMessageDialog(null, "Error loading file", "Error", JOptionPane.ERROR_MESSAGE);
+			System.err.println("Error loading file");
+			System.exit(0);
 		}
 		catch (InputMismatchException e) {
 
 			//File reading error
-			JOptionPane.showMessageDialog(null, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
+			System.err.println("Error reading file");
+			System.exit(0);
+			
 		}
 	}
 

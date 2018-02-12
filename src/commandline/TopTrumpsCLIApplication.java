@@ -115,8 +115,6 @@ public class TopTrumpsCLIApplication {
 			//Get a list of all eliminated players and display in the console
 			ArrayList<Player> eliminated = game.clearPlayers();
 			displayEliminatedPlayers(eliminated);
-
-			//displayRemaingCardCount
 			
 			//If the human player is still in the game
 			if (!players.get(0).isAI()) {
@@ -151,6 +149,7 @@ public class TopTrumpsCLIApplication {
 			//Wait for user input and put to lower case
 			String stats = scanner.nextLine().toLowerCase();
 
+			//User has chosen to view stats
 			if (stats.equals("s")) {
 
 				// Print statistics
@@ -211,6 +210,12 @@ public class TopTrumpsCLIApplication {
 		}
 	}
 
+	/**
+	 * Gets the attribute that will be compared in the round
+	 * @param scanner
+	 * @param currentPlayer
+	 * @return the chosen attribute
+	 */
 	private static String getSelectedAttribute(Scanner scanner, Player currentPlayer) {
 
 		String selectedAttribute;
@@ -228,12 +233,19 @@ public class TopTrumpsCLIApplication {
 		//It is the users turn to play
 		else {
 
+			//Get user input
 			selectedAttribute = getUserAttributeInput(scanner);
 		}
 
+		//Retunr the attribute
 		return selectedAttribute;
 	}
 
+	/**
+	 * Get the users input for which attribute they wish to choose
+	 * @param scanner
+	 * @return the chosen category
+	 */
 	private static String getUserAttributeInput(Scanner scanner) {
 
 		//Prompt the user to pick a category
@@ -263,39 +275,60 @@ public class TopTrumpsCLIApplication {
 			}
 		}
 
+		//Return the chosen attribute
 		return selectedAttribute;
 	}
 
+	/**
+	 * Display the winner of the round
+	 * @param winner
+	 */
 	private static void displayWinner(Player winner){
 
 		//No winner. The round was a draw, inform user
 		if (winner == null) {
-
 			System.out.println("The round was a draw. Cards added to the communal pile.");
-		} else {			
+		} else {		
+			//Print the winner
 		 System.out.println(winner.getName() + " won the round.");
 		}
 	}
 
+	/**
+	 * Displays any players that have been eliminated from the game
+	 * @param eliminated players
+	 */
 	private static void displayEliminatedPlayers(ArrayList<Player> eliminated) {
 
+		//If there have been players eliminated
 		if (!(eliminated == null)) {
+			
+			//Loop through all eliminated players
 			for (int i = 0; i < eliminated.size(); i++) {
 
+				//Get the player from the arrayList
 				Player elimPlayer = eliminated.get(i);
 
+				//If the eliminated player is an AI
 				if (elimPlayer.isAI()) {
 
+					//Display to the user which AI has been eliminated
 					System.out.println(elimPlayer + " has been eliminated");	
 				}
+				//If the user has been eliminated
 				else {
-
+					
+					//Inform the user they are out
 					System.out.println("You have been eliminated");
 				}
 			}
 		}
 	}
 
+	/**
+	 * Displays all the cards currently in play
+	 * @param players
+	 */
 	private static void displayCards(ArrayList<Player> players) {
 
 		System.out.println("Everbody shows their cards");
