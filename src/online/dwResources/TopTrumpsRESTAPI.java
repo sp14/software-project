@@ -82,9 +82,6 @@ public class TopTrumpsRESTAPI {
         //Start the game logic
 
        game = new Game();
-        
-
-
 
         //round1
         game.initGame(false,numAIPlayers);
@@ -93,11 +90,11 @@ public class TopTrumpsRESTAPI {
         //  DB PART
         //=============
 
-        db = new PostgresSQL();
-        game.setGameID(db.setCurrentGameNo());
-        gameNum = game.getGameID();
+//        db = new PostgresSQL();
+//        game.setGameID(db.setCurrentGameNo());
+//        gameNum = game.getGameID();
 
-        System.out.println("the game id is " + gameNum);
+//        System.out.println("the game id is " + gameNum);
 
 
         game.drawCards();
@@ -106,6 +103,7 @@ public class TopTrumpsRESTAPI {
         players = game.getPlayers();
 
 
+        gameNum = 0;
         //basic information include gameNumber(gameID) and number of AI players
         int[] basicInfo = new int[2];
         basicInfo[0]=gameNum;
@@ -417,22 +415,22 @@ public class TopTrumpsRESTAPI {
     //====================
     //  Database Part
     //====================
-    @GET
-    @Path("/updateDatabase")
-    public String updateDatabase() throws IOException{
-
-    	//The game is over. Update Database
-		// Update game table
-		db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
-
-		// Update players' tables
-		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
-			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
-		}
-
-
-    	return "";
-    }
+//    @GET
+//    @Path("/updateDatabase")
+//    public String updateDatabase() throws IOException{
+//
+//    	//The game is over. Update Database
+//		// Update game table
+//		db.insertIntoGameTable(game.getGameID(), game.getRoundCounter(), game.getDrawCounter(), game.getWinner().getName());
+//
+//		// Update players' tables
+//		for (int i=0 ; i < game.getStartingPlayers().size(); i ++) {
+//			db.insertPlayersTables(game.getGameID(), game.getStartingPlayers().get(i).getWinCounter(), game.getStartingPlayers().get(i).getName() );
+//		}
+//
+//
+//    	return "";
+//    }
     
     
     // =============
