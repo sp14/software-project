@@ -66,12 +66,6 @@
     <p id="currentPlayerName">Who's Turn:</p>
     <strong><p id="message"> </p></strong>
 
-        <#--<p id="currentRound"></p>-->
-        <#--<p id="drawCount"></p>-->
-        <#--<p id="communalPile"></p>-->
-        <#--<p id="playerLeft"></p>-->
-        <#--<p id="currentPlayerName"></p>-->
-        <#--<strong><p id="message"> </p></strong>-->
 </div>
 
 
@@ -315,16 +309,15 @@
     function showAICards(gameNum,numAIPlayers) {
         if (numAIPlayers === 3){
 
-            // alert("showAICards method alert");
-            hiddenElements("A4");
+            hiddenCards("A4");
         }else if (numAIPlayers === 2){
-            hiddenElements("A4");
-            hiddenElements("A3");
+            hiddenCards("A4");
+            hiddenCards("A3");
 
         }else if (numAIPlayers === 1){
-            hiddenElements("A4");
-            hiddenElements("A3");
-            hiddenElements("A2");
+            hiddenCards("A4");
+            hiddenCards("A3");
+            hiddenCards("A2");
 
         }
 
@@ -877,6 +870,12 @@
         // document.getElementById(id).hidden = "hidden";
         // document.getElementById(id).hidden = true;
         document.getElementById(id).style.visibility = "hidden";
+
+    }
+    // hidden which can adjust layout
+    function hiddenCards(id) {
+        document.getElementById(id).hidden = true;
+
 
     }
 
