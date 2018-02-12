@@ -5,7 +5,10 @@ public class PostgresSQL {
 
 	private static Connection connection = null;
 
-	public PostgresSQL() {	//Constructor
+	/**
+	 * Default constructor
+	 */
+	public PostgresSQL() {
 
 	}
 
@@ -14,22 +17,14 @@ public class PostgresSQL {
 	 */
 	private static void sqlConnection() {	
 
-		//connection for home
-//		String databaseName = "postgres";
-//		String userName = "postgres";
-//		String password = "postgres";
-//		try {
-//			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + databaseName,
-//					userName, password);
+		// Database credentials
+		String databaseName = "m_17_2352834c";
+		String userName = "m_17_2352834c";
+		String password = "2352834c";
 
-			//connection for uni
-					String databaseName = "m_17_2352834c";
-					String userName = "m_17_2352834c";
-					String password = "2352834c";
-			
-					try {
-						connection = DriverManager.getConnection("jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/" + databaseName,
-								userName, password);
+		try {
+			connection = DriverManager.getConnection("jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/" + databaseName,
+					userName, password);
 		}
 
 		catch (SQLException e) {
@@ -52,7 +47,7 @@ public class PostgresSQL {
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Connection could not be closed ï¿½ SQL exception");
+			System.out.println("Connection could not be closed: SQL exception");
 		}
 	}
 
@@ -63,7 +58,7 @@ public class PostgresSQL {
 	 */
 	public int setCurrentGameNo() {
 
-		// Current game number variable.
+		// Variable for the greatest game number in the database.
 		int currentGameNo = 0;
 
 		// Connect to the database
